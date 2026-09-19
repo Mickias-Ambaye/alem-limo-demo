@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alem LLC · Luxury Transportation</title>
+<meta name="description" content="Alem LLC — women-owned luxury chauffeured transportation serving Virginia, D.C. & Maryland. Airport transfers, corporate travel, weddings & special occasions. Beyond rideshare, below broker rates.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b0a08'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-weight='bold' font-size='42' text-anchor='middle' fill='%23d4af37'%3EA%3C/text%3E%3C/svg%3E">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#0b0a08;color:#f5f1e6;font-family:Jost,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#d4af37;text-decoration:none}
+  a:hover{color:#f8e58c}
+  input,select,textarea{outline:none}
+  input:focus,textarea:focus,select:focus{border-color:#d4af37 !important}
+  ::placeholder{color:#6f6753}
+  select option{background:#131109;color:#f5f1e6}
+  input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(80%) sepia(40%) saturate(400%) hue-rotate(5deg)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+</style>
+<script src="./image-slot.js"></script>
+</helmet>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:13px 32px;background:rgba(11,10,8,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,175,55,.22)">
+  <a href="#top" style="display:flex;align-items:center;gap:12px">
+    <span style="font-family:Cinzel,serif;font-weight:900;font-size:26px;line-height:1;background:linear-gradient(120deg,#8a6a1c,#d4af37 35%,#f8e58c 50%,#d4af37 65%,#8a6a1c);-webkit-background-clip:text;background-clip:text;color:transparent">A</span>
+    <span style="display:flex;flex-direction:column;line-height:1.1">
+      <span style="font-family:Cinzel,serif;font-weight:700;font-size:16px;letter-spacing:.14em;color:#f5f1e6">ALEM LLC</span>
+      <span style="font-size:9px;letter-spacing:.32em;color:#d4af37;text-transform:uppercase">Luxury Transportation</span>
+    </span>
+  </a>
+  <nav style="display:flex;gap:24px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;flex-wrap:wrap">
+    <a href="#about" style="color:#cfc7b2" style-hover="color:#f8e58c">About</a>
+    <a href="#services" style="color:#cfc7b2" style-hover="color:#f8e58c">Services</a>
+    <a href="#fleet" style="color:#cfc7b2" style-hover="color:#f8e58c">Fleet &amp; Rates</a>
+    <a href="#reviews" style="color:#cfc7b2" style-hover="color:#f8e58c">Reviews</a>
+    <a href="#faq" style="color:#cfc7b2" style-hover="color:#f8e58c">FAQ</a>
+    <a href="#booking" style="color:#cfc7b2" style-hover="color:#f8e58c">Book Now</a>
+  </nav>
+  <a href="tel:2405952259" style="font-size:14px;letter-spacing:.06em;color:#d4af37;white-space:nowrap">(240) 595-2259</a>
+</header>
+
+<section id="top" style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center">
+  <div style="position:absolute;inset:0"><image-slot id="hero-bg" shape="rect" placeholder="Hero photo, black limo at night, city lights" src="images/hero-limo-night.jpg"></image-slot></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,10,8,.78) 0%,rgba(11,10,8,.55) 40%,rgba(11,10,8,.88) 100%)"></div>
+  <div style="position:relative;z-index:2;pointer-events:none;width:100%;max-width:1060px;padding:130px 24px 70px;text-align:center">
+    <div style="pointer-events:auto;display:inline-flex;align-items:center;gap:14px;color:#d4af37;animation:fadeUp .8s ease both">
+      <span style="display:block;width:60px;height:1px;background:linear-gradient(90deg,transparent,#d4af37)"></span>
+      <span style="font-size:12px;letter-spacing:.42em;text-transform:uppercase">Women-Owned &amp; Operated</span>
+      <span style="display:block;width:60px;height:1px;background:linear-gradient(90deg,#d4af37,transparent)"></span>
+    </div>
+    <h1 style="pointer-events:auto;font-family:Cinzel,serif;font-weight:700;font-size:clamp(36px,6vw,68px);letter-spacing:.06em;margin:18px 0 14px;color:#f5f1e6;text-shadow:0 2px 30px rgba(0,0,0,.6);animation:fadeUp .8s .15s ease both">Beyond Rideshare.<br>Below Broker Rates.</h1>
+    <p style="pointer-events:auto;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(20px,2.6vw,26px);color:#e8e0cc;max-width:680px;margin:0 auto 36px;text-shadow:0 1px 16px rgba(0,0,0,.7);animation:fadeUp .8s .3s ease both">A women-owned, direct owner-operator chauffeur network serving Virginia, D.C. &amp; Maryland, no brokers, no middlemen, no surprises.</p>
+    <div style="pointer-events:auto;background:rgba(19,17,9,.92);border:1px solid rgba(212,175,55,.45);backdrop-filter:blur(8px);padding:22px;max-width:860px;margin:0 auto;animation:fadeUp .8s .45s ease both">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end">
+        <div style="text-align:left"><div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#d4af37;margin-bottom:7px">Trip Type</div>
+          <select value="{{ tripType }}" onChange="{{ onTripType }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px;font:400 14px Jost">
+            <option>Airport Transfer</option><option>Point-to-Point</option><option>Hourly / As-Directed</option>
+          </select></div>
+        <div style="text-align:left"><div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#d4af37;margin-bottom:7px">Date</div>
+          <input type="date" min="{{ today }}" value="{{ date }}" onChange="{{ onDate }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 12px;font:400 14px Jost;color-scheme:dark"></div>
+        <div style="text-align:left"><div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#d4af37;margin-bottom:7px">Passengers</div>
+          <select value="{{ pax }}" onChange="{{ onPax }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px;font:400 14px Jost">
+            <option>1–3</option><option>4–6</option><option>7–14</option><option>15+</option>
+          </select></div>
+        <button onClick="{{ heroQuote }}" style="background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;border:none;font:600 13px Jost;letter-spacing:.18em;text-transform:uppercase;padding:14px 18px;cursor:pointer" style-hover="filter:brightness(1.1)">Get Instant Quote</button>
+      </div>
+    </div>
+    <div style="pointer-events:auto;display:flex;gap:12px 34px;margin-top:34px;flex-wrap:wrap;justify-content:center;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#cfc7b2;animation:fadeUp .8s .6s ease both">
+      <span>◆ VA CPCC Licensed &amp; Insured</span><span>◆ Female Chauffeurs Available</span><span>◆ Flight Tracking Included</span><span>◆ Local &amp; Out-of-State</span>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid rgba(212,175,55,.14);border-bottom:1px solid rgba(212,175,55,.14);background:#0e0d0a">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:rgba(212,175,55,.14)">
+    <div style="background:#0e0d0a;padding:34px 28px;text-align:center"><div style="font-family:Cinzel,serif;font-size:15px;letter-spacing:.12em;color:#f8e58c;margin-bottom:8px">01 · Book in 60 Seconds</div><div style="font-size:14px;line-height:1.6;color:#9a917c">Pick your ride and time online, see your fare estimate instantly, no waiting for a callback.</div></div>
+    <div style="background:#0e0d0a;padding:34px 28px;text-align:center"><div style="font-family:Cinzel,serif;font-size:15px;letter-spacing:.12em;color:#f8e58c;margin-bottom:8px">02 · We Confirm &amp; Track</div><div style="font-size:14px;line-height:1.6;color:#9a917c">You get a personal confirmation call, plus text updates. Airport runs are flight-tracked automatically.</div></div>
+    <div style="background:#0e0d0a;padding:34px 28px;text-align:center"><div style="font-family:Cinzel,serif;font-size:15px;letter-spacing:.12em;color:#f8e58c;margin-bottom:8px">03 · Arrive in Style</div><div style="font-size:14px;line-height:1.6;color:#9a917c">Your chauffeur, often the owner of the vehicle, arrives early, suited, with a spotless cabin.</div></div>
+  </div>
+</section>
+
+<section id="about" style="padding:96px 24px">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:center">
+    <div>
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#d4af37;margin-bottom:12px">◆ &nbsp;Welcome to Alem LLC&nbsp; ◆</div>
+      <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:32px;letter-spacing:.06em;margin:0 0 18px;color:#f5f1e6">What Makes Us Special</h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;line-height:1.5;color:#cfc7b2;margin:0 0 28px">A premier, proudly women-owned luxury transportation provider based in the DMV, operating under Virginia DMV Contract Passenger Carrier Authority (CPCC).</p>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;gap:16px"><span style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,175,55,.45);transform:rotate(45deg);margin-top:2px"><span style="transform:rotate(-45deg);color:#f8e58c;font-family:Cinzel,serif;font-size:14px">01</span></span>
+          <div><div style="font-family:Cinzel,serif;font-size:15px;letter-spacing:.1em;color:#f5f1e6;margin-bottom:6px">Direct Owner-Operator Model</div><div style="font-size:14px;line-height:1.65;color:#9a917c">Most of our drivers are women who own their vehicles. No third-party brokers or middlemen, direct accountability, showroom-maintained vehicles, and transparent pricing.</div></div></div>
+        <div style="display:flex;gap:16px"><span style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,175,55,.45);transform:rotate(45deg);margin-top:2px"><span style="transform:rotate(-45deg);color:#f8e58c;font-family:Cinzel,serif;font-size:14px">02</span></span>
+          <div><div style="font-family:Cinzel,serif;font-size:15px;letter-spacing:.1em;color:#f5f1e6;margin-bottom:6px">Female Chauffeurs Available</div><div style="font-size:14px;line-height:1.65;color:#9a917c">We proudly feature professional female drivers for maximum comfort, safety and peace of mind, just request one when you book.</div></div></div>
+        <div style="display:flex;gap:16px"><span style="flex:0 0 auto;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,175,55,.45);transform:rotate(45deg);margin-top:2px"><span style="transform:rotate(-45deg);color:#f8e58c;font-family:Cinzel,serif;font-size:14px">03</span></span>
+          <div><div style="font-family:Cinzel,serif;font-size:15px;letter-spacing:.1em;color:#f5f1e6;margin-bottom:6px">Local &amp; Interstate Travel</div><div style="font-size:14px;line-height:1.65;color:#9a917c">Local DMV transit or out-of-state charter service, we have you covered. Out-of-state trips need just 1 hour advance notice.</div></div></div>
+      </div>
+    </div>
+    <div style="height:420px"><image-slot id="about-photo" shape="rect" placeholder="Photo, Kidist / owner-operator with vehicle"></image-slot></div>
+  </div>
+</section>
+
+<section id="services" style="padding:96px 24px;background:#0e0d0a;border-top:1px solid rgba(212,175,55,.14)">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:56px">
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#d4af37;margin-bottom:12px">◆ &nbsp;Our Services&nbsp; ◆</div>
+      <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:34px;letter-spacing:.06em;margin:0;color:#f5f1e6">Every Occasion, Elevated</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+      <sc-for list="{{ serviceCards }}" as="s" hint-placeholder-count="4">
+        <div style="background:#131109;border:1px solid rgba(212,175,55,.2);padding:32px 26px;transition:border-color .3s" style-hover="border-color:rgba(212,175,55,.6)">
+          <div style="width:48px;height:48px;margin-bottom:18px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,175,55,.45);transform:rotate(45deg)"><span style="transform:rotate(-45deg);font-family:Cinzel,serif;font-size:17px;color:#f8e58c">{{ s.mark }}</span></div>
+          <div style="font-family:Cinzel,serif;font-size:17px;letter-spacing:.1em;color:#f5f1e6;margin-bottom:10px">{{ s.name }}</div>
+          <div style="font-size:14px;line-height:1.65;color:#9a917c;margin-bottom:14px">{{ s.desc }}</div>
+          <div style="font-size:12.5px;line-height:2;color:#cfc7b2">{{ s.p1 }}<br>{{ s.p2 }}<br>{{ s.p3 }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="fleet" style="padding:96px 24px;border-top:1px solid rgba(212,175,55,.14)">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#d4af37;margin-bottom:12px">◆ &nbsp;Fleet &amp; Rates&nbsp; ◆</div>
+      <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:34px;letter-spacing:.06em;margin:0;color:#f5f1e6">Our Luxury Fleet</h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:#9a917c;margin:14px 0 0">Initial rates $70–$100+ · varies by vehicle, distance &amp; booking type. All major cards accepted.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;margin-top:44px">
+      <sc-for list="{{ fleetCards }}" as="f" hint-placeholder-count="4">
+        <div style="background:#131109;border:1px solid rgba(212,175,55,.2);display:flex;flex-direction:column">
+          <div style="height:180px"><image-slot id="{{ f.slotId }}" shape="rect" placeholder="{{ f.ph }}" src="{{ f.img }}"></image-slot></div>
+          <div style="padding:22px 22px 24px;display:flex;flex-direction:column;gap:10px;flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span style="font-family:Cinzel,serif;font-size:16px;letter-spacing:.06em;color:#f5f1e6">{{ f.name }}</span><span style="font-size:13px;color:#f8e58c;white-space:nowrap">from {{ f.rate }}</span></div>
+            <div style="font-size:13px;color:#9a917c">{{ f.model }}</div>
+            <div style="display:flex;gap:12px;font-size:12.5px;color:#cfc7b2;letter-spacing:.04em;flex-wrap:wrap"><span>{{ f.pax }} passengers</span><span>·</span><span>{{ f.hr }}/hr hourly</span></div>
+            <div style="font-size:12.5px;line-height:1.7;color:#9a917c;margin-top:auto">{{ f.amenities }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="reviews" style="padding:96px 24px;background:#0e0d0a;border-top:1px solid rgba(212,175,55,.14)">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:48px">
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#d4af37;margin-bottom:12px">◆ &nbsp;Client Reviews&nbsp; ◆</div>
+      <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:34px;letter-spacing:.06em;margin:0 0 14px;color:#f5f1e6">Riders Who Keep Coming Back</h2>
+      <div style="font-size:16px;color:#cfc7b2"><span style="color:#f8e58c;letter-spacing:.2em;font-size:18px">★★★★★</span> &nbsp;{{ avgRating }} average · {{ reviewTotal }} verified rides</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+      <sc-for list="{{ reviewCards }}" as="r" hint-placeholder-count="3">
+        <div style="background:#131109;border:1px solid rgba(212,175,55,.2);padding:28px 26px;display:flex;flex-direction:column;gap:12px">
+          <div style="color:#f8e58c;letter-spacing:.18em;font-size:15px">{{ r.stars }}</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;line-height:1.55;color:#e8e0cc">“{{ r.text }}”</div>
+          <div style="margin-top:auto;font-size:13px;color:#9a917c"><span style="color:#f5f1e6">{{ r.name }}</span> · {{ r.tag }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="max-width:640px;margin:56px auto 0;background:#131109;border:1px solid rgba(212,175,55,.25);padding:30px 28px">
+      <div style="font-family:Cinzel,serif;font-size:17px;letter-spacing:.1em;color:#f8e58c;margin-bottom:16px">Share Your Experience</div>
+      <sc-if value="{{ revThanks }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:15px;color:#cfc7b2;font-style:italic">Thank you, your review was received and will appear once our team approves it.</div>
+      </sc-if>
+      <sc-if value="{{ revFormOpen }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;gap:6px;margin-bottom:14px">
+          <sc-for list="{{ starPicks }}" as="st" hint-placeholder-count="5">
+            <button onClick="{{ st.pick }}" style="{{ st.style }}">★</button>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <input placeholder="Your name" value="{{ revName }}" onChange="{{ onRevName }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <select value="{{ revTag }}" onChange="{{ onRevTag }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+            <option>Airport Transfer</option><option>Corporate Event</option><option>Wedding</option><option>Prom</option><option>Senior Concierge</option><option>Special Occasion</option>
+          </select>
+          <textarea placeholder="How was your ride?" value="{{ revText }}" onChange="{{ onRevText }}" rows="3" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost;resize:vertical"></textarea>
+        </div>
+        <button onClick="{{ submitReview }}" disabled="{{ revLocked }}" style="{{ revBtnStyle }}">Submit Review</button>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+<section style="padding:80px 24px;border-top:1px solid rgba(212,175,55,.14)">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:44px;align-items:center">
+    <div>
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#d4af37;margin-bottom:12px">◆ &nbsp;The Alem Standard&nbsp; ◆</div>
+      <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:30px;letter-spacing:.06em;margin:0 0 20px;color:#f5f1e6">Small Details, Done Right</h2>
+      <div style="display:flex;flex-direction:column;gap:13px;font-size:14.5px;line-height:1.55;color:#cfc7b2">
+        <div><span style="color:#f8e58c">◆</span> &nbsp;Owner-operators, no brokers, no middlemen, no handoffs</div>
+        <div><span style="color:#f8e58c">◆</span> &nbsp;Background-checked, professionally suited chauffeurs</div>
+        <div><span style="color:#f8e58c">◆</span> &nbsp;Meet &amp; greet with name sign at all airport arrivals</div>
+        <div><span style="color:#f8e58c">◆</span> &nbsp;Complimentary bottled water, phone chargers &amp; Wi-Fi</div>
+        <div><span style="color:#f8e58c">◆</span> &nbsp;Child seats available on request, always free</div>
+        <div><span style="color:#f8e58c">◆</span> &nbsp;Text updates: chauffeur name, photo &amp; live ETA</div>
+      </div>
+    </div>
+    <div style="height:340px"><image-slot id="standard-photo" shape="rect" placeholder="Chauffeur opening door / interior detail photo" src="images/chauffeur-door.jpg"></image-slot></div>
+  </div>
+</section>
+
+<section id="faq" style="padding:96px 24px;background:#0e0d0a;border-top:1px solid rgba(212,175,55,.14)">
+  <div style="max-width:760px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:48px">
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#d4af37;margin-bottom:12px">◆ &nbsp;Questions&nbsp; ◆</div>
+      <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:34px;letter-spacing:.06em;margin:0;color:#f5f1e6">Before You Book</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="5">
+        <div style="background:#131109;border:1px solid rgba(212,175,55,.2)">
+          <button onClick="{{ q.toggle }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;background:none;border:none;color:#f5f1e6;font:500 16px Jost;text-align:left;padding:18px 22px;cursor:pointer">
+            <span>{{ q.q }}</span><span style="color:#d4af37;font-size:18px">{{ q.chev }}</span>
+          </button>
+          <sc-if value="{{ q.open }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:0 22px 20px;font-size:14.5px;line-height:1.7;color:#9a917c">{{ q.a }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="booking" style="padding:96px 24px;border-top:1px solid rgba(212,175,55,.14)">
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:48px;align-items:start">
+    <div>
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#d4af37;margin-bottom:12px">◆ &nbsp;Reservations&nbsp; ◆</div>
+      <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:34px;letter-spacing:.06em;margin:0 0 18px;color:#f5f1e6">Book Your Ride</h2>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:#cfc7b2;margin:0 0 26px;max-width:420px">Live availability, an instant estimate, and a personal confirmation, booking takes about a minute.</p>
+      <div style="display:flex;flex-direction:column;gap:14px;font-size:14px;color:#9a917c">
+        <div><span style="color:#d4af37;letter-spacing:.16em;text-transform:uppercase;font-size:11px">Prefer to talk? Ask for Kidist</span><br><a href="tel:2405952259" style="color:#f5f1e6;font-size:16px">(240) 595-2259</a>, 24/7 dispatch</div>
+        <div><span style="color:#d4af37;letter-spacing:.16em;text-transform:uppercase;font-size:11px">Email</span><br><a href="mailto:Alemllc@gmail.com" style="color:#f5f1e6;font-size:16px">Alemllc@gmail.com</a></div>
+        <div><span style="color:#d4af37;letter-spacing:.16em;text-transform:uppercase;font-size:11px">Good to know</span><br><span style="color:#cfc7b2;font-size:14.5px;line-height:1.7">Free cancellation up to 24h before pickup.<br>Out-of-state trips: book at least 1 hour ahead.<br>All major credit &amp; debit cards accepted.<br>Corporate card-on-file billing available.</span></div>
+      </div>
+    </div>
+    <div style="background:#131109;border:1px solid rgba(212,175,55,.3);padding:34px 30px 38px">
+      <div style="display:flex;gap:8px;margin-bottom:26px">
+        <sc-for list="{{ stepDots }}" as="d" hint-placeholder-count="4">
+          <div style="{{ d.style }}"></div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ isStep0 }}" hint-placeholder-val="{{ true }}">
+        <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:18px">1 · Trip &amp; Vehicle</div>
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Trip type</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+          <sc-for list="{{ tripOpts }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.name }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ isHourly }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Hours</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+            <sc-for list="{{ hourOpts }}" as="h" hint-placeholder-count="4">
+              <button onClick="{{ h.pick }}" style="{{ h.style }}">{{ h.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Vehicle</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+          <sc-for list="{{ vehicleOpts }}" as="v" hint-placeholder-count="4">
+            <button onClick="{{ v.pick }}" disabled="{{ v.off }}" style="{{ v.style }}">
+              <span>{{ v.label }}</span><span style="font-size:12px;opacity:.85">{{ v.sub }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#0b0a08;border:1px solid rgba(212,175,55,.3);padding:14px 16px;margin-bottom:20px">
+          <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c">Estimated fare</span>
+          <span style="font-family:Cinzel,serif;font-size:20px;color:#f8e58c">{{ estimate }}</span>
+        </div>
+        <button onClick="{{ next }}" disabled="{{ step0Locked }}" style="{{ nextStyle }}">Continue</button>
+      </sc-if>
+
+      <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:18px">2 · Date &amp; Time</div>
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Date</div>
+        <input type="date" min="{{ today }}" value="{{ date }}" onChange="{{ onDate }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost;margin-bottom:20px;color-scheme:dark">
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Pickup time</div>
+        <sc-if value="{{ noDate }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:14px;color:#6f6753;font-style:italic;margin-bottom:22px">Select a date to see live availability.</div>
+        </sc-if>
+        <sc-if value="{{ hasDate }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px">
+            <sc-for list="{{ slotOpts }}" as="t" hint-placeholder-count="6">
+              <button onClick="{{ t.pick }}" disabled="{{ t.gone }}" style="{{ t.style }}">{{ t.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div style="display:flex;gap:10px">
+          <button onClick="{{ back }}" style="flex:0 0 auto;background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:pointer">Back</button>
+          <button onClick="{{ next }}" disabled="{{ step1Locked }}" style="{{ nextStyle }}">Continue</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:18px">3 · Trip Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <input placeholder="Pickup address or airport *" value="{{ pickup }}" onChange="{{ onPickup }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Drop-off address" value="{{ dropoff }}" onChange="{{ onDropoff }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Flight number (airport trips)" value="{{ flight }}" onChange="{{ onFlight }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Full name *" value="{{ name }}" onChange="{{ onName }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Phone *" value="{{ phone }}" onChange="{{ onPhone }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Email, for confirmation" value="{{ email }}" onChange="{{ onEmail }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+        </div>
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Extras</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+          <sc-for list="{{ extraOpts }}" as="x" hint-placeholder-count="4">
+            <button onClick="{{ x.pick }}" style="{{ x.style }}">{{ x.label }}</button>
+          </sc-for>
+        </div>
+        <textarea placeholder="Notes, stops, special requests, occasion details" value="{{ notes }}" onChange="{{ onNotes }}" rows="2" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost;resize:vertical;margin-bottom:18px"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#0b0a08;border:1px solid rgba(212,175,55,.3);padding:14px 16px;margin-bottom:20px">
+          <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c">Estimated total</span>
+          <span style="font-family:Cinzel,serif;font-size:20px;color:#f8e58c">{{ estimate }}</span>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button onClick="{{ back }}" style="flex:0 0 auto;background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:pointer">Back</button>
+          <button onClick="{{ confirm }}" disabled="{{ step2Locked }}" style="{{ nextStyle }}">Confirm Reservation</button>
+        </div>
+        <div style="font-size:12px;color:#6f6753;margin-top:14px;text-align:center">No charge now, our team confirms your final quote by phone or text first.</div>
+      </sc-if>
+
+      <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:12px 0 4px">
+          <div style="width:56px;height:56px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;border:1px solid #d4af37;transform:rotate(45deg)"><span style="transform:rotate(-45deg);color:#f8e58c;font-size:22px">✓</span></div>
+          <div style="font-family:Cinzel,serif;font-size:20px;letter-spacing:.08em;color:#f8e58c;margin-bottom:8px">Reservation Received</div>
+          <div style="font-size:14px;color:#9a917c;margin-bottom:20px">Confirmation <span style="color:#f5f1e6;letter-spacing:.1em">{{ confNo }}</span>, a text confirmation is on its way.</div>
+          <div style="background:#0b0a08;border:1px solid rgba(212,175,55,.25);padding:18px;text-align:left;font-size:14px;line-height:2;color:#cfc7b2;margin-bottom:24px">
+            <div>{{ tripType }} · {{ vehicle }}</div>
+            <div>{{ dateNice }} at {{ time }}</div>
+            <div>{{ name }} · {{ phone }}</div>
+            <div>Estimated: <span style="color:#f8e58c">{{ estimate }}</span></div>
+          </div>
+          <button onClick="{{ reset }}" style="background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;cursor:pointer">Book Another Ride</button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+<footer id="contact" style="border-top:1px solid rgba(212,175,55,.22);padding:60px 24px 40px;background:#0e0d0a">
+  <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:36px;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div style="font-family:Cinzel,serif;font-weight:700;font-size:20px;letter-spacing:.14em;color:#f5f1e6">ALEM LLC</div>
+      <div style="font-size:10px;letter-spacing:.32em;color:#d4af37;text-transform:uppercase;margin-top:4px">Luxury Transportation Services</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:#cfc7b2;margin-top:16px">“Beyond Rideshare. Below Broker Rates.”</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#9a917c;margin-top:10px">Kidist Alemayehu, Owner</div>
+    </div>
+    <div style="font-size:14px;line-height:2.1;color:#cfc7b2">
+      <div>Phone · <a href="tel:2405952259">(240) 595-2259</a></div>
+      <div>Email · <a href="mailto:Alemllc@gmail.com">Alemllc@gmail.com</a></div>
+      <div>DCA · IAD · BWI · Washington DC · Maryland · Virginia</div>
+      <div style="font-size:12.5px;color:#9a917c">Virginia DMV Contract Passenger Carrier (CPCC) · Licensed &amp; Insured</div>
+    </div>
+    <div style="font-size:13px;line-height:2.2;letter-spacing:.14em;text-transform:uppercase">
+      <div><a href="#about" style="color:#9a917c" style-hover="color:#f8e58c">About</a></div>
+      <div><a href="#services" style="color:#9a917c" style-hover="color:#f8e58c">Services</a></div>
+      <div><a href="#fleet" style="color:#9a917c" style-hover="color:#f8e58c">Fleet &amp; Rates</a></div>
+      <div><a href="#reviews" style="color:#9a917c" style-hover="color:#f8e58c">Reviews</a></div>
+      <div><a href="#booking" style="color:#9a917c" style-hover="color:#f8e58c">Book Now</a></div>
+    </div>
+  </div>
+  <div style="max-width:1100px;margin:36px auto 0;padding-top:20px;border-top:1px solid rgba(212,175,55,.12);font-size:12px;color:#6f6753;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <span>© 2026 Alem LLC. All rights reserved.</span>
+    <span>Women-owned &amp; operated · Licensed &amp; insured chauffeured transportation.</span>
+    <button onClick="{{ openAdmin }}" style="background:none;border:1px solid rgba(212,175,55,.3);color:#6f6753;font:500 10px Jost;letter-spacing:.22em;text-transform:uppercase;padding:8px 14px;cursor:pointer" style-hover="color:#f8e58c;border-color:#d4af37">Team Login</button>
+  </div>
+</footer>
+
+<a href="#booking" style="position:fixed;right:22px;bottom:22px;z-index:80;background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:15px 24px;box-shadow:0 8px 28px rgba(0,0,0,.5)" style-hover="filter:brightness(1.1)">Book Now</a>
+
+<sc-if value="{{ adminOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:200;background:#0b0a08;overflow:auto">
+
+    <sc-if value="{{ notAuthed }}" hint-placeholder-val="{{ true }}">
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box">
+        <div style="width:100%;max-width:400px;background:#131109;border:1px solid rgba(212,175,55,.4);padding:44px 38px;text-align:center">
+          <div style="font-family:Cinzel,serif;font-weight:900;font-size:40px;line-height:1;background:linear-gradient(120deg,#8a6a1c,#d4af37 35%,#f8e58c 50%,#d4af37 65%,#8a6a1c);-webkit-background-clip:text;background-clip:text;color:transparent">A</div>
+          <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.14em;color:#f8e58c;margin:14px 0 6px">Team Console</div>
+          <div style="font-size:13.5px;color:#9a917c;margin-bottom:24px">Enter your team PIN to manage bookings, availability, rates and reviews.</div>
+          <input type="password" placeholder="Team PIN" value="{{ pw }}" onChange="{{ onPw }}" onKeyDown="{{ pwKey }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:13px 14px;font:400 16px Jost;letter-spacing:.35em;text-align:center;margin-bottom:12px">
+          <button onClick="{{ login }}" style="width:100%;background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:13px;cursor:pointer" style-hover="filter:brightness(1.1)">Enter Console</button>
+          <sc-if value="{{ pwError }}" hint-placeholder-val="{{ false }}">
+            <div style="color:#c96a5a;font-size:13px;margin-top:12px">Incorrect PIN.</div>
+          </sc-if>
+          <button onClick="{{ closeAdmin }}" style="background:none;border:none;color:#6f6753;font:400 12px Jost;letter-spacing:.16em;text-transform:uppercase;margin-top:20px;cursor:pointer" style-hover="color:#f8e58c">← Back to site</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ authed }}" hint-placeholder-val="{{ false }}">
+      <div style="position:sticky;top:0;z-index:10;background:rgba(11,10,8,.97);border-bottom:1px solid rgba(212,175,55,.25)">
+        <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-family:Cinzel,serif;font-weight:900;font-size:24px;line-height:1;background:linear-gradient(120deg,#8a6a1c,#d4af37 35%,#f8e58c 50%,#d4af37 65%,#8a6a1c);-webkit-background-clip:text;background-clip:text;color:transparent">A</span>
+            <span style="display:flex;flex-direction:column;line-height:1.2">
+              <span style="font-family:Cinzel,serif;font-size:14px;letter-spacing:.14em;color:#f5f1e6">TEAM CONSOLE</span>
+              <span style="font-size:11px;color:#9a917c">{{ todayNice }}</span>
+            </span>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button onClick="{{ logout }}" style="background:none;border:1px solid rgba(212,175,55,.35);color:#9a917c;font:500 11px Jost;letter-spacing:.18em;text-transform:uppercase;padding:9px 16px;cursor:pointer" style-hover="color:#f8e58c">Sign Out</button>
+            <button onClick="{{ closeAdmin }}" style="background:none;border:1px solid rgba(212,175,55,.35);color:#d4af37;font:500 11px Jost;letter-spacing:.18em;text-transform:uppercase;padding:9px 16px;cursor:pointer" style-hover="color:#f8e58c">Back to Site</button>
+          </div>
+        </div>
+        <div style="max-width:1100px;margin:0 auto;display:flex;gap:6px;padding:0 24px 12px;flex-wrap:wrap">
+          <sc-for list="{{ adminTabs }}" as="tab" hint-placeholder-count="5">
+            <button onClick="{{ tab.pick }}" style="{{ tab.style }}">{{ tab.name }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="max-width:1100px;margin:0 auto;padding:32px 24px 90px">
+
+        <sc-if value="{{ tabToday }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:36px">
+            <sc-for list="{{ statTiles }}" as="st" hint-placeholder-count="4">
+              <div style="background:#131109;border:1px solid rgba(212,175,55,.25);padding:22px 20px">
+                <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">{{ st.label }}</div>
+                <div style="font-family:Cinzel,serif;font-size:30px;color:#f8e58c">{{ st.value }}</div>
+                <div style="font-size:12px;color:#6f6753;margin-top:6px">{{ st.sub }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-family:Cinzel,serif;font-size:17px;letter-spacing:.1em;color:#f5f1e6;margin-bottom:14px">Today's Schedule</div>
+          <sc-if value="{{ noToday }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#131109;border:1px dashed rgba(212,175,55,.25);padding:26px;text-align:center;font-size:14px;font-style:italic;color:#6f6753;margin-bottom:36px">No rides scheduled today.</div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:36px">
+            <sc-for list="{{ todayRows }}" as="b" hint-placeholder-count="0">
+              <div style="display:flex;align-items:center;gap:18px;background:#131109;border:1px solid rgba(212,175,55,.2);padding:16px 20px;flex-wrap:wrap">
+                <span style="font-family:Cinzel,serif;font-size:17px;color:#f8e58c;min-width:84px">{{ b.time }}</span>
+                <span style="flex:1;min-width:200px;font-size:14px;line-height:1.6;color:#cfc7b2"><span style="color:#f5f1e6">{{ b.name }}</span> · {{ b.veh }}<br><span style="font-size:13px;color:#9a917c">{{ b.route }}</span></span>
+                <span style="{{ b.chipStyle }}">{{ b.statusLabel }}</span>
+                <a href="{{ b.tel }}" style="font-size:13px">Call</a>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-family:Cinzel,serif;font-size:17px;letter-spacing:.1em;color:#f5f1e6;margin-bottom:14px">Coming Up</div>
+          <sc-if value="{{ noNextUp }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#131109;border:1px dashed rgba(212,175,55,.25);padding:26px;text-align:center;font-size:14px;font-style:italic;color:#6f6753">No upcoming reservations. New bookings appear here automatically.</div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ nextUpRows }}" as="b" hint-placeholder-count="0">
+              <div style="display:flex;align-items:center;gap:18px;background:#131109;border:1px solid rgba(212,175,55,.2);padding:14px 20px;flex-wrap:wrap">
+                <span style="font-size:13px;color:#f8e58c;min-width:150px">{{ b.when }}</span>
+                <span style="flex:1;min-width:200px;font-size:14px;color:#cfc7b2"><span style="color:#f5f1e6">{{ b.name }}</span> · {{ b.veh }} · <span style="color:#9a917c">{{ b.route }}</span></span>
+                <span style="{{ b.chipStyle }}">{{ b.statusLabel }}</span>
+                <span style="font-size:13px;color:#f8e58c">{{ b.est }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ tabBookings }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px">
+            <sc-for list="{{ filterChips }}" as="fc" hint-placeholder-count="4">
+              <button onClick="{{ fc.pick }}" style="{{ fc.style }}">{{ fc.label }}</button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ noFiltered }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#131109;border:1px dashed rgba(212,175,55,.25);padding:30px;text-align:center;font-size:14px;font-style:italic;color:#6f6753">No reservations here yet.</div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ bookingRows }}" as="b" hint-placeholder-count="0">
+              <div style="background:#131109;border:1px solid rgba(212,175,55,.22)">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid rgba(212,175,55,.12);flex-wrap:wrap">
+                  <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                    <span style="font-size:13px;letter-spacing:.1em;color:#f8e58c">{{ b.conf }}</span>
+                    <span style="{{ b.chipStyle }}">{{ b.statusLabel }}</span>
+                  </div>
+                  <span style="font-family:Cinzel,serif;font-size:17px;color:#f8e58c">{{ b.est }}</span>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px 24px;padding:16px 20px">
+                  <div><div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6f6753;margin-bottom:4px">When</div><div style="font-size:14px;color:#f5f1e6">{{ b.when }}</div></div>
+                  <div><div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6f6753;margin-bottom:4px">Passenger</div><div style="font-size:14px;color:#f5f1e6">{{ b.name }}</div><div style="font-size:13px;color:#9a917c">{{ b.phone }} · <a href="{{ b.tel }}">Call</a> · <a href="{{ b.sms }}">Text</a></div></div>
+                  <div><div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6f6753;margin-bottom:4px">Trip</div><div style="font-size:14px;color:#cfc7b2">{{ b.what }}</div></div>
+                  <div><div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6f6753;margin-bottom:4px">Route</div><div style="font-size:14px;color:#cfc7b2">{{ b.route }}</div></div>
+                  <sc-if value="{{ b.hasFlight }}" hint-placeholder-val="{{ false }}">
+                    <div><div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6f6753;margin-bottom:4px">Flight</div><div style="font-size:14px;color:#cfc7b2">{{ b.flight }}</div></div>
+                  </sc-if>
+                  <sc-if value="{{ b.hasNotes }}" hint-placeholder-val="{{ false }}">
+                    <div style="grid-column:1/-1"><div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6f6753;margin-bottom:4px">Extras &amp; Notes</div><div style="font-size:13.5px;line-height:1.6;color:#9a917c">{{ b.notes }}</div></div>
+                  </sc-if>
+                </div>
+                <div style="display:flex;gap:8px;padding:0 20px 16px;flex-wrap:wrap">
+                  <sc-if value="{{ b.isNew }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ b.confirmB }}" style="background:none;border:1px solid rgba(143,191,127,.6);color:#8fbf7f;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px;cursor:pointer">Confirm Booking</button>
+                  </sc-if>
+                  <sc-if value="{{ b.isConfirmed }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ b.completeB }}" style="background:none;border:1px solid rgba(212,175,55,.5);color:#f8e58c;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px;cursor:pointer">Mark Completed</button>
+                  </sc-if>
+                  <sc-if value="{{ b.notCompleted }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ b.remove }}" style="background:none;border:1px solid rgba(201,106,90,.5);color:#c96a5a;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px;cursor:pointer">Cancel</button>
+                  </sc-if>
+                  <sc-if value="{{ b.isCompleted }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ b.remove }}" style="background:none;border:1px solid rgba(212,175,55,.25);color:#6f6753;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px;cursor:pointer">Delete Record</button>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ tabSlots }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:12px">Block / open pickup times</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+            <sc-for list="{{ adminDayChips }}" as="dc" hint-placeholder-count="7">
+              <button onClick="{{ dc.pick }}" style="{{ dc.style }}">{{ dc.label }}</button>
+            </sc-for>
+          </div>
+          <input type="date" value="{{ adminDate }}" onChange="{{ onAdminDate }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:10px 14px;font:400 15px Jost;margin-bottom:18px;color-scheme:dark">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px">
+            <sc-for list="{{ adminSlots }}" as="t" hint-placeholder-count="6">
+              <button onClick="{{ t.toggle }}" style="{{ t.style }}">{{ t.label }} · {{ t.state }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:22px;flex-wrap:wrap;font-size:12.5px;color:#9a917c;margin-top:18px">
+            <span><span style="color:#8fbf7f">●</span> Open, customers can book</span>
+            <span><span style="color:#c96a5a">●</span> Blocked, hidden from customers</span>
+            <span><span style="color:#f8e58c">●</span> Booked, has a reservation</span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ tabVehicles }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:14px">Fleet, rates &amp; availability</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ adminVehicles }}" as="v" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;background:#131109;border:1px solid rgba(212,175,55,.2);padding:16px 20px;flex-wrap:wrap">
+                <span style="min-width:180px"><span style="display:block;font-size:15px;color:#f5f1e6">{{ v.name }}</span><span style="display:block;font-size:12.5px;color:#9a917c;margin-top:2px">{{ v.model }}</span></span>
+                <span style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                  <span style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#9a917c">Base $</span>
+                  <input type="number" value="{{ v.flat }}" onChange="{{ v.onFlat }}" style="width:70px;background:#0b0a08;border:1px solid rgba(212,175,55,.3);color:#f8e58c;padding:8px;font:500 14px Jost"></span>
+                  <span style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#9a917c">$/hr</span>
+                  <input type="number" value="{{ v.rate }}" onChange="{{ v.onRate }}" style="width:70px;background:#0b0a08;border:1px solid rgba(212,175,55,.3);color:#f8e58c;padding:8px;font:500 14px Jost"></span>
+                  <button onClick="{{ v.toggle }}" style="{{ v.style }}">{{ v.state }}</button>
+                </span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:12.5px;color:#6f6753;margin-top:16px">Base = starting flat fare shown to customers ("from $"). Rate changes apply to the live site immediately.</div>
+        </sc-if>
+
+        <sc-if value="{{ tabReviews }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:14px">Pending reviews ({{ pendingCount }}) · {{ approvedCount }} published</div>
+          <sc-if value="{{ noPending }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#131109;border:1px dashed rgba(212,175,55,.25);padding:30px;text-align:center;font-size:14px;font-style:italic;color:#6f6753;margin-bottom:16px">Nothing awaiting approval.</div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ pendingRows }}" as="p" hint-placeholder-count="0">
+              <div style="background:#131109;border:1px solid rgba(212,175,55,.2);padding:16px 20px">
+                <div style="color:#f8e58c;letter-spacing:.16em;font-size:13px;margin-bottom:6px">{{ p.stars }}</div>
+                <div style="font-size:14px;font-style:italic;color:#cfc7b2;margin-bottom:10px">“{{ p.text }}”</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+                  <span style="font-size:13px;color:#9a917c">{{ p.name }} · {{ p.tag }}</span>
+                  <span style="display:flex;gap:8px">
+                    <button onClick="{{ p.approve }}" style="background:none;border:1px solid rgba(143,191,127,.5);color:#8fbf7f;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:7px 12px;cursor:pointer">Approve &amp; Publish</button>
+                    <button onClick="{{ p.remove }}" style="background:none;border:1px solid rgba(201,106,90,.5);color:#c96a5a;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:7px 12px;cursor:pointer">Delete</button>
+                  </span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+    </sc-if>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;adminPin&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2259&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Team console&quot;},&quot;slotHours&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;2 hours&quot;,&quot;options&quot;:[&quot;1 hour&quot;,&quot;2 hours&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Booking&quot;}}">
+class Component extends DCLogic {
+  state = {
+    step: 0, tripType: 'Airport Transfer', hours: 3, vehicle: null, date: '', time: null, pax: '1–3',
+    pickup: '', dropoff: '', flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {},
+    revName: '', revText: '', revTag: 'Airport Transfer', revStars: 5, revThanks: false,
+    faqOpen: -1,
+    adminOpen: false, authed: false, pw: '', pwError: false,
+    adminTab: 'today', adminFilter: 'all', adminDate: '',
+    blocked: {}, vehiclesOff: {}, bookings: [], userReviews: [], rates: null, flats: null
+  };
+  iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  componentDidMount() {
+    this.setState({ adminDate: this.iso(new Date()) });
+    try {
+      const d = JSON.parse(localStorage.getItem('alem_site_v2') || '{}');
+      this.setState({ blocked: d.blocked || {}, vehiclesOff: d.vehiclesOff || {}, bookings: d.bookings || [], userReviews: d.userReviews || [], rates: d.rates || null, flats: d.flats || null });
+    } catch (e) {}
+  }
+  persist(patch) {
+    this.setState(patch, () => {
+      const { blocked, vehiclesOff, bookings, userReviews, rates, flats } = this.state;
+      localStorage.setItem('alem_site_v2', JSON.stringify({ blocked, vehiclesOff, bookings, userReviews, rates, flats }));
+    });
+  }
+  defRates() { return { 'Premium Sedan': 70, 'Luxury SUV': 100, 'Executive Sprinter': 135, 'Shuttle & Limo Bus': 175 }; }
+  rates() { return { ...this.defRates(), ...(this.state.rates || {}) }; }
+  flats() { const d = {}; this.vehicles().forEach(v => d[v.name] = v.flat); return { ...d, ...(this.state.flats || {}) }; }
+  vehicles() {
+    return [
+      { name: 'Premium Sedan', model: 'Lincoln Corsair · Cadillac CT4 · executive sedans', pax: 3, flat: 70, slotId: 'fleet-sedan', ph: 'Premium sedan photo', img: 'images/fleet-sedan.jpg', amenities: 'Owner-operated · leather cabin · chargers · bottled water' },
+      { name: 'Luxury SUV', model: 'Cadillac Escalade · Chevrolet Suburban', pax: 6, flat: 100, slotId: 'fleet-suv', ph: 'Luxury SUV photo', img: 'images/fleet-suv.jpg', amenities: 'Captain seating · Wi-Fi · child seats on request' },
+      { name: 'Executive Sprinter', model: 'Mercedes-Benz Sprinter Van', pax: 14, flat: 150, slotId: 'fleet-sprinter', ph: 'Sprinter van photo', img: 'images/fleet-sprinter.jpg', amenities: 'High roof · Wi-Fi · group luggage space' },
+      { name: 'Shuttle & Limo Bus', model: 'Shuttle & limo buses for group charters', pax: 30, flat: 250, slotId: 'fleet-bus', ph: 'Shuttle / limo bus photo', img: 'images/fleet-bus.jpg', amenities: 'Large groups · events · multi-stop charters' }
+    ];
+  }
+  seedReviews() {
+    return [
+      { stars: 5, text: 'Flight landed 40 minutes early at IAD and our chauffeur was already there, sign in hand. That has never happened with any other service.', name: 'Michael R.', tag: 'Airport Transfer' },
+      { stars: 5, text: 'Booked the limo bus for my daughter\u2019s prom group. Kidist personally called to confirm every detail. The kids felt like royalty.', name: 'Sandra T.', tag: 'Prom' },
+      { stars: 5, text: 'We use Alem for every board visit now. Spotless cars, silent professional drivers, and card-on-file invoicing is effortless.', name: 'David K.', tag: 'Corporate Event' },
+      { stars: 5, text: 'Requested a female chauffeur for my mother\u2019s medical visits, patient, kind, door-through-door help every single time.', name: 'Elena M.', tag: 'Senior Concierge' },
+      { stars: 4, text: 'Smooth booking, fair price, noticeably below the broker quotes I got. Driver texted her photo and ETA before pickup.', name: 'Priya N.', tag: 'Point-to-Point' },
+      { stars: 5, text: 'DCA pickup at 5am, driver was waiting with coffee recommendations and got me to my meeting with time to spare.', name: 'Tom W.', tag: 'Airport Transfer' }
+    ];
+  }
+  slots() {
+    const every = (this.props.slotHours ?? '2 hours') === '1 hour' ? 1 : 2;
+    const out = [];
+    for (let h = 6; h <= 22; h += every) { const ap = h < 12 ? 'AM' : 'PM', hh = h % 12 === 0 ? 12 : h % 12; out.push(hh + ':00 ' + ap); }
+    return out;
+  }
+  slotState(date, label) {
+    if (this.state.bookings.some(b => b.date === date && b.time === label && (b.status || 'new') !== 'completed')) return 'booked';
+    if ((this.state.blocked[date] || []).includes(label)) return 'blocked';
+    return 'open';
+  }
+  timeKey(t) { const m = /(\d+):(\d+)\s*(AM|PM)/.exec(t || ''); if (!m) return 0; let h = +m[1] % 12; if (m[3] === 'PM') h += 12; return h * 60 + +m[2]; }
+  estNum(b) { return parseInt(String(b.est || '').replace(/[^0-9]/g, ''), 10) || 0; }
+  extraList() { return [{ label: 'Meet & Greet +$25', fee: 25 }, { label: 'Female Chauffeur, Free', fee: 0 }, { label: 'Child Seat, Free', fee: 0 }, { label: 'Extra Stop +$20', fee: 20 }]; }
+  estimateNum() {
+    const S = this.state;
+    if (!S.vehicle) return null;
+    const hr = this.rates()[S.vehicle] || 0;
+    let base = S.tripType === 'Hourly / As-Directed' ? hr * S.hours : (this.flats()[S.vehicle] || 0);
+    base += this.extraList().filter(x => S.extras[x.label]).reduce((a, x) => a + x.fee, 0);
+    return base;
+  }
+  chip(sel, dis) {
+    return 'background:' + (sel ? 'linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c)' : '#0b0a08') +
+      ';color:' + (sel ? '#141005' : dis ? '#524a38' : '#cfc7b2') +
+      ';border:1px solid ' + (sel ? '#f8e58c' : 'rgba(212,175,55,.3)') +
+      ';font:500 13px Jost;padding:10px 14px;cursor:' + (dis ? 'not-allowed' : 'pointer') + (dis ? ';opacity:.5' : '');
+  }
+  statusChip(st) {
+    const c = st === 'new' ? '#f8e58c' : st === 'confirmed' ? '#8fbf7f' : '#9a917c';
+    return 'font:600 10px Jost;letter-spacing:.18em;text-transform:uppercase;color:' + c + ';border:1px solid ' + c + '66;padding:5px 10px;white-space:nowrap';
+  }
+  setStatus(i, status) { this.persist({ bookings: this.state.bookings.map((b, j) => j === i ? { ...b, status } : b) }); }
+  bookingView({ b, i }) {
+    const st = b.status || 'new';
+    const digits = String(b.phone || '').replace(/[^0-9+]/g, '');
+    const dNice = b.date ? new Date(b.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : '-';
+    const extras = (b.extras || []).join(', ');
+    const notes = [extras, b.notes].filter(Boolean).join(', ');
+    return {
+      conf: b.conf, est: b.est || '-', name: b.name, phone: b.phone, veh: b.vehicle,
+      time: b.time, when: dNice + ' · ' + b.time,
+      what: (b.tripType || '') + ' · ' + b.vehicle,
+      route: (b.pickup || '-') + ' → ' + (b.dropoff || 'as directed'),
+      flight: b.flight || '', hasFlight: !!b.flight,
+      notes, hasNotes: !!notes,
+      tel: 'tel:' + digits, sms: 'sms:' + digits,
+      statusLabel: st, chipStyle: this.statusChip(st),
+      isNew: st === 'new', isConfirmed: st === 'confirmed', isCompleted: st === 'completed', notCompleted: st !== 'completed',
+      confirmB: () => this.setStatus(i, 'confirmed'),
+      completeB: () => this.setStatus(i, 'completed'),
+      remove: () => this.persist({ bookings: this.state.bookings.filter((_, j) => j !== i) })
+    };
+  }
+  renderVals() {
+    const S = this.state, set = p => this.setState(p);
+    const today = this.iso(new Date());
+    const inputHandler = k => e => set({ [k]: e.target.value });
+    const goldBtn = dis => 'flex:1;background:' + (dis ? '#2a2418' : 'linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c)') +
+      ';color:' + (dis ? '#6f6753' : '#141005') + ';border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:' + (dis ? 'not-allowed' : 'pointer');
+    const step0Locked = !S.vehicle, step1Locked = !(S.date && S.time), step2Locked = !(S.name.trim() && S.phone.trim() && S.pickup.trim());
+    const est = this.estimateNum();
+    const estimate = est == null ? '- select a vehicle -' : '$' + est + (S.tripType === 'Hourly / As-Directed' ? ' (' + S.hours + ' hrs)' : '');
+    const dateNice = S.date ? new Date(S.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '';
+    const allReviews = [...this.seedReviews(), ...S.userReviews.filter(r => r.approved)];
+    const avg = (allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1);
+    const faqData = [
+      ['How far in advance should I book?', 'Airport transfers: 24 hours is ideal, though we take same-day bookings when availability allows. Out-of-state trips need at least 1 hour advance notice. Weddings, proms and events: 2–4 weeks recommended.'],
+      ['Can I request a female chauffeur?', 'Yes, proudly. Most of our owner-operators are professional women drivers. Select the Female Chauffeur option when booking, or mention it in the notes, and we\u2019ll match you at no extra charge.'],
+      ['What happens if my flight is delayed?', 'Nothing, we track every flight automatically. Your chauffeur adjusts to your actual arrival time at no extra charge, and waits up to 60 minutes after landing.'],
+      ['Do you travel outside the DMV?', 'Yes. Beyond Virginia, D.C. and Maryland we run out-of-state charters under our Virginia CPCC authority, just book at least 1 hour in advance for interstate trips.'],
+      ['What is your cancellation policy?', 'Free cancellation up to 24 hours before pickup on sedan and SUV trips. Sprinter and bus event bookings are refundable up to 72 hours before.'],
+      ['How do payments work?', 'We accept all major credit and debit cards. Corporate accounts can set up direct card-on-file billing for effortless invoicing.'],
+      ['Are gratuity and tolls included?', 'Your estimate shows the base fare. Tolls, parking and a suggested 20% gratuity are itemized in the final quote we confirm with you, no surprises at drop-off.'],
+      ['Do you provide child seats?', 'Yes, forward-facing and booster seats are available free of charge. Just select the child seat extra when booking or mention it in the notes.']
+    ];
+    // console data
+    const sorted = S.bookings.map((b, i) => ({ b, i })).sort((a, z) => (a.b.date || '').localeCompare(z.b.date || '') || this.timeKey(a.b.time) - this.timeKey(z.b.time));
+    const todayList = sorted.filter(x => x.b.date === today);
+    const upcoming = sorted.filter(x => x.b.date >= today && (x.b.status || 'new') !== 'completed');
+    const nextUp = sorted.filter(x => x.b.date > today && (x.b.status || 'new') !== 'completed').slice(0, 6);
+    const revenue = upcoming.reduce((a, x) => a + this.estNum(x.b), 0);
+    const pending = S.userReviews.filter(r => !r.approved);
+    const filtered = sorted.filter(x => S.adminFilter === 'all' || (x.b.status || 'new') === S.adminFilter);
+    const counts = { all: sorted.length, new: 0, confirmed: 0, completed: 0 };
+    sorted.forEach(x => counts[x.b.status || 'new']++);
+    const todayNice = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    return {
+      today,
+      tripType: S.tripType, onTripType: e => set({ tripType: e.target.value }),
+      pax: S.pax, onPax: e => set({ pax: e.target.value }),
+      date: S.date, onDate: e => set({ date: e.target.value, time: null }),
+      heroQuote: () => { set({ step: 0 }); location.hash = ''; location.hash = '#booking'; },
+      serviceCards: [
+        { name: 'Airport Transfers', mark: '✈', desc: 'Prompt, flight-tracked connections to IAD, DCA & BWI.', p1: '◆ Meet & greet with name sign', p2: '◆ 60 min free wait after landing', p3: '◆ Curbside or baggage-claim pickup' },
+        { name: 'Corporate Events', mark: 'C', desc: 'Executive transfers, multi-stop roadshows and client hosting.', p1: '◆ Card-on-file corporate billing', p2: '◆ Discreet, NDA-friendly chauffeurs', p3: '◆ Multi-car event coordination' },
+        { name: 'Weddings, Proms & Occasions', mark: '❦', desc: 'Elegant transportation tailored to your biggest moments.', p1: '◆ Red-carpet arrival service', p2: '◆ Complimentary decoration', p3: '◆ Photo-stop time built in' },
+        { name: 'Senior Concierge Transport', mark: '✦', desc: 'Compassionate, door-through-door assistance for medical visits and errands.', p1: '◆ Patient, unhurried chauffeurs', p2: '◆ Female drivers on request', p3: '◆ Standing weekly schedules welcome' }
+      ],
+      fleetCards: this.vehicles().map(v => ({ ...v, rate: '$' + (this.flats()[v.name] || 0), hr: '$' + (this.rates()[v.name] || 0) })),
+      avgRating: avg, reviewTotal: 180 + S.userReviews.filter(r => r.approved).length,
+      reviewCards: allReviews.map(r => ({ ...r, stars: '★★★★★'.slice(0, r.stars) })),
+      revThanks: S.revThanks, revFormOpen: !S.revThanks,
+      starPicks: [1, 2, 3, 4, 5].map(n => ({ pick: () => set({ revStars: n }), style: 'background:none;border:none;font-size:26px;cursor:pointer;padding:0 2px;color:' + (n <= S.revStars ? '#f8e58c' : '#3a3424') })),
+      revName: S.revName, onRevName: inputHandler('revName'),
+      revText: S.revText, onRevText: inputHandler('revText'),
+      revTag: S.revTag, onRevTag: e => set({ revTag: e.target.value }),
+      revLocked: !(S.revName.trim() && S.revText.trim()),
+      revBtnStyle: goldBtn(!(S.revName.trim() && S.revText.trim())) + ';margin-top:16px;width:100%',
+      submitReview: () => this.persist({ userReviews: [...S.userReviews, { stars: S.revStars, text: S.revText.trim(), name: S.revName.trim(), tag: S.revTag, approved: false }], revThanks: true, revName: '', revText: '' }),
+      faqs: faqData.map(([q, a], i) => ({ q, a, open: S.faqOpen === i, chev: S.faqOpen === i ? '−' : '+', toggle: () => set({ faqOpen: S.faqOpen === i ? -1 : i }) })),
+      isStep0: S.step === 0, isStep1: S.step === 1, isStep2: S.step === 2, isStep3: S.step === 3,
+      stepDots: [0, 1, 2, 3].map(i => ({ style: 'flex:1;height:2px;background:' + (i <= S.step ? '#d4af37' : '#2a2418') })),
+      tripOpts: ['Airport Transfer', 'Point-to-Point', 'Hourly / As-Directed'].map(t => ({ name: t, pick: () => set({ tripType: t }), style: this.chip(S.tripType === t, false) })),
+      isHourly: S.tripType === 'Hourly / As-Directed',
+      hourOpts: [2, 3, 4, 6, 8].map(h => ({ label: h + ' hrs', pick: () => set({ hours: h }), style: this.chip(S.hours === h, false) })),
+      vehicleOpts: this.vehicles().map(v => {
+        const off = !!S.vehiclesOff[v.name], sel = S.vehicle === v.name;
+        return {
+          label: off ? v.name + ', unavailable' : v.name,
+          sub: v.pax + ' pax · ' + (S.tripType === 'Hourly / As-Directed' ? '$' + (this.rates()[v.name] || 0) + '/hr' : 'from $' + (this.flats()[v.name] || 0)),
+          off, pick: () => set({ vehicle: v.name }),
+          style: this.chip(sel, off) + ';display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left'
+        };
+      }),
+      slotOpts: this.slots().map(t => {
+        const st = this.slotState(S.date, t), gone = st !== 'open';
+        return { label: t, gone, pick: () => set({ time: t }), style: this.chip(S.time === t, gone) };
+      }),
+      noDate: !S.date, hasDate: !!S.date, time: S.time || '',
+      pickup: S.pickup, dropoff: S.dropoff, flight: S.flight, name: S.name, phone: S.phone, email: S.email, notes: S.notes,
+      onPickup: inputHandler('pickup'), onDropoff: inputHandler('dropoff'), onFlight: inputHandler('flight'),
+      onName: inputHandler('name'), onPhone: inputHandler('phone'), onEmail: inputHandler('email'), onNotes: inputHandler('notes'),
+      extraOpts: this.extraList().map(x => ({ label: x.label, pick: () => set({ extras: { ...S.extras, [x.label]: !S.extras[x.label] } }), style: this.chip(!!S.extras[x.label], false) })),
+      next: () => set({ step: S.step + 1 }), back: () => set({ step: S.step - 1 }),
+      step0Locked, step1Locked, step2Locked,
+      nextStyle: goldBtn(S.step === 0 ? step0Locked : S.step === 1 ? step1Locked : step2Locked),
+      estimate,
+      confirm: () => {
+        const confNo = 'AL-' + Date.now().toString(36).toUpperCase().slice(-6);
+        const b = { conf: confNo, status: 'new', date: S.date, time: S.time, name: S.name, phone: S.phone, email: S.email, tripType: S.tripType, vehicle: S.vehicle, pickup: S.pickup, dropoff: S.dropoff, flight: S.flight, notes: S.notes, extras: Object.keys(S.extras).filter(k => S.extras[k]), est: estimate };
+        this.persist({ bookings: [...S.bookings, b], confNo, step: 3 });
+      },
+      reset: () => set({ step: 0, vehicle: null, date: '', time: null, pickup: '', dropoff: '', flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {} }),
+      vehicle: S.vehicle || '', confNo: S.confNo, dateNice,
+      adminOpen: S.adminOpen, openAdmin: () => set({ adminOpen: true, pwError: false }),
+      closeAdmin: () => set({ adminOpen: false }),
+      notAuthed: !S.authed, authed: S.authed, pw: S.pw, pwError: S.pwError,
+      onPw: e => set({ pw: e.target.value, pwError: false }),
+      pwKey: e => { if (e.key === 'Enter') this.tryLogin(); },
+      login: () => this.tryLogin(), logout: () => set({ authed: false, pw: '' }),
+      todayNice,
+      adminTabs: [['today', 'Today'], ['bookings', 'Bookings' + (counts.new ? ' · ' + counts.new + ' new' : '')], ['slots', 'Availability'], ['vehicles', 'Fleet & Rates'], ['reviews', 'Reviews' + (pending.length ? ' · ' + pending.length : '')]].map(([id, name]) => ({
+        name, pick: () => set({ adminTab: id }),
+        style: 'background:' + (S.adminTab === id ? 'rgba(212,175,55,.16)' : 'none') + ';border:1px solid rgba(212,175,55,' + (S.adminTab === id ? '.6' : '.25') + ');color:' + (S.adminTab === id ? '#f8e58c' : '#9a917c') + ';font:500 12px Jost;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;cursor:pointer'
+      })),
+      tabToday: S.adminTab === 'today', tabSlots: S.adminTab === 'slots', tabVehicles: S.adminTab === 'vehicles', tabBookings: S.adminTab === 'bookings', tabReviews: S.adminTab === 'reviews',
+      statTiles: [
+        { label: 'Rides Today', value: String(todayList.length), sub: todayNice },
+        { label: 'Upcoming Rides', value: String(upcoming.length), sub: 'including today' },
+        { label: 'Booked Revenue', value: '$' + revenue, sub: 'upcoming estimates' },
+        { label: 'Pending Reviews', value: String(pending.length), sub: 'awaiting approval' }
+      ],
+      noToday: todayList.length === 0, todayRows: todayList.map(x => this.bookingView(x)),
+      noNextUp: nextUp.length === 0, nextUpRows: nextUp.map(x => this.bookingView(x)),
+      filterChips: [['all', 'All'], ['new', 'New'], ['confirmed', 'Confirmed'], ['completed', 'Completed']].map(([id, label]) => ({
+        label: label + ' · ' + counts[id], pick: () => set({ adminFilter: id }), style: this.chip(S.adminFilter === id, false)
+      })),
+      noFiltered: filtered.length === 0,
+      bookingRows: filtered.map(x => this.bookingView(x)),
+      adminDate: S.adminDate, onAdminDate: e => set({ adminDate: e.target.value }),
+      adminDayChips: [...Array(7)].map((_, i) => {
+        const d = new Date(); d.setDate(d.getDate() + i); const v = this.iso(d);
+        return { label: i === 0 ? 'Today' : d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }), pick: () => set({ adminDate: v }), style: this.chip(S.adminDate === v, false) };
+      }),
+      adminSlots: this.slots().map(t => {
+        const st = this.slotState(S.adminDate, t);
+        const color = st === 'open' ? '#8fbf7f' : st === 'booked' ? '#f8e58c' : '#c96a5a';
+        return {
+          label: t, state: st,
+          style: 'background:#0b0a08;border:1px solid ' + color + '55;color:' + color + ';font:500 12px Jost;padding:10px 8px;cursor:' + (st === 'booked' ? 'not-allowed' : 'pointer'),
+          toggle: () => {
+            if (st === 'booked') return;
+            const cur = S.blocked[S.adminDate] || [];
+            this.persist({ blocked: { ...S.blocked, [S.adminDate]: st === 'blocked' ? cur.filter(x => x !== t) : [...cur, t] } });
+          }
+        };
+      }),
+      adminVehicles: this.vehicles().map(v => {
+        const off = !!S.vehiclesOff[v.name];
+        return {
+          name: v.name, model: v.model, rate: this.rates()[v.name] || 0, flat: this.flats()[v.name] || 0,
+          onRate: e => this.persist({ rates: { ...this.rates(), [v.name]: parseInt(e.target.value, 10) || 0 } }),
+          onFlat: e => this.persist({ flats: { ...this.flats(), [v.name]: parseInt(e.target.value, 10) || 0 } }),
+          state: off ? 'Hidden' : 'Live',
+          style: 'background:none;border:1px solid ' + (off ? 'rgba(201,106,90,.5)' : 'rgba(143,191,127,.5)') + ';color:' + (off ? '#c96a5a' : '#8fbf7f') + ';font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px;cursor:pointer',
+          toggle: () => this.persist({ vehiclesOff: { ...S.vehiclesOff, [v.name]: !off } })
+        };
+      }),
+      pendingCount: pending.length, noPending: pending.length === 0,
+      approvedCount: S.userReviews.filter(r => r.approved).length,
+      pendingRows: S.userReviews.map((r, i) => ({ r, i })).filter(x => !x.r.approved).map(({ r, i }) => ({
+        stars: '★★★★★'.slice(0, r.stars), text: r.text, name: r.name, tag: r.tag,
+        approve: () => this.persist({ userReviews: S.userReviews.map((x, j) => j === i ? { ...x, approved: true } : x) }),
+        remove: () => this.persist({ userReviews: S.userReviews.filter((_, j) => j !== i) })
+      }))
+    };
+  }
+  tryLogin() {
+    const pin = String(this.props.adminPin ?? '2259');
+    if (this.state.pw === pin) this.setState({ authed: true, pwError: false, pw: '' });
+    else this.setState({ pwError: true });
+  }
+}
+</script>
+</body>
+</html>
