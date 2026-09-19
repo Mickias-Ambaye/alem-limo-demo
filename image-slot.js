@@ -1095,7 +1095,10 @@
       // (Claude wrote it into the HTML) so it passes through unchanged.
       let stored = this.id ? getSlot(this.id) : this._local;
       if (stored && stored.u && !/^data:image\//i.test(stored.u)) stored = null;
-      const srcAttr = this.getAttribute('src') || '';
+      let srcAttr = this.getAttribute('src') || '';
+      // An unhydrated template binding ("{{ f.img }}") is never a real URL —
+      // treat it as empty so the raw hidden template can't fetch garbage.
+      if (srcAttr.indexOf('{{') !== -1) srcAttr = '';
       this._userUrl = (stored && stored.u) || null;
       const url = this._userUrl || srcAttr;
       // Don't clobber an in-flight reframe with a store-triggered re-render.
