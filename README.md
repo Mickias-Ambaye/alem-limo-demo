@@ -1,8 +1,9 @@
-# Alem LLC — Luxury Transportation (Client Demo)
+# Alem Luxury Transportation (Client Demo)
 
-Demo website for **Alem LLC**, a women-owned luxury chauffeured transportation
+Demo website for **Alem**, a women-owned luxury chauffeured transportation
 company serving Virginia, D.C. & Maryland. Built from the approved Claude Design
-mockup (`Alem Limo Website v2`) — pixel-identical to the design.
+mockup (`Alem Limo Website v2`), then revised per owner feedback (per-mile
+pricing, route verification map, mobile pass, no owner photo).
 
 **Live site:** hosted on GitHub Pages from this repository.
 
@@ -10,13 +11,24 @@ mockup (`Alem Limo Website v2`) — pixel-identical to the design.
 
 - Full landing page: hero with instant-quote bar, About, Services, Fleet & Rates,
   Reviews (with customer review submission), The Alem Standard, FAQ, and a
-  4-step booking flow with live fare estimates and time-slot availability.
-- **Team Console** (button in the footer → "Team Login", demo PIN `2259`):
-  today's schedule, booking management, availability blocking, fleet rate
-  editing, and review approval.
-- Bookings, reviews, blocked slots and rate changes persist in the visitor's
-  browser (`localStorage`) — perfect for demoing the flow end-to-end. There is
-  no backend; wiring one up is a next step after client approval.
+  4-step booking flow — fully phone-friendly.
+- **Pricing model:** every fare is *initial fee + per-mile rate* (no hourly).
+  Fleet cards show "from $X" + "$Y per mile"; the booking estimate becomes an
+  exact dollar figure once the route is verified.
+- **Route verification map** (booking step 3): customer addresses are geocoded
+  (OpenStreetMap Nominatim), driving distance comes from OSRM, and the route
+  draws on a dark Esri map with two draggable gold pins — drag to fine-tune the
+  exact pickup/drop-off spot, Uber-style. Free services, no API keys.
+- **Service area:** the owner sets a central hub + radius (miles) in the Team
+  Console → Fleet & Rates. A verified pickup outside the radius shows an
+  out-of-area notice (booking still submits; the team confirms by phone).
+- **Team Console** (footer → "Team Login", demo PIN `2259`): today's schedule,
+  booking management, availability blocking, per-vehicle Initial $ / $-per-mile
+  editing, service-area settings, and review approval.
+- Bookings, reviews, blocked slots, rates and the service area persist in the
+  visitor's browser (`localStorage`, key `alem_site_v3`) — perfect for demoing
+  end-to-end. There is no backend; wiring one up is a next step after client
+  approval.
 
 ## Swapping photos
 
@@ -26,20 +38,17 @@ site picks it up — no code changes needed:
 | File | Where it appears |
 |---|---|
 | `images/hero-limo-night.jpg` | Full-screen hero background |
+| `images/about-interior.jpg` | About section ("What Makes Us Special") |
 | `images/fleet-sedan.jpg` | Fleet card — Premium Sedan |
 | `images/fleet-suv.jpg` | Fleet card — Luxury SUV |
 | `images/fleet-sprinter.jpg` | Fleet card — Executive Sprinter |
 | `images/fleet-bus.jpg` | Fleet card — Shuttle & Limo Bus |
 | `images/chauffeur-door.jpg` | "Small Details, Done Right" section |
 
-One slot is intentionally left open for the client's own photo: the **About**
-section ("Photo, Kidist / owner-operator with vehicle"). Add a photo by giving
-the `image-slot` with `id="about-photo"` in `index.html` a
-`src="images/..."` attribute, same as the other slots.
-
-Current placeholder photos are free stock from Pexels
+All photos are free stock from Pexels
 ([license](https://www.pexels.com/license/)):
 [hero](https://www.pexels.com/photo/back-of-a-black-mercedes-at-dawn-11877372/) ·
+[about interior](https://www.pexels.com/photo/black-limousine-interior-9151813/) ·
 [sedan](https://www.pexels.com/photo/luxury-car-on-city-street-15535501/) ·
 [SUV](https://www.pexels.com/photo/black-cadillac-escalade-parked-under-trees-in-fire-zone-23319054/) ·
 [sprinter](https://www.pexels.com/photo/a-2023-black-mercedes-benz-sprinter-parked-among-palm-tree-19871521/) ·
