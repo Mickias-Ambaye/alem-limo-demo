@@ -10,25 +10,36 @@ pricing, route verification map, mobile pass, no owner photo).
 ## What's included
 
 - Full landing page: hero with instant-quote bar, About, Services, Fleet & Rates,
-  Reviews (with customer review submission), The Alem Standard, FAQ, and a
-  4-step booking flow — fully phone-friendly.
+  Reviews (with customer review submission), The Alem Standard, FAQ, and an
+  Uber-style booking flow — fully phone-friendly.
 - **Pricing model:** every fare is *initial fee + per-mile rate* (no hourly).
-  Fleet cards show "from $X" + "$Y per mile"; the booking estimate becomes an
-  exact dollar figure once the route is verified.
-- **Route verification map** (booking step 3): customer addresses are geocoded
-  (OpenStreetMap Nominatim), driving distance comes from OSRM, and the route
-  draws on a dark Esri map with two draggable gold pins — drag to fine-tune the
-  exact pickup/drop-off spot, Uber-style. Free services, no API keys.
-- **Service area:** the owner sets a central hub + radius (miles) in the Team
-  Console → Fleet & Rates. A verified pickup outside the radius shows an
-  out-of-area notice (booking still submits; the team confirms by phone).
-- **Team Console** (footer → "Team Login", demo PIN `2259`): today's schedule,
-  booking management, availability blocking, per-vehicle Initial $ / $-per-mile
-  editing, service-area settings, and review approval.
-- Bookings, reviews, blocked slots, rates and the service area persist in the
-  visitor's browser (`localStorage`, key `alem_site_v3`) — perfect for demoing
-  end-to-end. There is no backend; wiring one up is a next step after client
-  approval.
+  Fleet cards show "from $X" + "$Y per mile"; the estimate becomes an exact
+  dollar figure once the route is confirmed on the map.
+- **Booking flow (Lyft/Uber pattern):** trip & vehicle → date + free-form time
+  (validated against business rules) → structured addresses (street / city /
+  state / ZIP) with live location suggestions as you type → **confirm the
+  pickup pin** zoomed to street level → **confirm the drop-off pin** → full
+  route + total review → Request Ride. Flight number only appears for Airport
+  Transfer trips. Phone (10-digit) and a real email are required; name is
+  optional. Maps: Esri dark tiles with place labels, Nominatim geocoding, OSRM
+  driving distance — all free, no API keys.
+- **Dispatcher review:** every request lands as "new" in the console; the
+  customer is told the dispatcher accepts each ride by text before it's final.
+- **Booking rules** (Console → Availability): dispatch hours, number of cars
+  (capacity per 2-hour window), minimum notice in hours (no
+  ride-in-10-minutes requests), how far ahead customers can book, and per-hour
+  blocking per day.
+- **Service area** (Console → Fleet & Rates): central hub + radius; verified
+  pickups outside it get an out-of-area notice.
+- **Team sign-in:** registered phone number (or email) + one-time 6-digit code,
+  Uber-style. The owner invites/removes members in Console → Team. **Demo
+  mode:** a static site can't send SMS/email, so the code displays on the
+  sign-in screen with a clear notice — production wires Twilio (SMS) or an
+  email service. Owner seed account: (240) 595-2259.
+- Bookings, reviews, rules, rates, team and the service area persist in the
+  visitor's browser (`localStorage`, key `alem_site_v4`) — perfect for demoing
+  end-to-end. There is no backend; wiring one up (real SMS, shared bookings)
+  is the next step after client approval.
 
 ## Swapping photos
 
@@ -55,10 +66,13 @@ All photos are free stock from Pexels
 [bus interior](https://www.pexels.com/photo/luxury-interior-of-a-premium-passenger-van-39416592/) ·
 [chauffeur](https://www.pexels.com/photo/a-man-in-gray-suit-opening-the-door-of-a-black-car-8425053/)
 
-## Changing the Team Console PIN
+## Team Console access
 
-In `index.html`, find `data-props` on the `<script type="text/x-dc">` tag and
-change the `adminPin` default (currently `2259`).
+Footer → "Team Login" → enter a registered phone number (or email) → enter the
+6-digit one-time code. The seeded owner account is **(240) 595-2259**; invite
+or remove team members in Console → Team. In this demo the code displays on
+the sign-in screen (no SMS service is connected); the seeded owner account
+lives in `team_()` in `index.html` if you need to change it.
 
 ## Running locally
 

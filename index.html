@@ -76,7 +76,7 @@
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end">
         <div style="text-align:left"><div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#d4af37;margin-bottom:7px">Trip Type</div>
           <select value="{{ tripType }}" onChange="{{ onTripType }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px;font:400 14px Jost">
-            <option>Airport Transfer</option><option>Point-to-Point</option>
+            <option>Point-to-Point</option><option>Airport Transfer</option>
           </select></div>
         <div style="text-align:left"><div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#d4af37;margin-bottom:7px">Date</div>
           <input type="date" min="{{ today }}" value="{{ date }}" onChange="{{ onDate }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 12px;font:400 14px Jost;color-scheme:dark"></div>
@@ -255,7 +255,7 @@
     </div>
     <div style="background:#131109;border:1px solid rgba(212,175,55,.3);padding:34px 30px 38px">
       <div style="display:flex;gap:8px;margin-bottom:26px">
-        <sc-for list="{{ stepDots }}" as="d" hint-placeholder-count="4">
+        <sc-for list="{{ stepDots }}" as="d" hint-placeholder-count="5">
           <div style="{{ d.style }}"></div>
         </sc-for>
       </div>
@@ -286,17 +286,15 @@
       <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ false }}">
         <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:18px">2 · Date &amp; Time</div>
         <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Date</div>
-        <input type="date" min="{{ today }}" value="{{ date }}" onChange="{{ onDate }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost;margin-bottom:20px;color-scheme:dark">
+        <input type="date" min="{{ today }}" max="{{ maxDate }}" value="{{ date }}" onChange="{{ onDate }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost;margin-bottom:20px;color-scheme:dark">
         <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Pickup time</div>
-        <sc-if value="{{ noDate }}" hint-placeholder-val="{{ true }}">
-          <div style="font-size:14px;color:#6f6753;font-style:italic;margin-bottom:22px">Select a date to see live availability.</div>
+        <input type="time" min="{{ openFrom }}" max="{{ openTo }}" step="900" value="{{ time }}" onChange="{{ onTime }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost;margin-bottom:10px;color-scheme:dark">
+        <div style="font-size:12.5px;color:#6f6753;margin-bottom:14px">{{ hoursNote }}</div>
+        <sc-if value="{{ timeErrF }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:13px;color:#c96a5a;margin-bottom:16px">{{ timeMsg }}</div>
         </sc-if>
-        <sc-if value="{{ hasDate }}" hint-placeholder-val="{{ false }}">
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px">
-            <sc-for list="{{ slotOpts }}" as="t" hint-placeholder-count="6">
-              <button onClick="{{ t.pick }}" disabled="{{ t.gone }}" style="{{ t.style }}">{{ t.label }}</button>
-            </sc-for>
-          </div>
+        <sc-if value="{{ timeOkF }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:13px;color:#8fbf7f;margin-bottom:16px">{{ timeMsg }}</div>
         </sc-if>
         <div style="display:flex;gap:10px">
           <button onClick="{{ back }}" style="flex:0 0 auto;background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:pointer">Back</button>
@@ -306,24 +304,51 @@
 
       <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
         <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:18px">3 · Trip Details</div>
-        <div class="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-          <input placeholder="Pickup address or airport *" value="{{ pickup }}" onChange="{{ onPickup }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
-          <input placeholder="Drop-off address" value="{{ dropoff }}" onChange="{{ onDropoff }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
-          <input placeholder="Flight number (airport trips)" value="{{ flight }}" onChange="{{ onFlight }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
-          <input placeholder="Full name *" value="{{ name }}" onChange="{{ onName }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
-          <input placeholder="Phone *" value="{{ phone }}" onChange="{{ onPhone }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
-          <input placeholder="Email, for confirmation" value="{{ email }}" onChange="{{ onEmail }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
-        </div>
-        <div style="margin-bottom:18px">
-          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-            <button onClick="{{ verifyRoute }}" disabled="{{ mapBusy }}" style="background:none;border:1px solid rgba(212,175,55,.5);color:#d4af37;font:500 12px Jost;letter-spacing:.16em;text-transform:uppercase;padding:11px 16px;cursor:pointer" style-hover="color:#f8e58c;border-color:#f8e58c">Verify Route on Map</button>
-            <span style="font-size:12.5px;color:#9a917c">{{ mapNote }}</span>
-          </div>
-          <div id="trip-map" style="height:250px;margin-top:12px;border:1px solid rgba(212,175,55,.3)"></div>
-          <sc-if value="{{ areaOver }}" hint-placeholder-val="{{ false }}">
-            <div style="font-size:12.5px;line-height:1.6;color:#c96a5a;margin-top:10px">{{ areaMsg }}</div>
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Pickup location</div>
+        <div style="position:relative;margin-bottom:12px">
+          <input placeholder="Street address *" value="{{ puStreet }}" onChange="{{ onPuStreet }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <sc-if value="{{ puSugOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:100%;left:0;right:0;z-index:40;background:#131109;border:1px solid rgba(212,175,55,.5);max-height:190px;overflow:auto;box-shadow:0 12px 30px rgba(0,0,0,.6)">
+              <sc-for list="{{ puSugs }}" as="sg" hint-placeholder-count="0">
+                <button onClick="{{ sg.pick }}" style="display:block;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid rgba(212,175,55,.12);color:#cfc7b2;font:400 13px Jost;padding:10px 12px;cursor:pointer" style-hover="background:#1b180e;color:#f8e58c">{{ sg.label }}</button>
+              </sc-for>
+            </div>
           </sc-if>
         </div>
+        <div class="formGrid" style="display:grid;grid-template-columns:1.7fr .6fr .8fr;gap:12px;margin-bottom:18px">
+          <input placeholder="City *" value="{{ puCity }}" onChange="{{ onPuCity }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="State" value="{{ puState }}" onChange="{{ onPuState }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="ZIP" value="{{ puZip }}" onChange="{{ onPuZip }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+        </div>
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Drop-off location</div>
+        <div style="position:relative;margin-bottom:12px">
+          <input placeholder="Street address *" value="{{ doStreet }}" onChange="{{ onDoStreet }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <sc-if value="{{ doSugOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:100%;left:0;right:0;z-index:40;background:#131109;border:1px solid rgba(212,175,55,.5);max-height:190px;overflow:auto;box-shadow:0 12px 30px rgba(0,0,0,.6)">
+              <sc-for list="{{ doSugs }}" as="sg" hint-placeholder-count="0">
+                <button onClick="{{ sg.pick }}" style="display:block;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid rgba(212,175,55,.12);color:#cfc7b2;font:400 13px Jost;padding:10px 12px;cursor:pointer" style-hover="background:#1b180e;color:#f8e58c">{{ sg.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <div class="formGrid" style="display:grid;grid-template-columns:1.7fr .6fr .8fr;gap:12px;margin-bottom:18px">
+          <input placeholder="City *" value="{{ doCity }}" onChange="{{ onDoCity }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="State" value="{{ doState }}" onChange="{{ onDoState }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="ZIP" value="{{ doZip }}" onChange="{{ onDoZip }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+        </div>
+        <sc-if value="{{ isAirport }}" hint-placeholder-val="{{ false }}">
+          <input placeholder="Flight number, for arrival tracking" value="{{ flight }}" onChange="{{ onFlight }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost;margin-bottom:18px">
+        </sc-if>
+        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Contact</div>
+        <div class="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px">
+          <input placeholder="Mobile phone *" value="{{ phone }}" onChange="{{ onPhone }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Email *" value="{{ email }}" onChange="{{ onEmail }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Name (optional)" value="{{ name }}" onChange="{{ onName }}" style="grid-column:1/-1;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+        </div>
+        <sc-if value="{{ contactErrF }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:13px;color:#c96a5a;margin-bottom:12px">{{ contactErrMsg }}</div>
+        </sc-if>
+        <div style="height:8px"></div>
         <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Extras</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
           <sc-for list="{{ extraOpts }}" as="x" hint-placeholder-count="4">
@@ -337,20 +362,50 @@
         </div>
         <div style="display:flex;gap:10px">
           <button onClick="{{ back }}" style="flex:0 0 auto;background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:pointer">Back</button>
-          <button onClick="{{ confirm }}" disabled="{{ step2Locked }}" style="{{ nextStyle }}">Confirm Reservation</button>
+          <button onClick="{{ toConfirm }}" disabled="{{ detailsLocked }}" style="{{ nextStyle }}">Continue</button>
         </div>
-        <div style="font-size:12px;color:#6f6753;margin-top:14px;text-align:center">No charge now, our team confirms your final quote by phone or text first.</div>
+        <div style="font-size:12px;color:#6f6753;margin-top:14px;text-align:center">Next: confirm your pickup and drop-off pins on the map.</div>
       </sc-if>
 
       <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:10px">4 · {{ confTitle }}</div>
+        <div style="font-size:13.5px;line-height:1.6;color:#9a917c;margin-bottom:14px">{{ confHint }}</div>
+        <div id="trip-map" style="height:300px;border:1px solid rgba(212,175,55,.3);margin-bottom:14px"></div>
+        <sc-if value="{{ mapBusyF }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:13px;color:#d4af37;margin-bottom:14px">{{ mapMsgT }}</div>
+        </sc-if>
+        <sc-if value="{{ isRouteStage }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#0b0a08;border:1px solid rgba(212,175,55,.3);padding:14px 16px;margin-bottom:12px">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c">Route</span>
+            <span style="font-size:14px;color:#cfc7b2">{{ distLabel }}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;background:#0b0a08;border:1px solid rgba(212,175,55,.3);padding:14px 16px;margin-bottom:12px">
+            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c">Estimated total</span>
+            <span style="font-family:Cinzel,serif;font-size:20px;color:#f8e58c">{{ estimate }}</span>
+          </div>
+          <sc-if value="{{ areaOver }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:12.5px;line-height:1.6;color:#c96a5a;margin-bottom:12px">{{ areaMsg }}</div>
+          </sc-if>
+        </sc-if>
+        <div style="display:flex;gap:10px">
+          <button onClick="{{ confBack }}" style="flex:0 0 auto;background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:pointer">Back</button>
+          <button onClick="{{ confNext }}" disabled="{{ confLocked }}" style="{{ confNextStyle }}">{{ confBtnLabel }}</button>
+        </div>
+        <sc-if value="{{ isRouteStage }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;color:#6f6753;margin-top:14px;text-align:center">No charge now. Our dispatcher reviews every request and accepts it by text before the ride is final.</div>
+        </sc-if>
+      </sc-if>
+
+      <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
         <div style="text-align:center;padding:12px 0 4px">
           <div style="width:56px;height:56px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;border:1px solid #d4af37;transform:rotate(45deg)"><span style="transform:rotate(-45deg);color:#f8e58c;font-size:22px">✓</span></div>
-          <div style="font-family:Cinzel,serif;font-size:20px;letter-spacing:.08em;color:#f8e58c;margin-bottom:8px">Reservation Received</div>
-          <div style="font-size:14px;color:#9a917c;margin-bottom:20px">Confirmation <span style="color:#f5f1e6;letter-spacing:.1em">{{ confNo }}</span>, a text confirmation is on its way.</div>
+          <div style="font-family:Cinzel,serif;font-size:20px;letter-spacing:.08em;color:#f8e58c;margin-bottom:8px">Request Received</div>
+          <div style="font-size:14px;line-height:1.7;color:#9a917c;margin-bottom:20px">Confirmation <span style="color:#f5f1e6;letter-spacing:.1em">{{ confNo }}</span>. Our dispatcher reviews every request, you'll get a text as soon as your ride is accepted.</div>
           <div style="background:#0b0a08;border:1px solid rgba(212,175,55,.25);padding:18px;text-align:left;font-size:14px;line-height:2;color:#cfc7b2;margin-bottom:24px">
             <div>{{ tripType }} · {{ vehicle }}</div>
-            <div>{{ dateNice }} at {{ time }}</div>
-            <div>{{ name }} · {{ phone }}</div>
+            <div>{{ dateNice }} at {{ timeNice }}</div>
+            <div>{{ routeLine }}</div>
+            <div>{{ phone }} · {{ email }}</div>
             <div>Estimated: <span style="color:#f8e58c">{{ estimate }}</span></div>
           </div>
           <button onClick="{{ reset }}" style="background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 24px;cursor:pointer">Book Another Ride</button>
@@ -399,11 +454,20 @@
         <div style="width:100%;max-width:400px;background:#131109;border:1px solid rgba(212,175,55,.4);padding:44px 38px;text-align:center">
           <div style="font-family:Cinzel,serif;font-weight:900;font-size:40px;line-height:1;background:linear-gradient(120deg,#8a6a1c,#d4af37 35%,#f8e58c 50%,#d4af37 65%,#8a6a1c);-webkit-background-clip:text;background-clip:text;color:transparent">A</div>
           <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.14em;color:#f8e58c;margin:14px 0 6px">Team Console</div>
-          <div style="font-size:13.5px;color:#9a917c;margin-bottom:24px">Enter your team PIN to manage bookings, availability, rates and reviews.</div>
-          <input type="password" placeholder="Team PIN" value="{{ pw }}" onChange="{{ onPw }}" onKeyDown="{{ pwKey }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:13px 14px;font:400 16px Jost;letter-spacing:.35em;text-align:center;margin-bottom:12px">
-          <button onClick="{{ login }}" style="width:100%;background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:13px;cursor:pointer" style-hover="filter:brightness(1.1)">Enter Console</button>
-          <sc-if value="{{ pwError }}" hint-placeholder-val="{{ false }}">
-            <div style="color:#c96a5a;font-size:13px;margin-top:12px">Incorrect PIN.</div>
+          <sc-if value="{{ authStageId }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:13.5px;line-height:1.6;color:#9a917c;margin-bottom:24px">Sign in with your registered phone number, we text you a one-time code. Email works as a fallback.</div>
+            <input placeholder="Phone number or email" value="{{ authId }}" onChange="{{ onAuthId }}" onKeyDown="{{ authIdKey }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:13px 14px;font:400 16px Jost;text-align:center;margin-bottom:12px">
+            <button onClick="{{ authSend }}" style="width:100%;background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:13px;cursor:pointer" style-hover="filter:brightness(1.1)">Send Code</button>
+          </sc-if>
+          <sc-if value="{{ authStageCode }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:13.5px;line-height:1.6;color:#9a917c;margin-bottom:16px">Enter the 6-digit code we sent {{ authDest }}.</div>
+            <div style="background:rgba(212,175,55,.08);border:1px dashed rgba(212,175,55,.5);padding:10px 14px;font-size:12.5px;line-height:1.7;color:#d4af37;margin-bottom:16px;text-align:left">Demo mode: this preview has no SMS/email service connected, so your code shows here instead: <span style="color:#f8e58c;letter-spacing:.2em;font-size:15px">{{ authDemoCode }}</span></div>
+            <input placeholder="6-digit code" value="{{ authCodeIn }}" onChange="{{ onAuthCode }}" onKeyDown="{{ authCodeKey }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:13px 14px;font:400 18px Jost;letter-spacing:.4em;text-align:center;margin-bottom:12px">
+            <button onClick="{{ authVerify }}" style="width:100%;background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:13px;cursor:pointer" style-hover="filter:brightness(1.1)">Verify &amp; Sign In</button>
+            <button onClick="{{ authRestart }}" style="background:none;border:none;color:#6f6753;font:400 12px Jost;letter-spacing:.14em;text-transform:uppercase;margin-top:14px;cursor:pointer" style-hover="color:#f8e58c">← Use a different number</button>
+          </sc-if>
+          <sc-if value="{{ authErrF }}" hint-placeholder-val="{{ false }}">
+            <div style="color:#c96a5a;font-size:13px;line-height:1.6;margin-top:12px">{{ authErrMsg }}</div>
           </sc-if>
           <button onClick="{{ closeAdmin }}" style="background:none;border:none;color:#6f6753;font:400 12px Jost;letter-spacing:.16em;text-transform:uppercase;margin-top:20px;cursor:pointer" style-hover="color:#f8e58c">← Back to site</button>
         </div>
@@ -525,7 +589,21 @@
         </sc-if>
 
         <sc-if value="{{ tabSlots }}" hint-placeholder-val="{{ false }}">
-          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:12px">Block / open pickup times</div>
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:12px">Booking rules</div>
+          <div style="background:#131109;border:1px solid rgba(212,175,55,.2);padding:16px 20px;display:flex;gap:14px 26px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+            <span style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#9a917c">Open</span>
+              <input type="time" value="{{ sOpenFrom }}" onChange="{{ onOpenFrom }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.3);color:#f8e58c;padding:8px;font:500 14px Jost;color-scheme:dark">
+              <span style="font-size:12px;color:#9a917c">to</span>
+              <input type="time" value="{{ sOpenTo }}" onChange="{{ onOpenTo }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.3);color:#f8e58c;padding:8px;font:500 14px Jost;color-scheme:dark"></span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#9a917c">Cars</span>
+              <input type="number" value="{{ sCars }}" onChange="{{ onCars }}" style="width:60px;background:#0b0a08;border:1px solid rgba(212,175,55,.3);color:#f8e58c;padding:8px;font:500 14px Jost"></span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#9a917c">Min notice</span>
+              <input type="number" value="{{ sLead }}" onChange="{{ onLead }}" style="width:60px;background:#0b0a08;border:1px solid rgba(212,175,55,.3);color:#f8e58c;padding:8px;font:500 14px Jost"><span style="font-size:12px;color:#9a917c">hrs</span></span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#9a917c">Book up to</span>
+              <input type="number" value="{{ sAdv }}" onChange="{{ onAdv }}" style="width:60px;background:#0b0a08;border:1px solid rgba(212,175,55,.3);color:#f8e58c;padding:8px;font:500 14px Jost"><span style="font-size:12px;color:#9a917c">days</span></span>
+          </div>
+          <div style="font-size:12.5px;color:#6f6753;margin-bottom:28px">Customers pick any time inside these hours. Each car covers one ride in a 2-hour window, when all cars are reserved around a time it can't be booked, and rides need the minimum notice above (no 10-minutes-from-now requests).</div>
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:12px">Block / open hours</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
             <sc-for list="{{ adminDayChips }}" as="dc" hint-placeholder-count="7">
               <button onClick="{{ dc.pick }}" style="{{ dc.style }}">{{ dc.label }}</button>
@@ -571,6 +649,34 @@
           <div style="font-size:12.5px;color:#6f6753;margin-top:12px">Current hub: {{ svcLabel }} · initial pickups welcomed within {{ svcRadius }} miles. Customers verifying a pickup outside this range see an out-of-area notice. {{ hubNote }}</div>
         </sc-if>
 
+        <sc-if value="{{ tabTeam }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:14px">Console team · sign-in codes go to their phone first, email otherwise</div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+            <sc-for list="{{ teamRows }}" as="tm" hint-placeholder-count="1">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;background:#131109;border:1px solid rgba(212,175,55,.2);padding:14px 20px;flex-wrap:wrap">
+                <span><span style="display:block;font-size:15px;color:#f5f1e6">{{ tm.name }}</span><span style="display:block;font-size:12.5px;color:#9a917c;margin-top:2px">{{ tm.contact }}</span></span>
+                <sc-if value="{{ tm.isOwner }}" hint-placeholder-val="{{ true }}">
+                  <span style="font:600 10px Jost;letter-spacing:.18em;text-transform:uppercase;color:#f8e58c;border:1px solid rgba(248,229,140,.4);padding:5px 10px">Owner</span>
+                </sc-if>
+                <sc-if value="{{ tm.canRemove }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ tm.remove }}" style="background:none;border:1px solid rgba(201,106,90,.5);color:#c96a5a;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:7px 12px;cursor:pointer">Remove</button>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:12px">Invite a team member</div>
+          <div class="formGrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
+            <input placeholder="Name" value="{{ nmName }}" onChange="{{ onNmName }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 13px;font:400 14px Jost">
+            <input placeholder="Mobile phone (preferred)" value="{{ nmPhone }}" onChange="{{ onNmPhone }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 13px;font:400 14px Jost">
+            <input placeholder="Email (fallback)" value="{{ nmEmail }}" onChange="{{ onNmEmail }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 13px;font:400 14px Jost">
+          </div>
+          <button onClick="{{ addMember }}" style="background:none;border:1px solid rgba(212,175,55,.5);color:#d4af37;font:500 11px Jost;letter-spacing:.16em;text-transform:uppercase;padding:10px 16px;cursor:pointer" style-hover="color:#f8e58c">Add Member</button>
+          <sc-if value="{{ teamMsgF }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:13px;color:#9a917c;margin-top:12px">{{ teamMsg }}</div>
+          </sc-if>
+          <div style="font-size:12.5px;color:#6f6753;margin-top:18px">In this demo the one-time code displays on the sign-in screen. Production connects an SMS service (for example Twilio) for texts, with email delivery as the fallback.</div>
+        </sc-if>
+
         <sc-if value="{{ tabReviews }}" hint-placeholder-val="{{ false }}">
           <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:14px">Pending reviews ({{ pendingCount }}) · {{ approvedCount }} published</div>
           <sc-if value="{{ noPending }}" hint-placeholder-val="{{ false }}">
@@ -598,95 +704,192 @@
   </div>
 </sc-if>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;adminPin&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2259&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Team console&quot;},&quot;slotHours&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;2 hours&quot;,&quot;options&quot;:[&quot;1 hour&quot;,&quot;2 hours&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Booking&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{}">
 class Component extends DCLogic {
   state = {
-    step: 0, tripType: 'Airport Transfer', vehicle: null, date: '', time: null, pax: '1–3',
-    pickup: '', dropoff: '', flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {},
-    distMi: null, pickupLL: null, mapBusy: false, mapMsg: '', adminHubQ: '', hubErr: false,
+    step: 0, tripType: 'Point-to-Point', vehicle: null, date: '', time: '', pax: '1–3',
+    puStreet: '', puCity: '', puState: '', puZip: '', doStreet: '', doCity: '', doState: '', doZip: '',
+    puSugs: [], doSugs: [], flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {},
+    confirmStage: 'pickup', pickupLL: null, dropLL: null, distMi: null, mapBusy: false, mapMsg: '',
     revName: '', revText: '', revTag: 'Airport Transfer', revStars: 5, revThanks: false,
     faqOpen: -1,
-    adminOpen: false, authed: false, pw: '', pwError: false,
-    adminTab: 'today', adminFilter: 'all', adminDate: '',
-    blocked: {}, vehiclesOff: {}, bookings: [], userReviews: [], rates: null, flats: null, serviceArea: null
+    adminOpen: false, authed: false, authStage: 'id', authId: '', authCode: '', authCodeIn: '', authDest: '', authErr: '',
+    adminTab: 'today', adminFilter: 'all', adminDate: '', adminHubQ: '', hubErr: false,
+    nmName: '', nmPhone: '', nmEmail: '', teamMsg: '',
+    blocked: {}, vehiclesOff: {}, bookings: [], userReviews: [], rates: null, flats: null, serviceArea: null, settings: null, team: null
   };
   iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
   componentDidMount() {
     this.setState({ adminDate: this.iso(new Date()) });
     try {
-      const d = JSON.parse(localStorage.getItem('alem_site_v3') || '{}');
-      this.setState({ blocked: d.blocked || {}, vehiclesOff: d.vehiclesOff || {}, bookings: d.bookings || [], userReviews: d.userReviews || [], rates: d.rates || null, flats: d.flats || null, serviceArea: d.serviceArea || null });
+      const d = JSON.parse(localStorage.getItem('alem_site_v4') || '{}');
+      this.setState({ blocked: d.blocked || {}, vehiclesOff: d.vehiclesOff || {}, bookings: d.bookings || [], userReviews: d.userReviews || [], rates: d.rates || null, flats: d.flats || null, serviceArea: d.serviceArea || null, settings: d.settings || null, team: d.team || null });
     } catch (e) {}
+    try { const a = JSON.parse(localStorage.getItem('alem_auth_v1') || 'null'); if (a && a.exp > Date.now()) this.setState({ authed: true }); } catch (e) {}
   }
   persist(patch) {
     this.setState(patch, () => {
-      const { blocked, vehiclesOff, bookings, userReviews, rates, flats, serviceArea } = this.state;
-      localStorage.setItem('alem_site_v3', JSON.stringify({ blocked, vehiclesOff, bookings, userReviews, rates, flats, serviceArea }));
+      const { blocked, vehiclesOff, bookings, userReviews, rates, flats, serviceArea, settings, team } = this.state;
+      localStorage.setItem('alem_site_v4', JSON.stringify({ blocked, vehiclesOff, bookings, userReviews, rates, flats, serviceArea, settings, team }));
     });
   }
   defRates() { return { 'Premium Sedan': 3.5, 'Luxury SUV': 4.5, 'Executive Sprinter': 5.5, 'Shuttle & Limo Bus': 7 }; }
   fmtRate(v) { return v % 1 ? v.toFixed(2) : String(v); }
   svc() { return Object.assign({ lat: 38.8951, lng: -77.0364, label: 'Washington, DC', radius: 40 }, this.state.serviceArea || {}); }
+  cfg() { return Object.assign({ openFrom: '06:00', openTo: '22:00', cars: 3, minLeadH: 2, maxAdvD: 60 }, this.state.settings || {}); }
+  team_() { const t = this.state.team; return (t && t.length) ? t : [{ name: 'Kidist Alemayehu', phone: '2405952259', email: 'Alemllc@gmail.com', owner: true }]; }
+  normPhone(s) { const d = String(s || '').replace(/[^0-9]/g, ''); return d.length === 11 && d[0] === '1' ? d.slice(1) : d; }
+  validPhone(s) { return this.normPhone(s).length === 10; }
+  validEmail(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim()); }
+  fmtPhone(p) { p = this.normPhone(p); return p.length === 10 ? '(' + p.slice(0, 3) + ') ' + p.slice(3, 6) + '-' + p.slice(6) : p; }
+  maskPhone(p) { p = this.normPhone(p); return p.length === 10 ? '(' + p.slice(0, 3) + ') •••-••' + p.slice(8) : '•••'; }
+  maskEmail(e) { const s = String(e || ''); const i = s.indexOf('@'); return i > 1 ? s[0] + '•••' + s.slice(i) : s; }
+  mins(t) { const m = /^(\d{1,2}):(\d{2})/.exec(String(t || '')); return m ? +m[1] * 60 + +m[2] : null; }
+  fmt12(t) { const mm = this.mins(t); if (mm == null) return String(t || ''); let h = Math.floor(mm / 60); const mi = mm % 60, ap = h < 12 ? 'AM' : 'PM'; h = h % 12 || 12; return h + ':' + String(mi).padStart(2, '0') + ' ' + ap; }
   haversineMi(a1, o1, a2, o2) {
     const d = Math.PI / 180, R = 3958.8;
     const h = Math.pow(Math.sin((a2 - a1) * d / 2), 2) + Math.cos(a1 * d) * Math.cos(a2 * d) * Math.pow(Math.sin((o2 - o1) * d / 2), 2);
     return 2 * R * Math.asin(Math.sqrt(h));
   }
+  timeCheck(date, time) {
+    const c = this.cfg();
+    if (!date || !time) return { ok: false, msg: '' };
+    const tm = this.mins(time);
+    if (tm == null) return { ok: false, msg: '' };
+    if (tm < this.mins(c.openFrom) || tm > this.mins(c.openTo)) return { ok: false, msg: 'We dispatch between ' + this.fmt12(c.openFrom) + ' and ' + this.fmt12(c.openTo) + '.' };
+    const dt = new Date(date + 'T' + time);
+    if ((dt - Date.now()) / 36e5 < c.minLeadH) return { ok: false, msg: 'Rides need at least ' + c.minLeadH + ' hours notice, choose a later time.' };
+    if (dt > new Date(Date.now() + c.maxAdvD * 864e5)) return { ok: false, msg: 'We take reservations up to ' + c.maxAdvD + ' days ahead.' };
+    if ((this.state.blocked[date] || []).includes(Math.floor(tm / 60))) return { ok: false, msg: 'That hour is unavailable, try a nearby time.' };
+    const busy = this.state.bookings.filter(b => b.date === date && (b.status || 'new') !== 'completed' && Math.abs((this.mins(b.time) || -999) - tm) < 120).length;
+    if (busy >= c.cars) return { ok: false, msg: 'All ' + c.cars + ' cars are reserved around that time, please pick another time.' };
+    return { ok: true, msg: 'A car is available at ' + this.fmt12(time) + '.' };
+  }
+  abbrState(n) { const M = { 'Virginia': 'VA', 'Maryland': 'MD', 'District of Columbia': 'DC', 'West Virginia': 'WV', 'Pennsylvania': 'PA', 'Delaware': 'DE', 'New Jersey': 'NJ', 'New York': 'NY', 'North Carolina': 'NC' }; return M[n] || n || ''; }
+  addr(kind) { const S = this.state, p = kind === 'pu'; return [(p ? S.puStreet : S.doStreet), (p ? S.puCity : S.doCity), (p ? S.puState : S.doState)].map(x => String(x || '').trim()).filter(Boolean).join(', '); }
+  sugFetch(kind) {
+    clearTimeout(this['_deb' + kind]);
+    this['_deb' + kind] = setTimeout(async () => {
+      const S = this.state, p = kind === 'pu';
+      const street = (p ? S.puStreet : S.doStreet).trim();
+      if (street.length < 4) { this.setState(p ? { puSugs: [] } : { doSugs: [] }); return; }
+      const q = [street, (p ? S.puCity : S.doCity).trim(), (p ? S.puState : S.doState).trim()].filter(Boolean).join(', ');
+      try {
+        const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=us&addressdetails=1&viewbox=-78.5,39.8,-75.9,37.8&q=' + encodeURIComponent(q));
+        const j = await r.json();
+        const sug = (j || []).map(x => ({ label: String(x.display_name || '').split(',').slice(0, 4).join(','), lat: +x.lat, lng: +x.lon, a: x.address || {} }));
+        this.setState(p ? { puSugs: sug } : { doSugs: sug });
+      } catch (e) {}
+    }, 450);
+  }
+  pickSug(kind, sg) {
+    const a = sg.a || {};
+    const cur = kind === 'pu' ? this.state.puStreet : this.state.doStreet;
+    const street = [a.house_number, a.road].filter(Boolean).join(' ') || a.aeroway || a.amenity || a.building || cur;
+    const city = a.city || a.town || a.village || a.hamlet || a.county || '';
+    const st = this.abbrState(a.state), zip = a.postcode || '';
+    const ll = { lat: sg.lat, lng: sg.lng };
+    if (kind === 'pu') this.setState({ puStreet: street, puCity: city, puState: st, puZip: zip, puSugs: [], pickupLL: ll, distMi: null });
+    else this.setState({ doStreet: street, doCity: city, doState: st, doZip: zip, doSugs: [], dropLL: ll, distMi: null });
+  }
+  async locate(kind) {
+    const S = this.state, p = kind === 'pu';
+    const street = (p ? S.puStreet : S.doStreet).trim(), city = (p ? S.puCity : S.doCity).trim(), st = (p ? S.puState : S.doState).trim(), zip = (p ? S.puZip : S.doZip).trim();
+    let u = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&street=' + encodeURIComponent(street) + '&city=' + encodeURIComponent(city);
+    if (st) u += '&state=' + encodeURIComponent(st);
+    if (zip) u += '&postalcode=' + encodeURIComponent(zip);
+    let r = await fetch(u), j = await r.json();
+    if (!j || !j[0]) { r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=' + encodeURIComponent([street, city, st].filter(Boolean).join(', '))); j = await r.json(); }
+    if (!j || !j[0]) throw new Error('nf');
+    return { lat: +j[0].lat, lng: +j[0].lon };
+  }
   async geocode(q) {
     const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=' + encodeURIComponent(q));
     const j = await r.json();
     if (!j || !j[0]) throw new Error('no result');
-    return { lat: +j[0].lat, lng: +j[0].lon, label: (j[0].display_name || q).split(',').slice(0, 2).join(',') };
-  }
-  ensureMap() {
-    const el = document.getElementById('trip-map');
-    if (!el || !window.L) return;
-    if (this._map && this._mapEl === el) return;
-    if (this._map) { try { this._map.remove(); } catch (e) {} this._map = null; this._route = null; }
-    const hub = this.svc();
-    const m = L.map(el).setView([hub.lat, hub.lng], 9);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri &middot; &copy; OpenStreetMap contributors', maxZoom: 16 }).addTo(m);
-    const pin = fill => L.divIcon({ className: '', html: '<span style="display:block;width:15px;height:15px;transform:rotate(45deg);background:' + (fill ? '#d4af37' : '#131109') + ';border:2px solid #f8e58c;box-shadow:0 0 10px rgba(0,0,0,.7)"></span>', iconSize: [15, 15], iconAnchor: [8, 8] });
-    const p0 = this.state.pickupLL || hub;
-    this._pk = L.marker([p0.lat, p0.lng], { draggable: true, icon: pin(true) }).addTo(m).bindTooltip('Pickup');
-    this._dp = L.marker([p0.lat + 0.07, p0.lng + 0.07], { draggable: true, icon: pin(false) }).addTo(m).bindTooltip('Drop-off');
-    const onDrag = () => this.routeBetween(this._pk.getLatLng(), this._dp.getLatLng());
-    this._pk.on('dragend', onDrag); this._dp.on('dragend', onDrag);
-    this._map = m; this._mapEl = el;
-    setTimeout(() => { try { m.invalidateSize(); } catch (e) {} }, 80);
-  }
-  async verifyRoute() {
-    const S = this.state;
-    if (!(S.pickup.trim() && S.dropoff.trim())) { this.setState({ mapMsg: 'Enter pickup and drop-off above first.' }); return; }
-    this.ensureMap();
-    this.setState({ mapBusy: true, mapMsg: 'Locating addresses…' });
-    try {
-      const a = await this.geocode(S.pickup);
-      const b = await this.geocode(S.dropoff);
-      if (this._pk) { this._pk.setLatLng([a.lat, a.lng]); this._dp.setLatLng([b.lat, b.lng]); }
-      await this.routeBetween({ lat: a.lat, lng: a.lng }, { lat: b.lat, lng: b.lng });
-    } catch (e) {
-      this.setState({ mapBusy: false, mapMsg: 'Address not found, drag the pins on the map instead.' });
-    }
+    return { lat: +j[0].lat, lng: +j[0].lon, label: String(j[0].display_name || q).split(',').slice(0, 2).join(',') };
   }
   async routeBetween(a, b) {
     this.setState({ mapBusy: true, mapMsg: 'Calculating route…' });
-    let miles = null, geom = null;
+    let miles = null; this._geom = null;
     try {
       const r = await fetch('https://router.project-osrm.org/route/v1/driving/' + a.lng + ',' + a.lat + ';' + b.lng + ',' + b.lat + '?overview=full&geometries=geojson');
       const j = await r.json();
-      if (j.routes && j.routes[0]) { miles = j.routes[0].distance / 1609.344; geom = j.routes[0].geometry; }
+      if (j.routes && j.routes[0]) { miles = j.routes[0].distance / 1609.344; this._geom = j.routes[0].geometry; }
     } catch (e) {}
     if (miles == null) miles = this.haversineMi(a.lat, a.lng, b.lat, b.lng) * 1.25;
-    if (this._map) {
-      if (this._route) { try { this._map.removeLayer(this._route); } catch (e) {} this._route = null; }
-      if (geom && window.L) this._route = L.geoJSON(geom, { style: { color: '#d4af37', weight: 3, opacity: .9 } }).addTo(this._map);
-      try { this._map.fitBounds(L.latLngBounds([[a.lat, a.lng], [b.lat, b.lng]]).pad(0.3)); } catch (e) {}
-    }
-    this.setState({ mapBusy: false, mapMsg: '', distMi: Math.round(miles * 10) / 10, pickupLL: { lat: a.lat, lng: a.lng } });
+    this.setState({ mapBusy: false, mapMsg: '', distMi: Math.round(miles * 10) / 10 });
   }
-  rates() { return { ...this.defRates(), ...(this.state.rates || {}) }; }
-  flats() { const d = {}; this.vehicles().forEach(v => d[v.name] = v.flat); return { ...d, ...(this.state.flats || {}) }; }
+  syncMap() {
+    const S = this.state, el = document.getElementById('trip-map');
+    if (!el || !window.L) return;
+    if (!this._map || this._mapEl !== el) {
+      if (this._map) { try { this._map.remove(); } catch (e) {} }
+      const m = L.map(el).setView([this.svc().lat, this.svc().lng], 9);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri &middot; &copy; OpenStreetMap contributors', maxZoom: 16 }).addTo(m);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 16 }).addTo(m);
+      this._map = m; this._mapEl = el; this._pk = this._dp = this._route = null; this._zoomTo = null;
+      setTimeout(() => { try { m.invalidateSize(); } catch (e) {} }, 90);
+    }
+    const m = this._map;
+    [this._pk, this._dp, this._route].forEach(x => { if (x) { try { m.removeLayer(x); } catch (e) {} } });
+    this._pk = this._dp = this._route = null;
+    const pin = fill => L.divIcon({ className: '', html: '<span style="display:block;width:16px;height:16px;transform:rotate(45deg);background:' + (fill ? '#d4af37' : '#131109') + ';border:2px solid #f8e58c;box-shadow:0 0 10px rgba(0,0,0,.7)"></span>', iconSize: [16, 16], iconAnchor: [8, 8] });
+    const mk = (ll, fill, label, onEnd) => L.marker([ll.lat, ll.lng], { draggable: true, icon: pin(fill) }).addTo(m).bindTooltip(label).on('dragend', onEnd);
+    const st = S.confirmStage;
+    if (st === 'pickup' && S.pickupLL) {
+      this._pk = mk(S.pickupLL, true, 'Pickup, drag me', () => { const p = this._pk.getLatLng(); this.setState({ pickupLL: { lat: p.lat, lng: p.lng }, distMi: null }); });
+      if (this._zoomTo !== 'pu') { m.setView([S.pickupLL.lat, S.pickupLL.lng], 16); this._zoomTo = 'pu'; }
+    } else if (st === 'dropoff' && S.dropLL) {
+      this._dp = mk(S.dropLL, false, 'Drop-off, drag me', () => { const p = this._dp.getLatLng(); this.setState({ dropLL: { lat: p.lat, lng: p.lng }, distMi: null }); });
+      if (this._zoomTo !== 'do') { m.setView([S.dropLL.lat, S.dropLL.lng], 16); this._zoomTo = 'do'; }
+    } else if (st === 'route' && S.pickupLL && S.dropLL) {
+      const redo = () => { this.routeBetween(this.state.pickupLL, this.state.dropLL); };
+      this._pk = mk(S.pickupLL, true, 'Pickup', () => { const p = this._pk.getLatLng(); this.setState({ pickupLL: { lat: p.lat, lng: p.lng } }, redo); });
+      this._dp = mk(S.dropLL, false, 'Drop-off', () => { const p = this._dp.getLatLng(); this.setState({ dropLL: { lat: p.lat, lng: p.lng } }, redo); });
+      if (this._geom) this._route = L.geoJSON(this._geom, { style: { color: '#d4af37', weight: 3, opacity: .9 } }).addTo(m);
+      if (this._zoomTo !== 'rt') { try { m.fitBounds(L.latLngBounds([[S.pickupLL.lat, S.pickupLL.lng], [S.dropLL.lat, S.dropLL.lng]]).pad(0.3)); } catch (e) {} this._zoomTo = 'rt'; }
+    }
+  }
+  async startConfirm() {
+    const S = this.state;
+    this._zoomTo = null; this._geom = null;
+    this.setState({ step: 3, confirmStage: 'pickup', distMi: null, mapBusy: !S.pickupLL, mapMsg: S.pickupLL ? '' : 'Locating pickup…' });
+    if (!S.pickupLL) {
+      try { const p = await this.locate('pu'); this.setState({ pickupLL: p, mapBusy: false, mapMsg: '' }); }
+      catch (e) { const h = this.svc(); this.setState({ mapBusy: false, mapMsg: 'We could not pin that pickup address, drag the pin to the right spot yourself.', pickupLL: { lat: h.lat, lng: h.lng } }); }
+    }
+  }
+  async advanceConfirm() {
+    const S = this.state;
+    if (S.confirmStage === 'pickup') {
+      this._zoomTo = null;
+      if (S.dropLL) { this.setState({ confirmStage: 'dropoff' }); return; }
+      this.setState({ confirmStage: 'dropoff', mapBusy: true, mapMsg: 'Locating drop-off…' });
+      try { const p = await this.locate('do'); this.setState({ dropLL: p, mapBusy: false, mapMsg: '' }); }
+      catch (e) { this.setState({ mapBusy: false, mapMsg: 'We could not pin that drop-off address, drag the pin to the right spot yourself.', dropLL: { lat: S.pickupLL.lat + 0.03, lng: S.pickupLL.lng + 0.03 } }); }
+    } else if (S.confirmStage === 'dropoff') {
+      this._zoomTo = null;
+      this.setState({ confirmStage: 'route' });
+      this.routeBetween(this.state.pickupLL, this.state.dropLL);
+    }
+  }
+  authSend() {
+    const id = String(this.state.authId || '').trim();
+    if (!id) { this.setState({ authErr: 'Enter your phone number or email.' }); return; }
+    const isEmail = id.includes('@');
+    const m = this.team_().find(x => isEmail ? String(x.email || '').toLowerCase() === id.toLowerCase() : (this.normPhone(x.phone) && this.normPhone(x.phone) === this.normPhone(id)));
+    if (!m) { this.setState({ authErr: 'Not a registered team member. Ask the owner to invite you from the Team tab.' }); return; }
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    const dest = m.phone ? 'by text to ' + this.maskPhone(m.phone) : 'by email to ' + this.maskEmail(m.email);
+    this.setState({ authStage: 'code', authCode: code, authDest: dest, authCodeIn: '', authErr: '' });
+  }
+  authVerify() {
+    if (this.state.authCode && this.state.authCodeIn.trim() === this.state.authCode) {
+      try { localStorage.setItem('alem_auth_v1', JSON.stringify({ exp: Date.now() + 8 * 36e5 })); } catch (e) {}
+      this.setState({ authed: true, authStage: 'id', authId: '', authCode: '', authCodeIn: '', authErr: '' });
+    } else this.setState({ authErr: 'Incorrect code, check the 6 digits and try again.' });
+  }
   vehicles() {
     return [
       { name: 'Premium Sedan', model: 'Lincoln Corsair · Cadillac CT4 · executive sedans', pax: 3, flat: 70, slotId: 'fleet-sedan', ph: 'Premium sedan photo', img: 'images/fleet-sedan.jpg', amenities: 'Owner-operated · leather cabin · chargers · bottled water' },
@@ -695,28 +898,18 @@ class Component extends DCLogic {
       { name: 'Shuttle & Limo Bus', model: 'Shuttle & limo buses for group charters', pax: 30, flat: 250, slotId: 'fleet-bus', ph: 'Shuttle / limo bus photo', img: 'images/fleet-bus.jpg', amenities: 'Large groups · events · multi-stop charters' }
     ];
   }
+  rates() { return { ...this.defRates(), ...(this.state.rates || {}) }; }
+  flats() { const d = {}; this.vehicles().forEach(v => d[v.name] = v.flat); return { ...d, ...(this.state.flats || {}) }; }
   seedReviews() {
     return [
       { stars: 5, text: 'Flight landed 40 minutes early at IAD and our chauffeur was already there, sign in hand. That has never happened with any other service.', name: 'Michael R.', tag: 'Airport Transfer' },
-      { stars: 5, text: 'Booked the limo bus for my daughter\u2019s prom group. Kidist personally called to confirm every detail. The kids felt like royalty.', name: 'Sandra T.', tag: 'Prom' },
+      { stars: 5, text: 'Booked the limo bus for my daughter’s prom group. Kidist personally called to confirm every detail. The kids felt like royalty.', name: 'Sandra T.', tag: 'Prom' },
       { stars: 5, text: 'We use Alem for every board visit now. Spotless cars, silent professional drivers, and card-on-file invoicing is effortless.', name: 'David K.', tag: 'Corporate Event' },
-      { stars: 5, text: 'Requested a female chauffeur for my mother\u2019s medical visits, patient, kind, door-through-door help every single time.', name: 'Elena M.', tag: 'Senior Concierge' },
+      { stars: 5, text: 'Requested a female chauffeur for my mother’s medical visits, patient, kind, door-through-door help every single time.', name: 'Elena M.', tag: 'Senior Concierge' },
       { stars: 4, text: 'Smooth booking, fair price, noticeably below the broker quotes I got. Driver texted her photo and ETA before pickup.', name: 'Priya N.', tag: 'Point-to-Point' },
       { stars: 5, text: 'DCA pickup at 5am, driver was waiting with coffee recommendations and got me to my meeting with time to spare.', name: 'Tom W.', tag: 'Airport Transfer' }
     ];
   }
-  slots() {
-    const every = (this.props.slotHours ?? '2 hours') === '1 hour' ? 1 : 2;
-    const out = [];
-    for (let h = 6; h <= 22; h += every) { const ap = h < 12 ? 'AM' : 'PM', hh = h % 12 === 0 ? 12 : h % 12; out.push(hh + ':00 ' + ap); }
-    return out;
-  }
-  slotState(date, label) {
-    if (this.state.bookings.some(b => b.date === date && b.time === label && (b.status || 'new') !== 'completed')) return 'booked';
-    if ((this.state.blocked[date] || []).includes(label)) return 'blocked';
-    return 'open';
-  }
-  timeKey(t) { const m = /(\d+):(\d+)\s*(AM|PM)/.exec(t || ''); if (!m) return 0; let h = +m[1] % 12; if (m[3] === 'PM') h += 12; return h * 60 + +m[2]; }
   estNum(b) { const m = /\$\s*(\d+)/.exec(String(b.est || '')); return m ? +m[1] : 0; }
   extraList() { return [{ label: 'Meet & Greet +$25', fee: 25 }, { label: 'Female Chauffeur, Free', fee: 0 }, { label: 'Child Seat, Free', fee: 0 }, { label: 'Extra Stop +$20', fee: 20 }]; }
   estimateNum() {
@@ -746,8 +939,8 @@ class Component extends DCLogic {
     const extras = (b.extras || []).join(', ');
     const notes = [extras, b.notes].filter(Boolean).join(', ');
     return {
-      conf: b.conf, est: b.est || '-', name: b.name, phone: b.phone, veh: b.vehicle,
-      time: b.time, when: dNice + ' · ' + b.time,
+      conf: b.conf, est: b.est || '-', name: b.name, phone: this.fmtPhone(b.phone) || b.phone, veh: b.vehicle,
+      time: this.fmt12(b.time), when: dNice + ' · ' + this.fmt12(b.time),
       what: (b.tripType || '') + ' · ' + b.vehicle,
       route: (b.pickup || '-') + ' → ' + (b.dropoff || 'as directed'),
       flight: b.flight || '', hasFlight: !!b.flight,
@@ -762,26 +955,29 @@ class Component extends DCLogic {
   }
   renderVals() {
     const S = this.state, set = p => this.setState(p);
+    const c = this.cfg();
     const today = this.iso(new Date());
+    const maxDate = this.iso(new Date(Date.now() + c.maxAdvD * 864e5));
     const inputHandler = k => e => set({ [k]: e.target.value });
     const goldBtn = dis => 'flex:1;background:' + (dis ? '#2a2418' : 'linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c)') +
       ';color:' + (dis ? '#6f6753' : '#141005') + ';border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:' + (dis ? 'not-allowed' : 'pointer');
-    const step0Locked = !S.vehicle, step1Locked = !(S.date && S.time), step2Locked = !(S.name.trim() && S.phone.trim() && S.pickup.trim());
+    const tCheck = this.timeCheck(S.date, S.time);
+    const puOk = S.puStreet.trim() && S.puCity.trim(), doOk = S.doStreet.trim() && S.doCity.trim();
+    const phoneOk = this.validPhone(S.phone), emailOk = this.validEmail(S.email);
+    const step0Locked = !S.vehicle, step1Locked = !tCheck.ok, detailsLocked = !(puOk && doOk && phoneOk && emailOk);
     const est = this.estimateNum();
     const perMi = S.vehicle ? (this.rates()[S.vehicle] || 0) : 0;
     const estimate = est == null ? '- select a vehicle -' : S.distMi == null ? '$' + est + ' + $' + this.fmtRate(perMi) + '/mi' : '$' + est + ' · ' + S.distMi.toFixed(1) + ' mi';
     const svcA = this.svc();
     const hubDist = S.pickupLL ? this.haversineMi(svcA.lat, svcA.lng, S.pickupLL.lat, S.pickupLL.lng) : null;
     const areaOver = hubDist != null && hubDist > svcA.radius;
-    const areaMsg = areaOver ? 'Heads up: this pickup is about ' + Math.round(hubDist) + ' miles from our ' + svcA.label + ' hub, outside the ' + svcA.radius + '-mile initial pickup area. You can still submit, our team will confirm availability with you first.' : '';
-    const mapNote = S.mapBusy ? (S.mapMsg || 'Working…') : S.distMi != null ? 'Route verified · ' + S.distMi.toFixed(1) + ' miles' : (S.mapMsg || 'Type addresses above, then verify, or drag the pins.');
-    if (S.step === 2 && !S.adminOpen) setTimeout(() => this.ensureMap(), 60);
+    const areaMsg = areaOver ? 'Heads up: this pickup is about ' + Math.round(hubDist) + ' miles from our ' + svcA.label + ' hub, outside the ' + svcA.radius + '-mile initial pickup area. You can still send the request, dispatch will confirm feasibility with you first.' : '';
     const dateNice = S.date ? new Date(S.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '';
     const allReviews = [...this.seedReviews(), ...S.userReviews.filter(r => r.approved)];
     const avg = (allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1);
     const faqData = [
-      ['How far in advance should I book?', 'Airport transfers: 24 hours is ideal, though we take same-day bookings when availability allows. Out-of-state trips need at least 1 hour advance notice. Weddings, proms and events: 2–4 weeks recommended.'],
-      ['Can I request a female chauffeur?', 'Yes. We have professional female drivers on the team. Select the Female Chauffeur option when booking, or mention it in the notes, and we\u2019ll match you at no extra charge.'],
+      ['How far in advance should I book?', 'Point-to-point and airport rides: same-day is often fine when a car is free, though 24 hours is ideal. Out-of-state trips need at least 1 hour advance notice. Weddings, proms and events: 2–4 weeks recommended.'],
+      ['Can I request a female chauffeur?', 'Yes. We have professional female drivers on the team. Select the Female Chauffeur option when booking, or mention it in the notes, and we’ll match you at no extra charge.'],
       ['What happens if my flight is delayed?', 'Nothing, we track every flight automatically. Your chauffeur adjusts to your actual arrival time at no extra charge, and waits up to 60 minutes after landing.'],
       ['Do you travel outside the DMV?', 'Yes. Beyond Virginia, D.C. and Maryland we run out-of-state charters under our Virginia CPCC authority, just book at least 1 hour in advance for interstate trips.'],
       ['What is your cancellation policy?', 'Free cancellation up to 24 hours before pickup on sedan and SUV trips. Sprinter and bus event bookings are refundable up to 72 hours before.'],
@@ -789,8 +985,7 @@ class Component extends DCLogic {
       ['Are gratuity and tolls included?', 'Your estimate shows the base fare. Tolls, parking and a suggested 20% gratuity are itemized in the final quote we confirm with you, no surprises at drop-off.'],
       ['Do you provide child seats?', 'Yes, forward-facing and booster seats are available free of charge. Just select the child seat extra when booking or mention it in the notes.']
     ];
-    // console data
-    const sorted = S.bookings.map((b, i) => ({ b, i })).sort((a, z) => (a.b.date || '').localeCompare(z.b.date || '') || this.timeKey(a.b.time) - this.timeKey(z.b.time));
+    const sorted = S.bookings.map((b, i) => ({ b, i })).sort((a, z) => (a.b.date || '').localeCompare(z.b.date || '') || ((this.mins(a.b.time) || 0) - (this.mins(z.b.time) || 0)));
     const todayList = sorted.filter(x => x.b.date === today);
     const upcoming = sorted.filter(x => x.b.date >= today && (x.b.status || 'new') !== 'completed');
     const nextUp = sorted.filter(x => x.b.date > today && (x.b.status || 'new') !== 'completed').slice(0, 6);
@@ -800,11 +995,26 @@ class Component extends DCLogic {
     const counts = { all: sorted.length, new: 0, confirmed: 0, completed: 0 };
     sorted.forEach(x => counts[x.b.status || 'new']++);
     const todayNice = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    if (S.step === 3 && !S.adminOpen) setTimeout(() => this.syncMap(), 60);
+    const stage = S.confirmStage;
+    const confTitle = stage === 'pickup' ? 'Confirm Pickup Pin' : stage === 'dropoff' ? 'Confirm Drop-off Pin' : 'Review & Request';
+    const confHint = stage === 'pickup' ? 'This is the exact spot your chauffeur meets you. Zoom and drag the gold pin to fine-tune it, then confirm.' : stage === 'dropoff' ? 'Now the drop-off. Drag the pin to the exact door or entrance, then confirm.' : 'Your full route and estimate. Drag either pin if something looks off, the price updates automatically.';
+    const confBtnLabel = stage === 'pickup' ? 'Confirm Pickup' : stage === 'dropoff' ? 'Confirm Drop-off' : 'Request Ride';
+    const confLocked = S.mapBusy || (stage === 'pickup' ? !S.pickupLL : stage === 'dropoff' ? !S.dropLL : S.distMi == null);
+    const requestRide = () => {
+      const confNo = 'AL-' + Date.now().toString(36).toUpperCase().slice(-6);
+      const b = { conf: confNo, status: 'new', date: S.date, time: S.time, name: S.name.trim() || 'Guest', phone: S.phone, email: S.email, tripType: S.tripType, vehicle: S.vehicle, pickup: this.addr('pu'), dropoff: this.addr('do'), flight: S.tripType === 'Airport Transfer' ? S.flight : '', notes: S.notes, extras: Object.keys(S.extras).filter(k => S.extras[k]), miles: S.distMi, est: estimate };
+      this.persist({ bookings: [...S.bookings, b], confNo, step: 4 });
+    };
     return {
-      today,
+      today, maxDate,
       tripType: S.tripType, onTripType: e => set({ tripType: e.target.value }),
       pax: S.pax, onPax: e => set({ pax: e.target.value }),
-      date: S.date, onDate: e => set({ date: e.target.value, time: null }),
+      date: S.date, onDate: e => set({ date: e.target.value }),
+      time: S.time, onTime: e => set({ time: e.target.value }),
+      openFrom: c.openFrom, openTo: c.openTo,
+      hoursNote: 'Dispatch hours ' + this.fmt12(c.openFrom) + ' – ' + this.fmt12(c.openTo) + ' · at least ' + c.minLeadH + ' h notice · up to ' + c.maxAdvD + ' days ahead',
+      timeErrF: !!(S.date && S.time && !tCheck.ok && tCheck.msg), timeOkF: !!tCheck.ok, timeMsg: tCheck.msg,
       heroQuote: () => { set({ step: 0 }); location.hash = ''; location.hash = '#booking'; },
       serviceCards: [
         { name: 'Airport Transfers', mark: '✈', desc: 'Prompt, flight-tracked connections to IAD, DCA & BWI.', p1: '◆ Meet & greet with name sign', p2: '◆ 60 min free wait after landing', p3: '◆ Curbside or baggage-claim pickup' },
@@ -824,9 +1034,9 @@ class Component extends DCLogic {
       revBtnStyle: goldBtn(!(S.revName.trim() && S.revText.trim())) + ';margin-top:16px;width:100%',
       submitReview: () => this.persist({ userReviews: [...S.userReviews, { stars: S.revStars, text: S.revText.trim(), name: S.revName.trim(), tag: S.revTag, approved: false }], revThanks: true, revName: '', revText: '' }),
       faqs: faqData.map(([q, a], i) => ({ q, a, open: S.faqOpen === i, chev: S.faqOpen === i ? '−' : '+', toggle: () => set({ faqOpen: S.faqOpen === i ? -1 : i }) })),
-      isStep0: S.step === 0, isStep1: S.step === 1, isStep2: S.step === 2, isStep3: S.step === 3,
-      stepDots: [0, 1, 2, 3].map(i => ({ style: 'flex:1;height:2px;background:' + (i <= S.step ? '#d4af37' : '#2a2418') })),
-      tripOpts: ['Airport Transfer', 'Point-to-Point'].map(t => ({ name: t, pick: () => set({ tripType: t }), style: this.chip(S.tripType === t, false) })),
+      isStep0: S.step === 0, isStep1: S.step === 1, isStep2: S.step === 2, isStep3: S.step === 3, isStep4: S.step === 4,
+      stepDots: [0, 1, 2, 3, 4].map(i => ({ style: 'flex:1;height:2px;background:' + (i <= S.step ? '#d4af37' : '#2a2418') })),
+      tripOpts: ['Point-to-Point', 'Airport Transfer'].map(t => ({ name: t, pick: () => set({ tripType: t }), style: this.chip(S.tripType === t, false) })),
       vehicleOpts: this.vehicles().map(v => {
         const off = !!S.vehiclesOff[v.name], sel = S.vehicle === v.name;
         return {
@@ -836,42 +1046,61 @@ class Component extends DCLogic {
           style: this.chip(sel, off) + ';display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left'
         };
       }),
-      slotOpts: this.slots().map(t => {
-        const st = this.slotState(S.date, t), gone = st !== 'open';
-        return { label: t, gone, pick: () => set({ time: t }), style: this.chip(S.time === t, gone) };
-      }),
-      noDate: !S.date, hasDate: !!S.date, time: S.time || '',
-      pickup: S.pickup, dropoff: S.dropoff, flight: S.flight, name: S.name, phone: S.phone, email: S.email, notes: S.notes,
-      onPickup: e => set({ pickup: e.target.value, distMi: null, pickupLL: null }),
-      onDropoff: e => set({ dropoff: e.target.value, distMi: null }),
-      onFlight: inputHandler('flight'),
-      onName: inputHandler('name'), onPhone: inputHandler('phone'), onEmail: inputHandler('email'), onNotes: inputHandler('notes'),
+      isAirport: S.tripType === 'Airport Transfer',
+      puStreet: S.puStreet, onPuStreet: e => { set({ puStreet: e.target.value, pickupLL: null, distMi: null }); this.sugFetch('pu'); },
+      puCity: S.puCity, onPuCity: e => { set({ puCity: e.target.value, pickupLL: null, distMi: null }); this.sugFetch('pu'); },
+      puState: S.puState, onPuState: e => set({ puState: e.target.value, pickupLL: null }),
+      puZip: S.puZip, onPuZip: e => set({ puZip: e.target.value }),
+      puSugOpen: S.puSugs.length > 0, puSugs: S.puSugs.map(sg => ({ label: sg.label, pick: () => this.pickSug('pu', sg) })),
+      doStreet: S.doStreet, onDoStreet: e => { set({ doStreet: e.target.value, dropLL: null, distMi: null }); this.sugFetch('do'); },
+      doCity: S.doCity, onDoCity: e => { set({ doCity: e.target.value, dropLL: null, distMi: null }); this.sugFetch('do'); },
+      doState: S.doState, onDoState: e => set({ doState: e.target.value, dropLL: null }),
+      doZip: S.doZip, onDoZip: e => set({ doZip: e.target.value }),
+      doSugOpen: S.doSugs.length > 0, doSugs: S.doSugs.map(sg => ({ label: sg.label, pick: () => this.pickSug('do', sg) })),
+      flight: S.flight, onFlight: inputHandler('flight'),
+      name: S.name, onName: inputHandler('name'),
+      phone: S.phone, onPhone: e => set({ phone: e.target.value }),
+      email: S.email, onEmail: e => set({ email: e.target.value }),
+      notes: S.notes, onNotes: inputHandler('notes'),
+      contactErrF: !!((S.phone && !phoneOk) || (S.email && !emailOk)),
+      contactErrMsg: (S.phone && !phoneOk) ? 'Enter a real 10-digit mobile number, we confirm every ride by text.' : 'Enter a valid email address for your confirmation.',
       extraOpts: this.extraList().map(x => ({ label: x.label, pick: () => set({ extras: { ...S.extras, [x.label]: !S.extras[x.label] } }), style: this.chip(!!S.extras[x.label], false) })),
       next: () => set({ step: S.step + 1 }), back: () => set({ step: S.step - 1 }),
-      step0Locked, step1Locked, step2Locked,
-      nextStyle: goldBtn(S.step === 0 ? step0Locked : S.step === 1 ? step1Locked : step2Locked),
+      toConfirm: () => { if (!detailsLocked) this.startConfirm(); },
+      step0Locked, step1Locked, detailsLocked,
+      nextStyle: goldBtn(S.step === 0 ? step0Locked : S.step === 1 ? step1Locked : detailsLocked),
       estimate,
-      verifyRoute: () => this.verifyRoute(),
-      mapBusy: S.mapBusy, mapNote, areaOver, areaMsg,
-      confirm: () => {
-        const confNo = 'AL-' + Date.now().toString(36).toUpperCase().slice(-6);
-        const b = { conf: confNo, status: 'new', date: S.date, time: S.time, name: S.name, phone: S.phone, email: S.email, tripType: S.tripType, vehicle: S.vehicle, pickup: S.pickup, dropoff: S.dropoff, flight: S.flight, notes: S.notes, extras: Object.keys(S.extras).filter(k => S.extras[k]), miles: S.distMi, est: estimate };
-        this.persist({ bookings: [...S.bookings, b], confNo, step: 3 });
-      },
-      reset: () => set({ step: 0, vehicle: null, date: '', time: null, pickup: '', dropoff: '', flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {}, distMi: null, pickupLL: null, mapMsg: '' }),
-      vehicle: S.vehicle || '', confNo: S.confNo, dateNice,
-      adminOpen: S.adminOpen, openAdmin: () => set({ adminOpen: true, pwError: false }),
+      confTitle, confHint, confBtnLabel, confLocked,
+      confNextStyle: goldBtn(confLocked),
+      confNext: () => { if (confLocked) return; if (stage === 'route') requestRide(); else this.advanceConfirm(); },
+      confBack: () => { this._zoomTo = null; if (stage === 'pickup') set({ step: 2 }); else if (stage === 'dropoff') set({ confirmStage: 'pickup' }); else set({ confirmStage: 'dropoff', distMi: null }); },
+      isRouteStage: stage === 'route' && S.step === 3,
+      distLabel: S.distMi != null ? S.distMi.toFixed(1) + ' miles · driving route' : 'Calculating…',
+      mapBusyF: !!(S.mapBusy || S.mapMsg), mapMsgT: S.mapMsg || 'Working…',
+      areaOver, areaMsg,
+      vehicle: S.vehicle || '', confNo: S.confNo, dateNice, timeNice: this.fmt12(S.time),
+      routeLine: this.addr('pu') + ' → ' + this.addr('do'),
+      reset: () => { this._zoomTo = null; this._geom = null; set({ step: 0, vehicle: null, date: '', time: '', puStreet: '', puCity: '', puState: '', puZip: '', doStreet: '', doCity: '', doState: '', doZip: '', puSugs: [], doSugs: [], flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {}, confirmStage: 'pickup', pickupLL: null, dropLL: null, distMi: null, mapMsg: '' }); },
+      adminOpen: S.adminOpen, openAdmin: () => set({ adminOpen: true, authErr: '' }),
       closeAdmin: () => set({ adminOpen: false }),
-      notAuthed: !S.authed, authed: S.authed, pw: S.pw, pwError: S.pwError,
-      onPw: e => set({ pw: e.target.value, pwError: false }),
-      pwKey: e => { if (e.key === 'Enter') this.tryLogin(); },
-      login: () => this.tryLogin(), logout: () => set({ authed: false, pw: '' }),
+      notAuthed: !S.authed, authed: S.authed,
+      authStageId: S.authStage === 'id', authStageCode: S.authStage === 'code',
+      authId: S.authId, onAuthId: e => set({ authId: e.target.value, authErr: '' }),
+      authIdKey: e => { if (e.key === 'Enter') this.authSend(); },
+      authSend: () => this.authSend(),
+      authDest: S.authDest, authDemoCode: S.authCode,
+      authCodeIn: S.authCodeIn, onAuthCode: e => set({ authCodeIn: e.target.value, authErr: '' }),
+      authCodeKey: e => { if (e.key === 'Enter') this.authVerify(); },
+      authVerify: () => this.authVerify(),
+      authRestart: () => set({ authStage: 'id', authCode: '', authCodeIn: '', authErr: '' }),
+      authErrF: !!S.authErr, authErrMsg: S.authErr,
+      logout: () => { try { localStorage.removeItem('alem_auth_v1'); } catch (e) {} set({ authed: false, authStage: 'id', authId: '', authCode: '', authCodeIn: '' }); },
       todayNice,
-      adminTabs: [['today', 'Today'], ['bookings', 'Bookings' + (counts.new ? ' · ' + counts.new + ' new' : '')], ['slots', 'Availability'], ['vehicles', 'Fleet & Rates'], ['reviews', 'Reviews' + (pending.length ? ' · ' + pending.length : '')]].map(([id, name]) => ({
+      adminTabs: [['today', 'Today'], ['bookings', 'Bookings' + (counts.new ? ' · ' + counts.new + ' new' : '')], ['slots', 'Availability'], ['vehicles', 'Fleet & Rates'], ['team', 'Team'], ['reviews', 'Reviews' + (pending.length ? ' · ' + pending.length : '')]].map(([id, name]) => ({
         name, pick: () => set({ adminTab: id }),
         style: 'background:' + (S.adminTab === id ? 'rgba(212,175,55,.16)' : 'none') + ';border:1px solid rgba(212,175,55,' + (S.adminTab === id ? '.6' : '.25') + ');color:' + (S.adminTab === id ? '#f8e58c' : '#9a917c') + ';font:500 12px Jost;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;cursor:pointer'
       })),
-      tabToday: S.adminTab === 'today', tabSlots: S.adminTab === 'slots', tabVehicles: S.adminTab === 'vehicles', tabBookings: S.adminTab === 'bookings', tabReviews: S.adminTab === 'reviews',
+      tabToday: S.adminTab === 'today', tabSlots: S.adminTab === 'slots', tabVehicles: S.adminTab === 'vehicles', tabBookings: S.adminTab === 'bookings', tabReviews: S.adminTab === 'reviews', tabTeam: S.adminTab === 'team',
       statTiles: [
         { label: 'Rides Today', value: String(todayList.length), sub: todayNice },
         { label: 'Upcoming Rides', value: String(upcoming.length), sub: 'including today' },
@@ -890,19 +1119,31 @@ class Component extends DCLogic {
         const d = new Date(); d.setDate(d.getDate() + i); const v = this.iso(d);
         return { label: i === 0 ? 'Today' : d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }), pick: () => set({ adminDate: v }), style: this.chip(S.adminDate === v, false) };
       }),
-      adminSlots: this.slots().map(t => {
-        const st = this.slotState(S.adminDate, t);
-        const color = st === 'open' ? '#8fbf7f' : st === 'booked' ? '#f8e58c' : '#c96a5a';
-        return {
-          label: t, state: st,
-          style: 'background:#0b0a08;border:1px solid ' + color + '55;color:' + color + ';font:500 12px Jost;padding:10px 8px;cursor:' + (st === 'booked' ? 'not-allowed' : 'pointer'),
-          toggle: () => {
-            if (st === 'booked') return;
-            const cur = S.blocked[S.adminDate] || [];
-            this.persist({ blocked: { ...S.blocked, [S.adminDate]: st === 'blocked' ? cur.filter(x => x !== t) : [...cur, t] } });
-          }
-        };
-      }),
+      sOpenFrom: c.openFrom, onOpenFrom: e => this.persist({ settings: { ...c, openFrom: e.target.value || '06:00' } }),
+      sOpenTo: c.openTo, onOpenTo: e => this.persist({ settings: { ...c, openTo: e.target.value || '22:00' } }),
+      sCars: c.cars, onCars: e => this.persist({ settings: { ...c, cars: Math.max(1, parseInt(e.target.value, 10) || 1) } }),
+      sLead: c.minLeadH, onLead: e => this.persist({ settings: { ...c, minLeadH: Math.max(0, parseInt(e.target.value, 10) || 0) } }),
+      sAdv: c.maxAdvD, onAdv: e => this.persist({ settings: { ...c, maxAdvD: Math.max(1, parseInt(e.target.value, 10) || 1) } }),
+      adminSlots: (() => {
+        const from = Math.floor((this.mins(c.openFrom) || 360) / 60), to = Math.floor((this.mins(c.openTo) || 1320) / 60);
+        const out = [];
+        for (let h = from; h <= to; h++) {
+          const blockedH = (S.blocked[S.adminDate] || []).includes(h);
+          const bookedN = S.bookings.filter(b => b.date === S.adminDate && (b.status || 'new') !== 'completed' && Math.floor((this.mins(b.time) || -999) / 60) === h).length;
+          const stt = bookedN ? 'booked' : blockedH ? 'blocked' : 'open';
+          const color = stt === 'open' ? '#8fbf7f' : stt === 'booked' ? '#f8e58c' : '#c96a5a';
+          out.push({
+            label: this.fmt12(h + ':00'), state: stt + (bookedN > 1 ? ' · ' + bookedN : ''),
+            style: 'background:#0b0a08;border:1px solid ' + color + '55;color:' + color + ';font:500 12px Jost;padding:10px 8px;cursor:' + (bookedN ? 'not-allowed' : 'pointer'),
+            toggle: () => {
+              if (bookedN) return;
+              const cur = S.blocked[S.adminDate] || [];
+              this.persist({ blocked: { ...S.blocked, [S.adminDate]: blockedH ? cur.filter(x => x !== h) : [...cur, h] } });
+            }
+          });
+        }
+        return out;
+      })(),
       adminVehicles: this.vehicles().map(v => {
         const off = !!S.vehiclesOff[v.name];
         return {
@@ -929,6 +1170,25 @@ class Component extends DCLogic {
       svcLabel: svcA.label, svcRadius: svcA.radius,
       onSvcRadius: e => this.persist({ serviceArea: { ...this.svc(), radius: Math.max(1, parseInt(e.target.value, 10) || 0) } }),
       hubNote: S.hubErr ? 'Hub address not found, try a city name.' : '',
+      teamRows: this.team_().map((m, i) => ({
+        name: m.name || 'Team member',
+        contact: [m.phone ? this.fmtPhone(m.phone) : '', m.email || ''].filter(Boolean).join(' · '),
+        isOwner: !!m.owner, canRemove: !m.owner,
+        remove: () => this.persist({ team: this.team_().filter((_, j) => j !== i) })
+      })),
+      nmName: S.nmName, onNmName: inputHandler('nmName'),
+      nmPhone: S.nmPhone, onNmPhone: e => set({ nmPhone: e.target.value, teamMsg: '' }),
+      nmEmail: S.nmEmail, onNmEmail: e => set({ nmEmail: e.target.value, teamMsg: '' }),
+      addMember: () => {
+        const ph = this.normPhone(S.nmPhone), em = S.nmEmail.trim();
+        if (S.nmPhone.trim() && ph.length !== 10) { set({ teamMsg: 'That phone number does not look like a 10-digit US number.' }); return; }
+        if (em && !this.validEmail(em)) { set({ teamMsg: 'That email address does not look valid.' }); return; }
+        if (!ph && !em) { set({ teamMsg: 'Add a mobile number (preferred) or an email so they can receive sign-in codes.' }); return; }
+        if (this.team_().some(m => (ph && this.normPhone(m.phone) === ph) || (em && String(m.email || '').toLowerCase() === em.toLowerCase()))) { set({ teamMsg: 'That person is already on the team.' }); return; }
+        this.persist({ team: [...this.team_(), { name: S.nmName.trim() || 'Team member', phone: ph, email: em }] });
+        set({ nmName: '', nmPhone: '', nmEmail: '', teamMsg: 'Added. They can sign in now, codes go to their phone first, email otherwise.' });
+      },
+      teamMsgF: !!S.teamMsg, teamMsg: S.teamMsg,
       pendingCount: pending.length, noPending: pending.length === 0,
       approvedCount: S.userReviews.filter(r => r.approved).length,
       pendingRows: S.userReviews.map((r, i) => ({ r, i })).filter(x => !x.r.approved).map(({ r, i }) => ({
@@ -937,11 +1197,6 @@ class Component extends DCLogic {
         remove: () => this.persist({ userReviews: S.userReviews.filter((_, j) => j !== i) })
       }))
     };
-  }
-  tryLogin() {
-    const pin = String(this.props.adminPin ?? '2259');
-    if (this.state.pw === pin) this.setState({ authed: true, pwError: false, pw: '' });
-    else this.setState({ pwError: true });
   }
 }
 </script>
