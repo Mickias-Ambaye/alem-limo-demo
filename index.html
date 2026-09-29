@@ -275,7 +275,8 @@
             <button onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.name }}</button>
           </sc-for>
         </div>
-        <div class="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+        <div style="font-size:12.5px;color:#6f6753;margin-bottom:14px">Tap a car to continue.</div>
+        <div class="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <sc-for list="{{ vehicleCards }}" as="v" hint-placeholder-count="4">
             <button onClick="{{ v.pick }}" disabled="{{ v.off }}" style="{{ v.style }}">
               <span style="{{ v.imgStyle }}"></span>
@@ -286,11 +287,6 @@
             </button>
           </sc-for>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;background:#0b0a08;border:1px solid rgba(212,175,55,.3);padding:14px 16px;margin-bottom:20px">
-          <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c">Estimated fare</span>
-          <span style="font-family:Cinzel,serif;font-size:20px;color:#f8e58c">{{ estimate }}</span>
-        </div>
-        <button onClick="{{ next }}" disabled="{{ step0Locked }}" style="{{ nextStyle }}">Continue</button>
       </sc-if>
 
       <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ false }}">
@@ -772,7 +768,7 @@ class Component extends DCLogic {
     step: 0, tripType: 'Point-to-Point', vehicle: null, date: '', time: '', pax: '1–3',
     puStreet: '', puCity: '', puState: '', puZip: '', doStreet: '', doCity: '', doState: '', doZip: '',
     puSugs: [], doSugs: [], flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {},
-    pickupLL: null, dropLL: null, distMi: null, calcBusy: false, calcFail: false, mapBusy: false,
+    pickupLL: null, dropLL: null, distMi: null, calcBusy: false, calcFail: false, mapBusy: false, emailErr: '', emailChecking: false,
     revName: '', revText: '', revTag: 'Airport Transfer', revStars: 5, revThanks: false,
     faqOpen: -1,
     adminOpen: false, authed: false, authUser: '', authPass: '', authErr: '',
@@ -812,8 +808,57 @@ class Component extends DCLogic {
   cfg() { return Object.assign({ openFrom: '06:00', openTo: '22:00', cars: 3, minLeadH: 2, maxAdvD: 60 }, this.state.settings || {}); }
   team_() { const t = this.state.team; return (t && t.length) ? t : [{ name: 'Owner', user: 'admin', pass: 'alem2259', owner: true }]; }
   normPhone(s) { const d = String(s || '').replace(/[^0-9]/g, ''); return d.length === 11 && d[0] === '1' ? d.slice(1) : d; }
-  validPhone(s) { return this.normPhone(s).length === 10; }
-  validEmail(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim()); }
+  validPhone(s) {
+    const d = this.normPhone(s);
+    if (!/^[2-9]\d{2}[2-9]\d{6}$/.test(d)) return false;
+    if (/^(\d)\1{9}$/.test(d)) return false;
+    if (d.slice(0, 3) === d.slice(3, 6)) return false;
+    if (d[1] === '1' && d[2] === '1') return false;
+    if (d[4] === '1' && d[5] === '1') return false;
+    if (d.slice(3, 6) === '555') return false;
+    if (d === '1234567890' || d === '0123456789' || d === '9876543210' || d === '2345678901') return false;
+    return true;
+  }
+  validEmail(s) {
+    const v = String(s || '').trim();
+    if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/.test(v)) return false;
+    if (/\.\.|^\.|\.@|@\./.test(v)) return false;
+    return true;
+  }
+  lev(a, b) {
+    if (Math.abs(a.length - b.length) > 2) return 9;
+    const m = [];
+    for (let i = 0; i <= a.length; i++) m[i] = [i];
+    for (let j = 0; j <= b.length; j++) m[0][j] = j;
+    for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+      m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return m[a.length][b.length];
+  }
+  goodDomains() { return ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'live.com', 'msn.com', 'comcast.net', 'verizon.net', 'att.net', 'protonmail.com', 'proton.me', 'me.com', 'mac.com', 'ymail.com', 'mail.com', 'gmx.com', 'zoho.com', 'fastmail.com', 'hey.com', 'duck.com', 'pm.me', 'yandex.com']; }
+  emailDomainSuggest(email) {
+    const m = /^[^\s@]+@([^\s@]+)$/.exec(String(email || '').trim().toLowerCase());
+    if (!m) return null;
+    const dom = m[1], good = this.goodDomains();
+    if (good.includes(dom)) return null;
+    for (const g of good) { const d = this.lev(dom, g); if (d > 0 && d <= 2) return g; }
+    return null;
+  }
+  async emailMxOk(email) {
+    const m = /^[^\s@]+@([^\s@]+)$/.exec(String(email || '').trim().toLowerCase());
+    if (!m) return false;
+    const dom = m[1];
+    if (this.goodDomains().includes(dom)) return true;
+    try {
+      const hdr = { accept: 'application/dns-json' };
+      const r = await fetch('https://cloudflare-dns.com/dns-query?type=MX&name=' + encodeURIComponent(dom), { headers: hdr });
+      const j = await r.json();
+      if (j.Status !== 0) return false;
+      if (j.Answer && j.Answer.length) return true;
+      const r2 = await fetch('https://cloudflare-dns.com/dns-query?type=A&name=' + encodeURIComponent(dom), { headers: hdr });
+      const j2 = await r2.json();
+      return j2.Status === 0 && !!(j2.Answer && j2.Answer.length);
+    } catch (e) { return true; }
+  }
   fmtPhone(p) { p = this.normPhone(p); return p.length === 10 ? '(' + p.slice(0, 3) + ') ' + p.slice(3, 6) + '-' + p.slice(6) : p; }
   mins(t) { const m = /^(\d{1,2}):(\d{2})/.exec(String(t || '')); return m ? +m[1] * 60 + +m[2] : null; }
   fmt12(t) { const mm = this.mins(t); if (mm == null) return String(t || ''); let h = Math.floor(mm / 60); const mi = mm % 60, ap = h < 12 ? 'AM' : 'PM'; h = h % 12 || 12; return h + ':' + String(mi).padStart(2, '0') + ' ' + ap; }
@@ -904,6 +949,12 @@ class Component extends DCLogic {
   }
   async toReview() {
     const S = this.state;
+    const sug = this.emailDomainSuggest(S.email);
+    if (sug) { this.keep({ emailErr: 'Check the email domain, did you mean @' + sug + '?' }); return; }
+    this.keep({ emailChecking: true, emailErr: '' });
+    const mxOk = await this.emailMxOk(S.email);
+    if (!mxOk) { this.keep({ emailChecking: false, emailErr: 'We can’t find that email provider, double-check the address.' }); return; }
+    this.setState({ emailChecking: false });
     this.go({ step: 3, distMi: null, calcBusy: true, calcFail: false });
     try {
       const a = S.pickupLL || await this.locate('pu');
@@ -1088,7 +1139,7 @@ class Component extends DCLogic {
           imgStyle: 'display:block;width:100%;height:110px;background:url(' + v.img + ') center/cover no-repeat' + (off ? ';filter:grayscale(1);opacity:.45' : ''),
           nameStyle: 'font-family:Cinzel,serif;font-size:14px;letter-spacing:.05em;color:' + (sel ? '#f8e58c' : '#f5f1e6'),
           style: 'padding:0;overflow:hidden;text-align:left;display:flex;flex-direction:column;background:#0b0a08;cursor:' + (off ? 'not-allowed' : 'pointer') + ';border:1px solid ' + (sel ? '#f8e58c' : 'rgba(212,175,55,.3)') + (sel ? ';box-shadow:0 0 12px rgba(248,229,140,.25)' : '') + (off ? ';opacity:.6' : ''),
-          pick: () => { if (!off) this.keep({ vehicle: v.name }); }
+          pick: () => { if (!off) this.go({ vehicle: v.name, step: 1 }); }
         };
       }),
       isAirport: S.tripType === 'Airport Transfer',
@@ -1108,11 +1159,11 @@ class Component extends DCLogic {
       onDoBlur: () => { clearTimeout(this._debdo); setTimeout(() => { if (this.state.doSugs.length) this.keep({ doSugs: [] }); }, 220); },
       flight: S.flight, onFlight: inputHandler('flight'),
       name: S.name, onName: inputHandler('name'),
-      phone: S.phone, onPhone: e => set({ phone: e.target.value }),
-      email: S.email, onEmail: e => set({ email: e.target.value }),
+      phone: S.phone, onPhone: e => { const d = this.normPhone(e.target.value); set({ phone: d.length === 10 ? '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6) : e.target.value }); },
+      email: S.email, onEmail: e => set({ email: e.target.value, emailErr: '' }),
       notes: S.notes, onNotes: inputHandler('notes'),
-      contactErrF: !!((S.phone && !phoneOk) || (S.email && !emailOk)),
-      contactErrMsg: (S.phone && !phoneOk) ? 'Enter a real 10-digit mobile number, we confirm every ride by text.' : 'Enter a valid email address for your confirmation.',
+      contactErrF: !!((S.phone && !phoneOk) || (S.email && !emailOk) || S.emailErr || S.emailChecking),
+      contactErrMsg: (S.phone && !phoneOk) ? 'That doesn’t look like a real US mobile number, we confirm every ride by text.' : (S.email && !emailOk) ? 'Enter a valid email address for your confirmation.' : S.emailErr ? S.emailErr : 'Checking your email address…',
       extraOpts: this.extraList().map(x => ({ label: x.label, pick: () => this.keep({ extras: { ...S.extras, [x.label]: !S.extras[x.label] } }), style: this.chip(!!S.extras[x.label], false) })),
       next: () => this.go({ step: S.step + 1 }),
       back: () => this.go({ step: S.step - 1 }),
@@ -1138,7 +1189,7 @@ class Component extends DCLogic {
       areaOver, areaMsg,
       vehicle: S.vehicle || '', confNo: S.confNo, dateNice, timeNice: this.fmt12(S.time),
       routeLine: this.addr('pu') + ' → ' + this.addr('do'),
-      reset: () => this.go({ step: 0, vehicle: null, date: '', time: '', puStreet: '', puCity: '', puState: '', puZip: '', doStreet: '', doCity: '', doState: '', doZip: '', puSugs: [], doSugs: [], flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {}, pickupLL: null, dropLL: null, distMi: null, calcBusy: false, calcFail: false }),
+      reset: () => this.go({ step: 0, vehicle: null, date: '', time: '', puStreet: '', puCity: '', puState: '', puZip: '', doStreet: '', doCity: '', doState: '', doZip: '', puSugs: [], doSugs: [], flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {}, pickupLL: null, dropLL: null, distMi: null, calcBusy: false, calcFail: false, emailErr: '', emailChecking: false }),
       adminOpen: S.adminOpen, openAdmin: () => set({ adminOpen: true, authErr: '' }),
       closeAdmin: () => set({ adminOpen: false }),
       notAuthed: !S.authed, authed: S.authed,
