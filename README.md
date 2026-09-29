@@ -15,31 +15,38 @@ pricing, route verification map, mobile pass, no owner photo).
 - **Pricing model:** every fare is *initial fee + per-mile rate* (no hourly).
   Fleet cards show "from $X" + "$Y per mile"; the estimate becomes an exact
   dollar figure once the route is confirmed on the map.
-- **Booking flow (Lyft/Uber pattern):** trip & vehicle → date + free-form time
-  (validated against business rules) → structured addresses (street / city /
-  state / ZIP) with live location suggestions as you type → **confirm the
-  pickup pin** zoomed to street level → **confirm the drop-off pin** → full
-  route + total review → Request Ride. Flight number only appears for Airport
-  Transfer trips. Phone (10-digit) and a real email are required; name is
-  optional. Maps: Esri dark tiles with place labels, Nominatim geocoding, OSRM
-  driving distance — all free, no API keys.
+- **Booking flow (Lyft/Uber pattern, photo-first):** pick your car from photo
+  cards (or hit "Book This Car" on any fleet card, which drops you straight
+  into the wizard with that car chosen) → date + free-form time validated
+  against business rules → structured addresses (street / city / state / ZIP)
+  with live location suggestions as you type (Enter accepts the top match,
+  Escape or tapping away dismisses them, and whatever you typed always
+  stands) → a clean text review with driving distance and total computed
+  quietly in the background → Request Ride. No maps or pins to wrangle —
+  distance comes from Nominatim geocoding + OSRM routing behind the scenes
+  (free, no API keys). Flight number only appears for Airport Transfer trips.
+  Phone (10-digit) and a real email are required; name is optional.
 - **Dispatcher review:** every request lands as "new" in the console; the
   customer is told the dispatcher accepts each ride by text before it's final.
 - **Booking rules** (Console → Availability): dispatch hours, number of cars
   (capacity per 2-hour window), minimum notice in hours (no
   ride-in-10-minutes requests), how far ahead customers can book, and per-hour
   blocking per day.
-- **Service area** (Console → Fleet & Rates): central hub + radius; verified
-  pickups outside it get an out-of-area notice.
-- **Team sign-in:** registered phone number (or email) + one-time 6-digit code,
-  Uber-style. The owner invites/removes members in Console → Team. **Demo
-  mode:** a static site can't send SMS/email, so the code displays on the
-  sign-in screen with a clear notice — production wires Twilio (SMS) or an
-  email service. Owner seed account: (240) 595-2259.
+- **Service area** (Console → Fleet & Rates): central hub + radius; pickups
+  geocoded outside it get an out-of-area notice.
+- **Reviews:** no seeded testimonials — the section shows only what real
+  visitors submit and the team approves. Console → Reviews has a pending queue
+  (approve/delete) and a published list (unpublish/delete).
+- **Team sign-in:** plain username + password, no third-party services. Owner
+  seed account: username `admin`, password `alem2259` — change it in `team_()`
+  in `index.html`. The owner adds/removes members (each with their own
+  username/password) in Console → Team.
+- Fully phone-friendly: single-column forms, no overflow, taps never make the
+  page jump, and step changes scroll to the top of the booking card.
 - Bookings, reviews, rules, rates, team and the service area persist in the
-  visitor's browser (`localStorage`, key `alem_site_v4`) — perfect for demoing
-  end-to-end. There is no backend; wiring one up (real SMS, shared bookings)
-  is the next step after client approval.
+  visitor's browser (`localStorage`, key `alem_site_v5`) — perfect for demoing
+  end-to-end. There is no backend; wiring one up (shared bookings, real
+  notifications, hashed passwords) is the next step after client approval.
 
 ## Swapping photos
 
@@ -68,11 +75,12 @@ All photos are free stock from Pexels
 
 ## Team Console access
 
-Footer → "Team Login" → enter a registered phone number (or email) → enter the
-6-digit one-time code. The seeded owner account is **(240) 595-2259**; invite
-or remove team members in Console → Team. In this demo the code displays on
-the sign-in screen (no SMS service is connected); the seeded owner account
-lives in `team_()` in `index.html` if you need to change it.
+Footer → "Team Login" → username + password. The seeded owner account is
+**`admin` / `alem2259`** (defined in `team_()` in `index.html` — change it
+there). Add or remove team members, each with their own username and
+password, in Console → Team. Note: this is demo-grade auth (credentials live
+in the page/localStorage); a production build moves accounts server-side with
+hashed passwords.
 
 ## Running locally
 

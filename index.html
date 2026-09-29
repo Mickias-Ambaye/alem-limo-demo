@@ -13,8 +13,6 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   html{scroll-behavior:smooth}
   body{margin:0;background:#0b0a08;color:#f5f1e6;font-family:Jost,sans-serif;-webkit-font-smoothing:antialiased}
@@ -26,8 +24,11 @@
   select option{background:#131109;color:#f5f1e6}
   input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(80%) sepia(40%) saturate(400%) hue-rotate(5deg)}
   @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-  .leaflet-container{background:#0b0a08;font:400 12px Jost,sans-serif}
+  .formGrid input,.formGrid select,.formGrid textarea{width:100%;box-sizing:border-box;min-width:0;max-width:100%}
+  #book-card{scroll-margin-top:84px}
+  #book-card *{overflow-anchor:none}
   @media (max-width:760px){
+    #book-card{scroll-margin-top:120px}
     header.site{padding:10px 14px !important;gap:8px 18px !important;flex-wrap:wrap;justify-content:center !important}
     header.site nav{gap:12px 16px !important;font-size:10.5px !important;justify-content:center}
     .heroPad{padding:150px 16px 60px !important}
@@ -35,7 +36,7 @@
     .formGrid{grid-template-columns:1fr !important}
     .formGrid > input,.formGrid > select,.formGrid > textarea{grid-column:auto !important}
     input,select,textarea{font-size:16px !important}
-    .bookNowFab{right:14px !important;bottom:14px !important;padding:13px 18px !important}
+    .bookNowFab{display:none !important}
     .footBottom{padding-bottom:74px !important}
   }
 </style>
@@ -155,6 +156,7 @@
             <div style="font-size:13px;color:#9a917c">{{ f.model }}</div>
             <div style="display:flex;gap:12px;font-size:12.5px;color:#cfc7b2;letter-spacing:.04em;flex-wrap:wrap"><span>{{ f.pax }} passengers</span><span>·</span><span>{{ f.mi }} per mile</span></div>
             <div style="font-size:12.5px;line-height:1.7;color:#9a917c;margin-top:auto">{{ f.amenities }}</div>
+            <button onClick="{{ f.book }}" disabled="{{ f.off }}" style="{{ f.bookStyle }}">{{ f.bookLabel }}</button>
           </div>
         </div>
       </sc-for>
@@ -167,10 +169,15 @@
     <div style="text-align:center;margin-bottom:48px">
       <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#d4af37;margin-bottom:12px">◆ &nbsp;Client Reviews&nbsp; ◆</div>
       <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:34px;letter-spacing:.06em;margin:0 0 14px;color:#f5f1e6">Riders Who Keep Coming Back</h2>
-      <div style="font-size:16px;color:#cfc7b2"><span style="color:#f8e58c;letter-spacing:.2em;font-size:18px">★★★★★</span> &nbsp;{{ avgRating }} average · {{ reviewTotal }} verified rides</div>
+      <sc-if value="{{ hasReviews }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:16px;color:#cfc7b2"><span style="color:#f8e58c;letter-spacing:.2em;font-size:18px">★★★★★</span> &nbsp;{{ avgRating }} average · {{ reviewTotal }}</div>
+      </sc-if>
     </div>
+    <sc-if value="{{ noReviews }}" hint-placeholder-val="{{ true }}">
+      <div style="max-width:640px;margin:0 auto;background:#131109;border:1px dashed rgba(212,175,55,.25);padding:32px 28px;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.6;color:#9a917c">Reviews from real riders appear here once our team approves them. Just had a ride? Be the first to share your experience below.</div>
+    </sc-if>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
-      <sc-for list="{{ reviewCards }}" as="r" hint-placeholder-count="3">
+      <sc-for list="{{ reviewCards }}" as="r" hint-placeholder-count="0">
         <div style="background:#131109;border:1px solid rgba(212,175,55,.2);padding:28px 26px;display:flex;flex-direction:column;gap:12px">
           <div style="color:#f8e58c;letter-spacing:.18em;font-size:15px">{{ r.stars }}</div>
           <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;line-height:1.55;color:#e8e0cc">“{{ r.text }}”</div>
@@ -248,12 +255,12 @@
       <h2 style="font-family:Cinzel,serif;font-weight:600;font-size:34px;letter-spacing:.06em;margin:0 0 18px;color:#f5f1e6">Book Your Ride</h2>
       <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:#cfc7b2;margin:0 0 26px;max-width:420px">Live availability, an instant estimate, and a personal confirmation, booking takes about a minute.</p>
       <div style="display:flex;flex-direction:column;gap:14px;font-size:14px;color:#9a917c">
-        <div><span style="color:#d4af37;letter-spacing:.16em;text-transform:uppercase;font-size:11px">Prefer to talk? Ask for Kidist</span><br><a href="tel:2405952259" style="color:#f5f1e6;font-size:16px">(240) 595-2259</a>, 24/7 dispatch</div>
+        <div><span style="color:#d4af37;letter-spacing:.16em;text-transform:uppercase;font-size:11px">Prefer to talk?</span><br><a href="tel:2405952259" style="color:#f5f1e6;font-size:16px">(240) 595-2259</a>, 24/7 dispatch</div>
         <div><span style="color:#d4af37;letter-spacing:.16em;text-transform:uppercase;font-size:11px">Email</span><br><a href="mailto:Alemllc@gmail.com" style="color:#f5f1e6;font-size:16px">Alemllc@gmail.com</a></div>
         <div><span style="color:#d4af37;letter-spacing:.16em;text-transform:uppercase;font-size:11px">Good to know</span><br><span style="color:#cfc7b2;font-size:14.5px;line-height:1.7">Free cancellation up to 24h before pickup.<br>Out-of-state trips: book at least 1 hour ahead.<br>All major credit &amp; debit cards accepted.<br>Corporate card-on-file billing available.</span></div>
       </div>
     </div>
-    <div style="background:#131109;border:1px solid rgba(212,175,55,.3);padding:34px 30px 38px">
+    <div id="book-card" style="background:#131109;border:1px solid rgba(212,175,55,.3);padding:34px 30px 38px">
       <div style="display:flex;gap:8px;margin-bottom:26px">
         <sc-for list="{{ stepDots }}" as="d" hint-placeholder-count="5">
           <div style="{{ d.style }}"></div>
@@ -261,18 +268,21 @@
       </div>
 
       <sc-if value="{{ isStep0 }}" hint-placeholder-val="{{ true }}">
-        <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:18px">1 · Trip &amp; Vehicle</div>
+        <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:18px">1 · Choose Your Car</div>
         <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Trip type</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
-          <sc-for list="{{ tripOpts }}" as="o" hint-placeholder-count="3">
+          <sc-for list="{{ tripOpts }}" as="o" hint-placeholder-count="2">
             <button onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.name }}</button>
           </sc-for>
         </div>
-        <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Vehicle</div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
-          <sc-for list="{{ vehicleOpts }}" as="v" hint-placeholder-count="4">
+        <div class="formGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+          <sc-for list="{{ vehicleCards }}" as="v" hint-placeholder-count="4">
             <button onClick="{{ v.pick }}" disabled="{{ v.off }}" style="{{ v.style }}">
-              <span>{{ v.label }}</span><span style="font-size:12px;opacity:.85">{{ v.sub }}</span>
+              <span style="{{ v.imgStyle }}"></span>
+              <span style="display:flex;flex-direction:column;gap:4px;padding:12px 14px;text-align:left">
+                <span style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><span style="{{ v.nameStyle }}">{{ v.name }}</span><span style="font-size:12px;color:#f8e58c;white-space:nowrap">{{ v.price }}</span></span>
+                <span style="font-size:12px;color:#9a917c">{{ v.sub }}</span>
+              </span>
             </button>
           </sc-for>
         </div>
@@ -306,7 +316,7 @@
         <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:18px">3 · Trip Details</div>
         <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Pickup location</div>
         <div style="position:relative;margin-bottom:12px">
-          <input placeholder="Street address *" value="{{ puStreet }}" onChange="{{ onPuStreet }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Street address *" value="{{ puStreet }}" onChange="{{ onPuStreet }}" onKeyDown="{{ onPuKey }}" onBlur="{{ onPuBlur }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
           <sc-if value="{{ puSugOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:100%;left:0;right:0;z-index:40;background:#131109;border:1px solid rgba(212,175,55,.5);max-height:190px;overflow:auto;box-shadow:0 12px 30px rgba(0,0,0,.6)">
               <sc-for list="{{ puSugs }}" as="sg" hint-placeholder-count="0">
@@ -322,7 +332,7 @@
         </div>
         <div style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9a917c;margin-bottom:10px">Drop-off location</div>
         <div style="position:relative;margin-bottom:12px">
-          <input placeholder="Street address *" value="{{ doStreet }}" onChange="{{ onDoStreet }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
+          <input placeholder="Street address *" value="{{ doStreet }}" onChange="{{ onDoStreet }}" onKeyDown="{{ onDoKey }}" onBlur="{{ onDoBlur }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:12px 14px;font:400 15px Jost">
           <sc-if value="{{ doSugOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:100%;left:0;right:0;z-index:40;background:#131109;border:1px solid rgba(212,175,55,.5);max-height:190px;overflow:auto;box-shadow:0 12px 30px rgba(0,0,0,.6)">
               <sc-for list="{{ doSugs }}" as="sg" hint-placeholder-count="0">
@@ -364,36 +374,37 @@
           <button onClick="{{ back }}" style="flex:0 0 auto;background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:pointer">Back</button>
           <button onClick="{{ toConfirm }}" disabled="{{ detailsLocked }}" style="{{ nextStyle }}">Continue</button>
         </div>
-        <div style="font-size:12px;color:#6f6753;margin-top:14px;text-align:center">Next: confirm your pickup and drop-off pins on the map.</div>
+        <div style="font-size:12px;color:#6f6753;margin-top:14px;text-align:center">Next: review your trip and send the request.</div>
       </sc-if>
 
       <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
-        <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:10px">4 · {{ confTitle }}</div>
-        <div style="font-size:13.5px;line-height:1.6;color:#9a917c;margin-bottom:14px">{{ confHint }}</div>
-        <div id="trip-map" style="height:300px;border:1px solid rgba(212,175,55,.3);margin-bottom:14px"></div>
-        <sc-if value="{{ mapBusyF }}" hint-placeholder-val="{{ false }}">
-          <div style="font-size:13px;color:#d4af37;margin-bottom:14px">{{ mapMsgT }}</div>
-        </sc-if>
-        <sc-if value="{{ isRouteStage }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex;justify-content:space-between;align-items:center;background:#0b0a08;border:1px solid rgba(212,175,55,.3);padding:14px 16px;margin-bottom:12px">
-            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c">Route</span>
-            <span style="font-size:14px;color:#cfc7b2">{{ distLabel }}</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;background:#0b0a08;border:1px solid rgba(212,175,55,.3);padding:14px 16px;margin-bottom:12px">
-            <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c">Estimated total</span>
-            <span style="font-family:Cinzel,serif;font-size:20px;color:#f8e58c">{{ estimate }}</span>
-          </div>
-          <sc-if value="{{ areaOver }}" hint-placeholder-val="{{ false }}">
-            <div style="font-size:12.5px;line-height:1.6;color:#c96a5a;margin-bottom:12px">{{ areaMsg }}</div>
+        <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;color:#f8e58c;margin-bottom:10px">4 · Review &amp; Request</div>
+        <div style="font-size:13.5px;line-height:1.6;color:#9a917c;margin-bottom:16px">One last look. If anything is off, go back and adjust, nothing is charged now.</div>
+        <div style="background:#0b0a08;border:1px solid rgba(212,175,55,.25);padding:4px 18px;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,.12)"><span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6f6753;padding-top:2px">Car</span><span style="font-size:14px;color:#f5f1e6;text-align:right">{{ vehicle }}</span></div>
+          <div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,.12)"><span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6f6753;padding-top:2px">When</span><span style="font-size:14px;color:#f5f1e6;text-align:right">{{ dateNice }} · {{ timeNice }}</span></div>
+          <div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,.12)"><span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6f6753;padding-top:2px">Pickup</span><span style="font-size:14px;color:#cfc7b2;text-align:right">{{ puLine }}</span></div>
+          <div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,.12)"><span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6f6753;padding-top:2px">Drop-off</span><span style="font-size:14px;color:#cfc7b2;text-align:right">{{ doLine }}</span></div>
+          <sc-if value="{{ hasFlightRow }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,.12)"><span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6f6753;padding-top:2px">Flight</span><span style="font-size:14px;color:#cfc7b2;text-align:right">{{ flight }}</span></div>
           </sc-if>
+          <sc-if value="{{ hasExtrasRow }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(212,175,55,.12)"><span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6f6753;padding-top:2px">Extras</span><span style="font-size:14px;color:#cfc7b2;text-align:right">{{ extrasLine }}</span></div>
+          </sc-if>
+          <div style="display:flex;justify-content:space-between;gap:14px;padding:12px 0"><span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6f6753;padding-top:2px">Distance</span><span style="font-size:14px;color:#cfc7b2;text-align:right">{{ distLabel }}</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#0b0a08;border:1px solid rgba(212,175,55,.3);padding:14px 16px;margin-bottom:14px">
+          <span style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c">Estimated total</span>
+          <span style="font-family:Cinzel,serif;font-size:20px;color:#f8e58c">{{ estimate }}</span>
+        </div>
+        <sc-if value="{{ areaOver }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12.5px;line-height:1.6;color:#c96a5a;margin-bottom:14px">{{ areaMsg }}</div>
         </sc-if>
         <div style="display:flex;gap:10px">
           <button onClick="{{ confBack }}" style="flex:0 0 auto;background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;cursor:pointer">Back</button>
-          <button onClick="{{ confNext }}" disabled="{{ confLocked }}" style="{{ confNextStyle }}">{{ confBtnLabel }}</button>
+          <button onClick="{{ confNext }}" disabled="{{ confLocked }}" style="{{ confNextStyle }}">Request Ride</button>
         </div>
-        <sc-if value="{{ isRouteStage }}" hint-placeholder-val="{{ false }}">
-          <div style="font-size:12px;color:#6f6753;margin-top:14px;text-align:center">No charge now. Our dispatcher reviews every request and accepts it by text before the ride is final.</div>
-        </sc-if>
+        <div style="font-size:12px;color:#6f6753;margin-top:14px;text-align:center">No charge now. Our dispatcher reviews every request and accepts it by text before the ride is final.</div>
       </sc-if>
 
       <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
@@ -421,7 +432,6 @@
       <div style="font-family:Cinzel,serif;font-weight:700;font-size:20px;letter-spacing:.14em;color:#f5f1e6">ALEM</div>
       <div style="font-size:10px;letter-spacing:.32em;color:#d4af37;text-transform:uppercase;margin-top:4px">Luxury Transportation Services</div>
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:#cfc7b2;margin-top:16px">“Beyond Rideshare. Below Broker Rates.”</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#9a917c;margin-top:10px">Kidist Alemayehu, Owner</div>
     </div>
     <div style="font-size:14px;line-height:2.1;color:#cfc7b2">
       <div>Phone · <a href="tel:2405952259">(240) 595-2259</a></div>
@@ -454,18 +464,10 @@
         <div style="width:100%;max-width:400px;background:#131109;border:1px solid rgba(212,175,55,.4);padding:44px 38px;text-align:center">
           <div style="font-family:Cinzel,serif;font-weight:900;font-size:40px;line-height:1;background:linear-gradient(120deg,#8a6a1c,#d4af37 35%,#f8e58c 50%,#d4af37 65%,#8a6a1c);-webkit-background-clip:text;background-clip:text;color:transparent">A</div>
           <div style="font-family:Cinzel,serif;font-size:18px;letter-spacing:.14em;color:#f8e58c;margin:14px 0 6px">Team Console</div>
-          <sc-if value="{{ authStageId }}" hint-placeholder-val="{{ true }}">
-            <div style="font-size:13.5px;line-height:1.6;color:#9a917c;margin-bottom:24px">Sign in with your registered phone number, we text you a one-time code. Email works as a fallback.</div>
-            <input placeholder="Phone number or email" value="{{ authId }}" onChange="{{ onAuthId }}" onKeyDown="{{ authIdKey }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:13px 14px;font:400 16px Jost;text-align:center;margin-bottom:12px">
-            <button onClick="{{ authSend }}" style="width:100%;background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:13px;cursor:pointer" style-hover="filter:brightness(1.1)">Send Code</button>
-          </sc-if>
-          <sc-if value="{{ authStageCode }}" hint-placeholder-val="{{ false }}">
-            <div style="font-size:13.5px;line-height:1.6;color:#9a917c;margin-bottom:16px">Enter the 6-digit code we sent {{ authDest }}.</div>
-            <div style="background:rgba(212,175,55,.08);border:1px dashed rgba(212,175,55,.5);padding:10px 14px;font-size:12.5px;line-height:1.7;color:#d4af37;margin-bottom:16px;text-align:left">Demo mode: this preview has no SMS/email service connected, so your code shows here instead: <span style="color:#f8e58c;letter-spacing:.2em;font-size:15px">{{ authDemoCode }}</span></div>
-            <input placeholder="6-digit code" value="{{ authCodeIn }}" onChange="{{ onAuthCode }}" onKeyDown="{{ authCodeKey }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:13px 14px;font:400 18px Jost;letter-spacing:.4em;text-align:center;margin-bottom:12px">
-            <button onClick="{{ authVerify }}" style="width:100%;background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:13px;cursor:pointer" style-hover="filter:brightness(1.1)">Verify &amp; Sign In</button>
-            <button onClick="{{ authRestart }}" style="background:none;border:none;color:#6f6753;font:400 12px Jost;letter-spacing:.14em;text-transform:uppercase;margin-top:14px;cursor:pointer" style-hover="color:#f8e58c">← Use a different number</button>
-          </sc-if>
+          <div style="font-size:13.5px;line-height:1.6;color:#9a917c;margin-bottom:24px">Sign in with your team username and password.</div>
+          <input placeholder="Username" value="{{ authUser }}" onChange="{{ onAuthUser }}" onKeyDown="{{ authKey }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:13px 14px;font:400 16px Jost;text-align:center;margin-bottom:12px">
+          <input type="password" placeholder="Password" value="{{ authPass }}" onChange="{{ onAuthPass }}" onKeyDown="{{ authKey }}" style="width:100%;box-sizing:border-box;background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:13px 14px;font:400 16px Jost;text-align:center;margin-bottom:12px">
+          <button onClick="{{ authLogin }}" style="width:100%;background:linear-gradient(120deg,#b8912c,#e8c85c 45%,#f8e58c 55%,#b8912c);color:#141005;border:none;font:600 12px Jost;letter-spacing:.2em;text-transform:uppercase;padding:13px;cursor:pointer" style-hover="filter:brightness(1.1)">Sign In</button>
           <sc-if value="{{ authErrF }}" hint-placeholder-val="{{ false }}">
             <div style="color:#c96a5a;font-size:13px;line-height:1.6;margin-top:12px">{{ authErrMsg }}</div>
           </sc-if>
@@ -650,7 +652,7 @@
         </sc-if>
 
         <sc-if value="{{ tabTeam }}" hint-placeholder-val="{{ false }}">
-          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:14px">Console team · sign-in codes go to their phone first, email otherwise</div>
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:14px">Console team · each member signs in with their own username &amp; password</div>
           <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
             <sc-for list="{{ teamRows }}" as="tm" hint-placeholder-count="1">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;background:#131109;border:1px solid rgba(212,175,55,.2);padding:14px 20px;flex-wrap:wrap">
@@ -664,17 +666,17 @@
               </div>
             </sc-for>
           </div>
-          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:12px">Invite a team member</div>
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin-bottom:12px">Add a team member</div>
           <div class="formGrid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
             <input placeholder="Name" value="{{ nmName }}" onChange="{{ onNmName }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 13px;font:400 14px Jost">
-            <input placeholder="Mobile phone (preferred)" value="{{ nmPhone }}" onChange="{{ onNmPhone }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 13px;font:400 14px Jost">
-            <input placeholder="Email (fallback)" value="{{ nmEmail }}" onChange="{{ onNmEmail }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 13px;font:400 14px Jost">
+            <input placeholder="Username" value="{{ nmUser }}" onChange="{{ onNmUser }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 13px;font:400 14px Jost">
+            <input placeholder="Password" value="{{ nmPass }}" onChange="{{ onNmPass }}" style="background:#0b0a08;border:1px solid rgba(212,175,55,.35);color:#f5f1e6;padding:11px 13px;font:400 14px Jost">
           </div>
           <button onClick="{{ addMember }}" style="background:none;border:1px solid rgba(212,175,55,.5);color:#d4af37;font:500 11px Jost;letter-spacing:.16em;text-transform:uppercase;padding:10px 16px;cursor:pointer" style-hover="color:#f8e58c">Add Member</button>
           <sc-if value="{{ teamMsgF }}" hint-placeholder-val="{{ false }}">
             <div style="font-size:13px;color:#9a917c;margin-top:12px">{{ teamMsg }}</div>
           </sc-if>
-          <div style="font-size:12.5px;color:#6f6753;margin-top:18px">In this demo the one-time code displays on the sign-in screen. Production connects an SMS service (for example Twilio) for texts, with email delivery as the fallback.</div>
+          <div style="font-size:12.5px;color:#6f6753;margin-top:18px">Share the username and password with your team member directly. No third-party services involved.</div>
         </sc-if>
 
         <sc-if value="{{ tabReviews }}" hint-placeholder-val="{{ false }}">
@@ -697,6 +699,25 @@
               </div>
             </sc-for>
           </div>
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9a917c;margin:30px 0 14px">Published on the site</div>
+          <sc-if value="{{ noApproved }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#131109;border:1px dashed rgba(212,175,55,.25);padding:26px;text-align:center;font-size:14px;font-style:italic;color:#6f6753">Nothing published yet. Approved reviews appear on the site and are listed here.</div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ approvedRows }}" as="p" hint-placeholder-count="0">
+              <div style="background:#131109;border:1px solid rgba(212,175,55,.2);padding:16px 20px">
+                <div style="color:#f8e58c;letter-spacing:.16em;font-size:13px;margin-bottom:6px">{{ p.stars }}</div>
+                <div style="font-size:14px;font-style:italic;color:#cfc7b2;margin-bottom:10px">“{{ p.text }}”</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+                  <span style="font-size:13px;color:#9a917c">{{ p.name }} · {{ p.tag }}</span>
+                  <span style="display:flex;gap:8px">
+                    <button onClick="{{ p.unpublish }}" style="background:none;border:1px solid rgba(212,175,55,.4);color:#d4af37;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:7px 12px;cursor:pointer">Unpublish</button>
+                    <button onClick="{{ p.remove }}" style="background:none;border:1px solid rgba(201,106,90,.5);color:#c96a5a;font:500 11px Jost;letter-spacing:.14em;text-transform:uppercase;padding:7px 12px;cursor:pointer">Delete</button>
+                  </span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
         </sc-if>
 
       </div>
@@ -710,19 +731,19 @@ class Component extends DCLogic {
     step: 0, tripType: 'Point-to-Point', vehicle: null, date: '', time: '', pax: '1–3',
     puStreet: '', puCity: '', puState: '', puZip: '', doStreet: '', doCity: '', doState: '', doZip: '',
     puSugs: [], doSugs: [], flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {},
-    confirmStage: 'pickup', pickupLL: null, dropLL: null, distMi: null, mapBusy: false, mapMsg: '',
+    pickupLL: null, dropLL: null, distMi: null, calcBusy: false, calcFail: false, mapBusy: false,
     revName: '', revText: '', revTag: 'Airport Transfer', revStars: 5, revThanks: false,
     faqOpen: -1,
-    adminOpen: false, authed: false, authStage: 'id', authId: '', authCode: '', authCodeIn: '', authDest: '', authErr: '',
+    adminOpen: false, authed: false, authUser: '', authPass: '', authErr: '',
     adminTab: 'today', adminFilter: 'all', adminDate: '', adminHubQ: '', hubErr: false,
-    nmName: '', nmPhone: '', nmEmail: '', teamMsg: '',
+    nmName: '', nmUser: '', nmPass: '', teamMsg: '',
     blocked: {}, vehiclesOff: {}, bookings: [], userReviews: [], rates: null, flats: null, serviceArea: null, settings: null, team: null
   };
   iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
   componentDidMount() {
     this.setState({ adminDate: this.iso(new Date()) });
     try {
-      const d = JSON.parse(localStorage.getItem('alem_site_v4') || '{}');
+      const d = JSON.parse(localStorage.getItem('alem_site_v5') || '{}');
       this.setState({ blocked: d.blocked || {}, vehiclesOff: d.vehiclesOff || {}, bookings: d.bookings || [], userReviews: d.userReviews || [], rates: d.rates || null, flats: d.flats || null, serviceArea: d.serviceArea || null, settings: d.settings || null, team: d.team || null });
     } catch (e) {}
     try { const a = JSON.parse(localStorage.getItem('alem_auth_v1') || 'null'); if (a && a.exp > Date.now()) this.setState({ authed: true }); } catch (e) {}
@@ -730,20 +751,28 @@ class Component extends DCLogic {
   persist(patch) {
     this.setState(patch, () => {
       const { blocked, vehiclesOff, bookings, userReviews, rates, flats, serviceArea, settings, team } = this.state;
-      localStorage.setItem('alem_site_v4', JSON.stringify({ blocked, vehiclesOff, bookings, userReviews, rates, flats, serviceArea, settings, team }));
+      localStorage.setItem('alem_site_v5', JSON.stringify({ blocked, vehiclesOff, bookings, userReviews, rates, flats, serviceArea, settings, team }));
+    });
+  }
+  keep(patch) {
+    const y = window.scrollY;
+    this.setState(patch, () => { window.scrollTo(0, y); requestAnimationFrame(() => window.scrollTo(0, y)); });
+  }
+  go(patch) {
+    this.setState(patch, () => {
+      const el = document.getElementById('book-card');
+      if (el) { try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { el.scrollIntoView(); } }
     });
   }
   defRates() { return { 'Premium Sedan': 3.5, 'Luxury SUV': 4.5, 'Executive Sprinter': 5.5, 'Shuttle & Limo Bus': 7 }; }
   fmtRate(v) { return v % 1 ? v.toFixed(2) : String(v); }
   svc() { return Object.assign({ lat: 38.8951, lng: -77.0364, label: 'Washington, DC', radius: 40 }, this.state.serviceArea || {}); }
   cfg() { return Object.assign({ openFrom: '06:00', openTo: '22:00', cars: 3, minLeadH: 2, maxAdvD: 60 }, this.state.settings || {}); }
-  team_() { const t = this.state.team; return (t && t.length) ? t : [{ name: 'Kidist Alemayehu', phone: '2405952259', email: 'Alemllc@gmail.com', owner: true }]; }
+  team_() { const t = this.state.team; return (t && t.length) ? t : [{ name: 'Owner', user: 'admin', pass: 'alem2259', owner: true }]; }
   normPhone(s) { const d = String(s || '').replace(/[^0-9]/g, ''); return d.length === 11 && d[0] === '1' ? d.slice(1) : d; }
   validPhone(s) { return this.normPhone(s).length === 10; }
   validEmail(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim()); }
   fmtPhone(p) { p = this.normPhone(p); return p.length === 10 ? '(' + p.slice(0, 3) + ') ' + p.slice(3, 6) + '-' + p.slice(6) : p; }
-  maskPhone(p) { p = this.normPhone(p); return p.length === 10 ? '(' + p.slice(0, 3) + ') •••-••' + p.slice(8) : '•••'; }
-  maskEmail(e) { const s = String(e || ''); const i = s.indexOf('@'); return i > 1 ? s[0] + '•••' + s.slice(i) : s; }
   mins(t) { const m = /^(\d{1,2}):(\d{2})/.exec(String(t || '')); return m ? +m[1] * 60 + +m[2] : null; }
   fmt12(t) { const mm = this.mins(t); if (mm == null) return String(t || ''); let h = Math.floor(mm / 60); const mi = mm % 60, ap = h < 12 ? 'AM' : 'PM'; h = h % 12 || 12; return h + ':' + String(mi).padStart(2, '0') + ' ' + ap; }
   haversineMi(a1, o1, a2, o2) {
@@ -773,12 +802,15 @@ class Component extends DCLogic {
       const S = this.state, p = kind === 'pu';
       const street = (p ? S.puStreet : S.doStreet).trim();
       if (street.length < 4) { this.setState(p ? { puSugs: [] } : { doSugs: [] }); return; }
+      const onStreet = () => { const ae = document.activeElement; return !!(ae && ae.getAttribute && ae.getAttribute('placeholder') === 'Street address *'); };
+      if (!onStreet()) return;
       const q = [street, (p ? S.puCity : S.doCity).trim(), (p ? S.puState : S.doState).trim()].filter(Boolean).join(', ');
       try {
         const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=us&addressdetails=1&viewbox=-78.5,39.8,-75.9,37.8&q=' + encodeURIComponent(q));
         const j = await r.json();
+        if (!onStreet()) return;
         const sug = (j || []).map(x => ({ label: String(x.display_name || '').split(',').slice(0, 4).join(','), lat: +x.lat, lng: +x.lon, a: x.address || {} }));
-        this.setState(p ? { puSugs: sug } : { doSugs: sug });
+        this.keep(p ? { puSugs: sug } : { doSugs: sug });
       } catch (e) {}
     }, 450);
   }
@@ -789,8 +821,8 @@ class Component extends DCLogic {
     const city = a.city || a.town || a.village || a.hamlet || a.county || '';
     const st = this.abbrState(a.state), zip = a.postcode || '';
     const ll = { lat: sg.lat, lng: sg.lng };
-    if (kind === 'pu') this.setState({ puStreet: street, puCity: city, puState: st, puZip: zip, puSugs: [], pickupLL: ll, distMi: null });
-    else this.setState({ doStreet: street, doCity: city, doState: st, doZip: zip, doSugs: [], dropLL: ll, distMi: null });
+    if (kind === 'pu') this.keep({ puStreet: street, puCity: city, puState: st, puZip: zip, puSugs: [], pickupLL: ll, distMi: null });
+    else this.keep({ doStreet: street, doCity: city, doState: st, doZip: zip, doSugs: [], dropLL: ll, distMi: null });
   }
   async locate(kind) {
     const S = this.state, p = kind === 'pu';
@@ -810,85 +842,36 @@ class Component extends DCLogic {
     return { lat: +j[0].lat, lng: +j[0].lon, label: String(j[0].display_name || q).split(',').slice(0, 2).join(',') };
   }
   async routeBetween(a, b) {
-    this.setState({ mapBusy: true, mapMsg: 'Calculating route…' });
-    let miles = null; this._geom = null;
+    let miles = null;
     try {
-      const r = await fetch('https://router.project-osrm.org/route/v1/driving/' + a.lng + ',' + a.lat + ';' + b.lng + ',' + b.lat + '?overview=full&geometries=geojson');
+      const r = await fetch('https://router.project-osrm.org/route/v1/driving/' + a.lng + ',' + a.lat + ';' + b.lng + ',' + b.lat + '?overview=false');
       const j = await r.json();
-      if (j.routes && j.routes[0]) { miles = j.routes[0].distance / 1609.344; this._geom = j.routes[0].geometry; }
+      if (j.routes && j.routes[0]) miles = j.routes[0].distance / 1609.344;
     } catch (e) {}
     if (miles == null) miles = this.haversineMi(a.lat, a.lng, b.lat, b.lng) * 1.25;
-    this.setState({ mapBusy: false, mapMsg: '', distMi: Math.round(miles * 10) / 10 });
+    this.setState({ distMi: Math.round(miles * 10) / 10 });
   }
-  syncMap() {
-    const S = this.state, el = document.getElementById('trip-map');
-    if (!el || !window.L) return;
-    if (!this._map || this._mapEl !== el) {
-      if (this._map) { try { this._map.remove(); } catch (e) {} }
-      const m = L.map(el).setView([this.svc().lat, this.svc().lng], 9);
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri &middot; &copy; OpenStreetMap contributors', maxZoom: 16 }).addTo(m);
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 16 }).addTo(m);
-      this._map = m; this._mapEl = el; this._pk = this._dp = this._route = null; this._zoomTo = null;
-      setTimeout(() => { try { m.invalidateSize(); } catch (e) {} }, 90);
-    }
-    const m = this._map;
-    [this._pk, this._dp, this._route].forEach(x => { if (x) { try { m.removeLayer(x); } catch (e) {} } });
-    this._pk = this._dp = this._route = null;
-    const pin = fill => L.divIcon({ className: '', html: '<span style="display:block;width:16px;height:16px;transform:rotate(45deg);background:' + (fill ? '#d4af37' : '#131109') + ';border:2px solid #f8e58c;box-shadow:0 0 10px rgba(0,0,0,.7)"></span>', iconSize: [16, 16], iconAnchor: [8, 8] });
-    const mk = (ll, fill, label, onEnd) => L.marker([ll.lat, ll.lng], { draggable: true, icon: pin(fill) }).addTo(m).bindTooltip(label).on('dragend', onEnd);
-    const st = S.confirmStage;
-    if (st === 'pickup' && S.pickupLL) {
-      this._pk = mk(S.pickupLL, true, 'Pickup, drag me', () => { const p = this._pk.getLatLng(); this.setState({ pickupLL: { lat: p.lat, lng: p.lng }, distMi: null }); });
-      if (this._zoomTo !== 'pu') { m.setView([S.pickupLL.lat, S.pickupLL.lng], 16); this._zoomTo = 'pu'; }
-    } else if (st === 'dropoff' && S.dropLL) {
-      this._dp = mk(S.dropLL, false, 'Drop-off, drag me', () => { const p = this._dp.getLatLng(); this.setState({ dropLL: { lat: p.lat, lng: p.lng }, distMi: null }); });
-      if (this._zoomTo !== 'do') { m.setView([S.dropLL.lat, S.dropLL.lng], 16); this._zoomTo = 'do'; }
-    } else if (st === 'route' && S.pickupLL && S.dropLL) {
-      const redo = () => { this.routeBetween(this.state.pickupLL, this.state.dropLL); };
-      this._pk = mk(S.pickupLL, true, 'Pickup', () => { const p = this._pk.getLatLng(); this.setState({ pickupLL: { lat: p.lat, lng: p.lng } }, redo); });
-      this._dp = mk(S.dropLL, false, 'Drop-off', () => { const p = this._dp.getLatLng(); this.setState({ dropLL: { lat: p.lat, lng: p.lng } }, redo); });
-      if (this._geom) this._route = L.geoJSON(this._geom, { style: { color: '#d4af37', weight: 3, opacity: .9 } }).addTo(m);
-      if (this._zoomTo !== 'rt') { try { m.fitBounds(L.latLngBounds([[S.pickupLL.lat, S.pickupLL.lng], [S.dropLL.lat, S.dropLL.lng]]).pad(0.3)); } catch (e) {} this._zoomTo = 'rt'; }
-    }
-  }
-  async startConfirm() {
+  async toReview() {
     const S = this.state;
-    this._zoomTo = null; this._geom = null;
-    this.setState({ step: 3, confirmStage: 'pickup', distMi: null, mapBusy: !S.pickupLL, mapMsg: S.pickupLL ? '' : 'Locating pickup…' });
-    if (!S.pickupLL) {
-      try { const p = await this.locate('pu'); this.setState({ pickupLL: p, mapBusy: false, mapMsg: '' }); }
-      catch (e) { const h = this.svc(); this.setState({ mapBusy: false, mapMsg: 'We could not pin that pickup address, drag the pin to the right spot yourself.', pickupLL: { lat: h.lat, lng: h.lng } }); }
+    this.go({ step: 3, distMi: null, calcBusy: true, calcFail: false });
+    try {
+      const a = S.pickupLL || await this.locate('pu');
+      const b = S.dropLL || await this.locate('do');
+      this.setState({ pickupLL: a, dropLL: b });
+      await this.routeBetween(a, b);
+      this.setState({ calcBusy: false });
+    } catch (e) {
+      this.setState({ calcBusy: false, calcFail: true, distMi: null });
     }
   }
-  async advanceConfirm() {
-    const S = this.state;
-    if (S.confirmStage === 'pickup') {
-      this._zoomTo = null;
-      if (S.dropLL) { this.setState({ confirmStage: 'dropoff' }); return; }
-      this.setState({ confirmStage: 'dropoff', mapBusy: true, mapMsg: 'Locating drop-off…' });
-      try { const p = await this.locate('do'); this.setState({ dropLL: p, mapBusy: false, mapMsg: '' }); }
-      catch (e) { this.setState({ mapBusy: false, mapMsg: 'We could not pin that drop-off address, drag the pin to the right spot yourself.', dropLL: { lat: S.pickupLL.lat + 0.03, lng: S.pickupLL.lng + 0.03 } }); }
-    } else if (S.confirmStage === 'dropoff') {
-      this._zoomTo = null;
-      this.setState({ confirmStage: 'route' });
-      this.routeBetween(this.state.pickupLL, this.state.dropLL);
-    }
-  }
-  authSend() {
-    const id = String(this.state.authId || '').trim();
-    if (!id) { this.setState({ authErr: 'Enter your phone number or email.' }); return; }
-    const isEmail = id.includes('@');
-    const m = this.team_().find(x => isEmail ? String(x.email || '').toLowerCase() === id.toLowerCase() : (this.normPhone(x.phone) && this.normPhone(x.phone) === this.normPhone(id)));
-    if (!m) { this.setState({ authErr: 'Not a registered team member. Ask the owner to invite you from the Team tab.' }); return; }
-    const code = String(Math.floor(100000 + Math.random() * 900000));
-    const dest = m.phone ? 'by text to ' + this.maskPhone(m.phone) : 'by email to ' + this.maskEmail(m.email);
-    this.setState({ authStage: 'code', authCode: code, authDest: dest, authCodeIn: '', authErr: '' });
-  }
-  authVerify() {
-    if (this.state.authCode && this.state.authCodeIn.trim() === this.state.authCode) {
+  login() {
+    const u = String(this.state.authUser || '').trim().toLowerCase();
+    const p = String(this.state.authPass || '');
+    const m = this.team_().find(x => String(x.user || '').toLowerCase() === u && String(x.pass || '') === p && p.length > 0);
+    if (m) {
       try { localStorage.setItem('alem_auth_v1', JSON.stringify({ exp: Date.now() + 8 * 36e5 })); } catch (e) {}
-      this.setState({ authed: true, authStage: 'id', authId: '', authCode: '', authCodeIn: '', authErr: '' });
-    } else this.setState({ authErr: 'Incorrect code, check the 6 digits and try again.' });
+      this.setState({ authed: true, authUser: '', authPass: '', authErr: '' });
+    } else this.setState({ authErr: 'Wrong username or password.' });
   }
   vehicles() {
     return [
@@ -900,16 +883,6 @@ class Component extends DCLogic {
   }
   rates() { return { ...this.defRates(), ...(this.state.rates || {}) }; }
   flats() { const d = {}; this.vehicles().forEach(v => d[v.name] = v.flat); return { ...d, ...(this.state.flats || {}) }; }
-  seedReviews() {
-    return [
-      { stars: 5, text: 'Flight landed 40 minutes early at IAD and our chauffeur was already there, sign in hand. That has never happened with any other service.', name: 'Michael R.', tag: 'Airport Transfer' },
-      { stars: 5, text: 'Booked the limo bus for my daughter’s prom group. Kidist personally called to confirm every detail. The kids felt like royalty.', name: 'Sandra T.', tag: 'Prom' },
-      { stars: 5, text: 'We use Alem for every board visit now. Spotless cars, silent professional drivers, and card-on-file invoicing is effortless.', name: 'David K.', tag: 'Corporate Event' },
-      { stars: 5, text: 'Requested a female chauffeur for my mother’s medical visits, patient, kind, door-through-door help every single time.', name: 'Elena M.', tag: 'Senior Concierge' },
-      { stars: 4, text: 'Smooth booking, fair price, noticeably below the broker quotes I got. Driver texted her photo and ETA before pickup.', name: 'Priya N.', tag: 'Point-to-Point' },
-      { stars: 5, text: 'DCA pickup at 5am, driver was waiting with coffee recommendations and got me to my meeting with time to spare.', name: 'Tom W.', tag: 'Airport Transfer' }
-    ];
-  }
   estNum(b) { const m = /\$\s*(\d+)/.exec(String(b.est || '')); return m ? +m[1] : 0; }
   extraList() { return [{ label: 'Meet & Greet +$25', fee: 25 }, { label: 'Female Chauffeur, Free', fee: 0 }, { label: 'Child Seat, Free', fee: 0 }, { label: 'Extra Stop +$20', fee: 20 }]; }
   estimateNum() {
@@ -967,14 +940,14 @@ class Component extends DCLogic {
     const step0Locked = !S.vehicle, step1Locked = !tCheck.ok, detailsLocked = !(puOk && doOk && phoneOk && emailOk);
     const est = this.estimateNum();
     const perMi = S.vehicle ? (this.rates()[S.vehicle] || 0) : 0;
-    const estimate = est == null ? '- select a vehicle -' : S.distMi == null ? '$' + est + ' + $' + this.fmtRate(perMi) + '/mi' : '$' + est + ' · ' + S.distMi.toFixed(1) + ' mi';
+    const estimate = est == null ? '- select a car -' : S.distMi == null ? '$' + est + ' + $' + this.fmtRate(perMi) + '/mi' : '$' + est + ' · ' + S.distMi.toFixed(1) + ' mi';
     const svcA = this.svc();
     const hubDist = S.pickupLL ? this.haversineMi(svcA.lat, svcA.lng, S.pickupLL.lat, S.pickupLL.lng) : null;
     const areaOver = hubDist != null && hubDist > svcA.radius;
     const areaMsg = areaOver ? 'Heads up: this pickup is about ' + Math.round(hubDist) + ' miles from our ' + svcA.label + ' hub, outside the ' + svcA.radius + '-mile initial pickup area. You can still send the request, dispatch will confirm feasibility with you first.' : '';
     const dateNice = S.date ? new Date(S.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '';
-    const allReviews = [...this.seedReviews(), ...S.userReviews.filter(r => r.approved)];
-    const avg = (allReviews.reduce((a, r) => a + r.stars, 0) / allReviews.length).toFixed(1);
+    const approved = S.userReviews.filter(r => r.approved);
+    const avg = approved.length ? (approved.reduce((a, r) => a + r.stars, 0) / approved.length).toFixed(1) : '0';
     const faqData = [
       ['How far in advance should I book?', 'Point-to-point and airport rides: same-day is often fine when a car is free, though 24 hours is ideal. Out-of-state trips need at least 1 hour advance notice. Weddings, proms and events: 2–4 weeks recommended.'],
       ['Can I request a female chauffeur?', 'Yes. We have professional female drivers on the team. Select the Female Chauffeur option when booking, or mention it in the notes, and we’ll match you at no extra charge.'],
@@ -995,16 +968,12 @@ class Component extends DCLogic {
     const counts = { all: sorted.length, new: 0, confirmed: 0, completed: 0 };
     sorted.forEach(x => counts[x.b.status || 'new']++);
     const todayNice = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-    if (S.step === 3 && !S.adminOpen) setTimeout(() => this.syncMap(), 60);
-    const stage = S.confirmStage;
-    const confTitle = stage === 'pickup' ? 'Confirm Pickup Pin' : stage === 'dropoff' ? 'Confirm Drop-off Pin' : 'Review & Request';
-    const confHint = stage === 'pickup' ? 'This is the exact spot your chauffeur meets you. Zoom and drag the gold pin to fine-tune it, then confirm.' : stage === 'dropoff' ? 'Now the drop-off. Drag the pin to the exact door or entrance, then confirm.' : 'Your full route and estimate. Drag either pin if something looks off, the price updates automatically.';
-    const confBtnLabel = stage === 'pickup' ? 'Confirm Pickup' : stage === 'dropoff' ? 'Confirm Drop-off' : 'Request Ride';
-    const confLocked = S.mapBusy || (stage === 'pickup' ? !S.pickupLL : stage === 'dropoff' ? !S.dropLL : S.distMi == null);
+    const selExtras = this.extraList().filter(x => S.extras[x.label]).map(x => x.label);
     const requestRide = () => {
       const confNo = 'AL-' + Date.now().toString(36).toUpperCase().slice(-6);
-      const b = { conf: confNo, status: 'new', date: S.date, time: S.time, name: S.name.trim() || 'Guest', phone: S.phone, email: S.email, tripType: S.tripType, vehicle: S.vehicle, pickup: this.addr('pu'), dropoff: this.addr('do'), flight: S.tripType === 'Airport Transfer' ? S.flight : '', notes: S.notes, extras: Object.keys(S.extras).filter(k => S.extras[k]), miles: S.distMi, est: estimate };
+      const b = { conf: confNo, status: 'new', date: S.date, time: S.time, name: S.name.trim() || 'Guest', phone: S.phone, email: S.email, tripType: S.tripType, vehicle: S.vehicle, pickup: this.addr('pu'), dropoff: this.addr('do'), flight: S.tripType === 'Airport Transfer' ? S.flight : '', notes: S.notes, extras: selExtras, miles: S.distMi, est: estimate };
       this.persist({ bookings: [...S.bookings, b], confNo, step: 4 });
+      setTimeout(() => { const el = document.getElementById('book-card'); if (el) { try { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {} } }, 80);
     };
     return {
       today, maxDate,
@@ -1015,35 +984,47 @@ class Component extends DCLogic {
       openFrom: c.openFrom, openTo: c.openTo,
       hoursNote: 'Dispatch hours ' + this.fmt12(c.openFrom) + ' – ' + this.fmt12(c.openTo) + ' · at least ' + c.minLeadH + ' h notice · up to ' + c.maxAdvD + ' days ahead',
       timeErrF: !!(S.date && S.time && !tCheck.ok && tCheck.msg), timeOkF: !!tCheck.ok, timeMsg: tCheck.msg,
-      heroQuote: () => { set({ step: 0 }); location.hash = ''; location.hash = '#booking'; },
+      heroQuote: () => this.go({ step: 0 }),
       serviceCards: [
         { name: 'Airport Transfers', mark: '✈', desc: 'Prompt, flight-tracked connections to IAD, DCA & BWI.', p1: '◆ Meet & greet with name sign', p2: '◆ 60 min free wait after landing', p3: '◆ Curbside or baggage-claim pickup' },
         { name: 'Corporate Events', mark: 'C', desc: 'Executive transfers, multi-stop roadshows and client hosting.', p1: '◆ Card-on-file corporate billing', p2: '◆ Discreet, NDA-friendly chauffeurs', p3: '◆ Multi-car event coordination' },
         { name: 'Weddings, Proms & Occasions', mark: '❦', desc: 'Elegant transportation tailored to your biggest moments.', p1: '◆ Red-carpet arrival service', p2: '◆ Complimentary decoration', p3: '◆ Photo-stop time built in' },
         { name: 'Senior Concierge Transport', mark: '✦', desc: 'Compassionate, door-through-door assistance for medical visits and errands.', p1: '◆ Patient, unhurried chauffeurs', p2: '◆ Female drivers on request', p3: '◆ Standing weekly schedules welcome' }
       ],
-      fleetCards: this.vehicles().map(v => ({ ...v, rate: '$' + (this.flats()[v.name] || 0), mi: '$' + this.fmtRate(this.rates()[v.name] || 0) })),
-      avgRating: avg, reviewTotal: 180 + S.userReviews.filter(r => r.approved).length,
-      reviewCards: allReviews.map(r => ({ ...r, stars: '★★★★★'.slice(0, r.stars) })),
+      fleetCards: this.vehicles().map(v => {
+        const off = !!S.vehiclesOff[v.name];
+        return {
+          ...v, rate: '$' + (this.flats()[v.name] || 0), mi: '$' + this.fmtRate(this.rates()[v.name] || 0), off,
+          bookLabel: off ? 'Currently Unavailable' : 'Book This Car',
+          bookStyle: 'margin-top:14px;background:none;border:1px solid rgba(212,175,55,' + (off ? '.25' : '.5') + ');color:' + (off ? '#6f6753' : '#d4af37') + ';font:500 11px Jost;letter-spacing:.18em;text-transform:uppercase;padding:11px 14px;cursor:' + (off ? 'not-allowed' : 'pointer'),
+          book: () => { if (!off) this.go({ vehicle: v.name, step: 1 }); }
+        };
+      }),
+      hasReviews: approved.length > 0, noReviews: approved.length === 0,
+      avgRating: avg, reviewTotal: approved.length + (approved.length === 1 ? ' rider review' : ' rider reviews'),
+      reviewCards: approved.map(r => ({ ...r, stars: '★★★★★'.slice(0, r.stars) })),
       revThanks: S.revThanks, revFormOpen: !S.revThanks,
-      starPicks: [1, 2, 3, 4, 5].map(n => ({ pick: () => set({ revStars: n }), style: 'background:none;border:none;font-size:26px;cursor:pointer;padding:0 2px;color:' + (n <= S.revStars ? '#f8e58c' : '#3a3424') })),
+      starPicks: [1, 2, 3, 4, 5].map(n => ({ pick: () => this.keep({ revStars: n }), style: 'background:none;border:none;font-size:26px;cursor:pointer;padding:0 2px;color:' + (n <= S.revStars ? '#f8e58c' : '#3a3424') })),
       revName: S.revName, onRevName: inputHandler('revName'),
       revText: S.revText, onRevText: inputHandler('revText'),
       revTag: S.revTag, onRevTag: e => set({ revTag: e.target.value }),
       revLocked: !(S.revName.trim() && S.revText.trim()),
       revBtnStyle: goldBtn(!(S.revName.trim() && S.revText.trim())) + ';margin-top:16px;width:100%',
-      submitReview: () => this.persist({ userReviews: [...S.userReviews, { stars: S.revStars, text: S.revText.trim(), name: S.revName.trim(), tag: S.revTag, approved: false }], revThanks: true, revName: '', revText: '' }),
-      faqs: faqData.map(([q, a], i) => ({ q, a, open: S.faqOpen === i, chev: S.faqOpen === i ? '−' : '+', toggle: () => set({ faqOpen: S.faqOpen === i ? -1 : i }) })),
+      submitReview: () => { const y = window.scrollY; this.persist({ userReviews: [...S.userReviews, { stars: S.revStars, text: S.revText.trim(), name: S.revName.trim(), tag: S.revTag, approved: false }], revThanks: true, revName: '', revText: '' }); setTimeout(() => window.scrollTo(0, y), 0); },
+      faqs: faqData.map(([q, a], i) => ({ q, a, open: S.faqOpen === i, chev: S.faqOpen === i ? '−' : '+', toggle: () => this.keep({ faqOpen: S.faqOpen === i ? -1 : i }) })),
       isStep0: S.step === 0, isStep1: S.step === 1, isStep2: S.step === 2, isStep3: S.step === 3, isStep4: S.step === 4,
       stepDots: [0, 1, 2, 3, 4].map(i => ({ style: 'flex:1;height:2px;background:' + (i <= S.step ? '#d4af37' : '#2a2418') })),
-      tripOpts: ['Point-to-Point', 'Airport Transfer'].map(t => ({ name: t, pick: () => set({ tripType: t }), style: this.chip(S.tripType === t, false) })),
-      vehicleOpts: this.vehicles().map(v => {
+      tripOpts: ['Point-to-Point', 'Airport Transfer'].map(t => ({ name: t, pick: () => this.keep({ tripType: t }), style: this.chip(S.tripType === t, false) })),
+      vehicleCards: this.vehicles().map(v => {
         const off = !!S.vehiclesOff[v.name], sel = S.vehicle === v.name;
         return {
-          label: off ? v.name + ', unavailable' : v.name,
-          sub: v.pax + ' pax · from $' + (this.flats()[v.name] || 0) + ' + $' + this.fmtRate(this.rates()[v.name] || 0) + '/mi',
-          off, pick: () => set({ vehicle: v.name }),
-          style: this.chip(sel, off) + ';display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left'
+          name: v.name, off,
+          price: 'from $' + (this.flats()[v.name] || 0),
+          sub: v.pax + ' passengers · $' + this.fmtRate(this.rates()[v.name] || 0) + '/mi' + (off ? ' · unavailable' : ''),
+          imgStyle: 'display:block;width:100%;height:110px;background:url(' + v.img + ') center/cover no-repeat' + (off ? ';filter:grayscale(1);opacity:.45' : ''),
+          nameStyle: 'font-family:Cinzel,serif;font-size:14px;letter-spacing:.05em;color:' + (sel ? '#f8e58c' : '#f5f1e6'),
+          style: 'padding:0;overflow:hidden;text-align:left;display:flex;flex-direction:column;background:#0b0a08;cursor:' + (off ? 'not-allowed' : 'pointer') + ';border:1px solid ' + (sel ? '#f8e58c' : 'rgba(212,175,55,.3)') + (sel ? ';box-shadow:0 0 12px rgba(248,229,140,.25)' : '') + (off ? ';opacity:.6' : ''),
+          pick: () => { if (!off) this.keep({ vehicle: v.name }); }
         };
       }),
       isAirport: S.tripType === 'Airport Transfer',
@@ -1052,11 +1033,15 @@ class Component extends DCLogic {
       puState: S.puState, onPuState: e => set({ puState: e.target.value, pickupLL: null }),
       puZip: S.puZip, onPuZip: e => set({ puZip: e.target.value }),
       puSugOpen: S.puSugs.length > 0, puSugs: S.puSugs.map(sg => ({ label: sg.label, pick: () => this.pickSug('pu', sg) })),
+      onPuKey: e => { if (e.key === 'Enter') { e.preventDefault(); const f = S.puSugs[0]; if (f) this.pickSug('pu', f); else this.keep({ puSugs: [] }); } else if (e.key === 'Escape') this.keep({ puSugs: [] }); },
+      onPuBlur: () => { clearTimeout(this._debpu); setTimeout(() => { if (this.state.puSugs.length) this.keep({ puSugs: [] }); }, 220); },
       doStreet: S.doStreet, onDoStreet: e => { set({ doStreet: e.target.value, dropLL: null, distMi: null }); this.sugFetch('do'); },
       doCity: S.doCity, onDoCity: e => { set({ doCity: e.target.value, dropLL: null, distMi: null }); this.sugFetch('do'); },
       doState: S.doState, onDoState: e => set({ doState: e.target.value, dropLL: null }),
       doZip: S.doZip, onDoZip: e => set({ doZip: e.target.value }),
       doSugOpen: S.doSugs.length > 0, doSugs: S.doSugs.map(sg => ({ label: sg.label, pick: () => this.pickSug('do', sg) })),
+      onDoKey: e => { if (e.key === 'Enter') { e.preventDefault(); const f = S.doSugs[0]; if (f) this.pickSug('do', f); else this.keep({ doSugs: [] }); } else if (e.key === 'Escape') this.keep({ doSugs: [] }); },
+      onDoBlur: () => { clearTimeout(this._debdo); setTimeout(() => { if (this.state.doSugs.length) this.keep({ doSugs: [] }); }, 220); },
       flight: S.flight, onFlight: inputHandler('flight'),
       name: S.name, onName: inputHandler('name'),
       phone: S.phone, onPhone: e => set({ phone: e.target.value }),
@@ -1064,37 +1049,34 @@ class Component extends DCLogic {
       notes: S.notes, onNotes: inputHandler('notes'),
       contactErrF: !!((S.phone && !phoneOk) || (S.email && !emailOk)),
       contactErrMsg: (S.phone && !phoneOk) ? 'Enter a real 10-digit mobile number, we confirm every ride by text.' : 'Enter a valid email address for your confirmation.',
-      extraOpts: this.extraList().map(x => ({ label: x.label, pick: () => set({ extras: { ...S.extras, [x.label]: !S.extras[x.label] } }), style: this.chip(!!S.extras[x.label], false) })),
-      next: () => set({ step: S.step + 1 }), back: () => set({ step: S.step - 1 }),
-      toConfirm: () => { if (!detailsLocked) this.startConfirm(); },
+      extraOpts: this.extraList().map(x => ({ label: x.label, pick: () => this.keep({ extras: { ...S.extras, [x.label]: !S.extras[x.label] } }), style: this.chip(!!S.extras[x.label], false) })),
+      next: () => this.go({ step: S.step + 1 }),
+      back: () => this.go({ step: S.step - 1 }),
+      toConfirm: () => { if (!detailsLocked) this.toReview(); },
       step0Locked, step1Locked, detailsLocked,
       nextStyle: goldBtn(S.step === 0 ? step0Locked : S.step === 1 ? step1Locked : detailsLocked),
       estimate,
-      confTitle, confHint, confBtnLabel, confLocked,
-      confNextStyle: goldBtn(confLocked),
-      confNext: () => { if (confLocked) return; if (stage === 'route') requestRide(); else this.advanceConfirm(); },
-      confBack: () => { this._zoomTo = null; if (stage === 'pickup') set({ step: 2 }); else if (stage === 'dropoff') set({ confirmStage: 'pickup' }); else set({ confirmStage: 'dropoff', distMi: null }); },
-      isRouteStage: stage === 'route' && S.step === 3,
-      distLabel: S.distMi != null ? S.distMi.toFixed(1) + ' miles · driving route' : 'Calculating…',
-      mapBusyF: !!(S.mapBusy || S.mapMsg), mapMsgT: S.mapMsg || 'Working…',
+      puLine: this.addr('pu'), doLine: this.addr('do'),
+      hasFlightRow: S.tripType === 'Airport Transfer' && !!S.flight.trim(),
+      hasExtrasRow: selExtras.length > 0, extrasLine: selExtras.join(', '),
+      distLabel: S.calcBusy ? 'Calculating…' : S.distMi != null ? S.distMi.toFixed(1) + ' miles · driving' : 'Confirmed with your final quote',
+      confLocked: S.calcBusy,
+      confNextStyle: goldBtn(S.calcBusy),
+      confNext: () => { if (!S.calcBusy) requestRide(); },
+      confBack: () => this.go({ step: 2 }),
       areaOver, areaMsg,
       vehicle: S.vehicle || '', confNo: S.confNo, dateNice, timeNice: this.fmt12(S.time),
       routeLine: this.addr('pu') + ' → ' + this.addr('do'),
-      reset: () => { this._zoomTo = null; this._geom = null; set({ step: 0, vehicle: null, date: '', time: '', puStreet: '', puCity: '', puState: '', puZip: '', doStreet: '', doCity: '', doState: '', doZip: '', puSugs: [], doSugs: [], flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {}, confirmStage: 'pickup', pickupLL: null, dropLL: null, distMi: null, mapMsg: '' }); },
+      reset: () => this.go({ step: 0, vehicle: null, date: '', time: '', puStreet: '', puCity: '', puState: '', puZip: '', doStreet: '', doCity: '', doState: '', doZip: '', puSugs: [], doSugs: [], flight: '', name: '', phone: '', email: '', notes: '', confNo: '', extras: {}, pickupLL: null, dropLL: null, distMi: null, calcBusy: false, calcFail: false }),
       adminOpen: S.adminOpen, openAdmin: () => set({ adminOpen: true, authErr: '' }),
       closeAdmin: () => set({ adminOpen: false }),
       notAuthed: !S.authed, authed: S.authed,
-      authStageId: S.authStage === 'id', authStageCode: S.authStage === 'code',
-      authId: S.authId, onAuthId: e => set({ authId: e.target.value, authErr: '' }),
-      authIdKey: e => { if (e.key === 'Enter') this.authSend(); },
-      authSend: () => this.authSend(),
-      authDest: S.authDest, authDemoCode: S.authCode,
-      authCodeIn: S.authCodeIn, onAuthCode: e => set({ authCodeIn: e.target.value, authErr: '' }),
-      authCodeKey: e => { if (e.key === 'Enter') this.authVerify(); },
-      authVerify: () => this.authVerify(),
-      authRestart: () => set({ authStage: 'id', authCode: '', authCodeIn: '', authErr: '' }),
+      authUser: S.authUser, onAuthUser: e => set({ authUser: e.target.value, authErr: '' }),
+      authPass: S.authPass, onAuthPass: e => set({ authPass: e.target.value, authErr: '' }),
+      authKey: e => { if (e.key === 'Enter') this.login(); },
+      authLogin: () => this.login(),
       authErrF: !!S.authErr, authErrMsg: S.authErr,
-      logout: () => { try { localStorage.removeItem('alem_auth_v1'); } catch (e) {} set({ authed: false, authStage: 'id', authId: '', authCode: '', authCodeIn: '' }); },
+      logout: () => { try { localStorage.removeItem('alem_auth_v1'); } catch (e) {} set({ authed: false, authUser: '', authPass: '' }); },
       todayNice,
       adminTabs: [['today', 'Today'], ['bookings', 'Bookings' + (counts.new ? ' · ' + counts.new + ' new' : '')], ['slots', 'Availability'], ['vehicles', 'Fleet & Rates'], ['team', 'Team'], ['reviews', 'Reviews' + (pending.length ? ' · ' + pending.length : '')]].map(([id, name]) => ({
         name, pick: () => set({ adminTab: id }),
@@ -1157,6 +1139,7 @@ class Component extends DCLogic {
       }),
       adminHubQ: S.adminHubQ,
       onAdminHubQ: e => set({ adminHubQ: e.target.value, hubErr: false }),
+      mapBusy: S.mapBusy,
       setHub: async () => {
         const q = String(this.state.adminHubQ || '').trim();
         if (!q) return;
@@ -1172,28 +1155,32 @@ class Component extends DCLogic {
       hubNote: S.hubErr ? 'Hub address not found, try a city name.' : '',
       teamRows: this.team_().map((m, i) => ({
         name: m.name || 'Team member',
-        contact: [m.phone ? this.fmtPhone(m.phone) : '', m.email || ''].filter(Boolean).join(' · '),
+        contact: '@' + (m.user || ''),
         isOwner: !!m.owner, canRemove: !m.owner,
         remove: () => this.persist({ team: this.team_().filter((_, j) => j !== i) })
       })),
       nmName: S.nmName, onNmName: inputHandler('nmName'),
-      nmPhone: S.nmPhone, onNmPhone: e => set({ nmPhone: e.target.value, teamMsg: '' }),
-      nmEmail: S.nmEmail, onNmEmail: e => set({ nmEmail: e.target.value, teamMsg: '' }),
+      nmUser: S.nmUser, onNmUser: e => set({ nmUser: e.target.value, teamMsg: '' }),
+      nmPass: S.nmPass, onNmPass: e => set({ nmPass: e.target.value, teamMsg: '' }),
       addMember: () => {
-        const ph = this.normPhone(S.nmPhone), em = S.nmEmail.trim();
-        if (S.nmPhone.trim() && ph.length !== 10) { set({ teamMsg: 'That phone number does not look like a 10-digit US number.' }); return; }
-        if (em && !this.validEmail(em)) { set({ teamMsg: 'That email address does not look valid.' }); return; }
-        if (!ph && !em) { set({ teamMsg: 'Add a mobile number (preferred) or an email so they can receive sign-in codes.' }); return; }
-        if (this.team_().some(m => (ph && this.normPhone(m.phone) === ph) || (em && String(m.email || '').toLowerCase() === em.toLowerCase()))) { set({ teamMsg: 'That person is already on the team.' }); return; }
-        this.persist({ team: [...this.team_(), { name: S.nmName.trim() || 'Team member', phone: ph, email: em }] });
-        set({ nmName: '', nmPhone: '', nmEmail: '', teamMsg: 'Added. They can sign in now, codes go to their phone first, email otherwise.' });
+        const nu = S.nmUser.trim(), np = S.nmPass;
+        if (!nu || /\s/.test(nu)) { set({ teamMsg: 'Pick a username without spaces.' }); return; }
+        if (np.length < 4) { set({ teamMsg: 'Password needs at least 4 characters.' }); return; }
+        if (this.team_().some(m => String(m.user || '').toLowerCase() === nu.toLowerCase())) { set({ teamMsg: 'That username is taken.' }); return; }
+        this.persist({ team: [...this.team_(), { name: S.nmName.trim() || 'Team member', user: nu, pass: np }] });
+        set({ nmName: '', nmUser: '', nmPass: '', teamMsg: 'Added. They can sign in with that username and password now.' });
       },
       teamMsgF: !!S.teamMsg, teamMsg: S.teamMsg,
       pendingCount: pending.length, noPending: pending.length === 0,
-      approvedCount: S.userReviews.filter(r => r.approved).length,
+      approvedCount: approved.length, noApproved: approved.length === 0,
       pendingRows: S.userReviews.map((r, i) => ({ r, i })).filter(x => !x.r.approved).map(({ r, i }) => ({
         stars: '★★★★★'.slice(0, r.stars), text: r.text, name: r.name, tag: r.tag,
         approve: () => this.persist({ userReviews: S.userReviews.map((x, j) => j === i ? { ...x, approved: true } : x) }),
+        remove: () => this.persist({ userReviews: S.userReviews.filter((_, j) => j !== i) })
+      })),
+      approvedRows: S.userReviews.map((r, i) => ({ r, i })).filter(x => x.r.approved).map(({ r, i }) => ({
+        stars: '★★★★★'.slice(0, r.stars), text: r.text, name: r.name, tag: r.tag,
+        unpublish: () => this.persist({ userReviews: S.userReviews.map((x, j) => j === i ? { ...x, approved: false } : x) }),
         remove: () => this.persist({ userReviews: S.userReviews.filter((_, j) => j !== i) })
       }))
     };
