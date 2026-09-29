@@ -26,8 +26,19 @@ pricing, route verification map, mobile pass, no owner photo).
   distance comes from Nominatim geocoding + OSRM routing behind the scenes
   (free, no API keys). Flight number only appears for Airport Transfer trips.
   Phone (10-digit) and a real email are required; name is optional.
+- **Itemized estimate:** the review step shows estimated miles and a full
+  price breakdown — initial fee, miles × per-mile rate, extras — then the
+  total. If an address can't be located confidently, the distance line reads
+  "quoted" and dispatch confirms the final price.
 - **Dispatcher review:** every request lands as "new" in the console; the
   customer is told the dispatcher accepts each ride by text before it's final.
+- **Trips & bookkeeping (console):** the Trips tab shows today's schedule,
+  upcoming rides, and revenue tiles (upcoming estimated + collected). The
+  Bookings tab adds: an **off-site trip form** (rides booked by phone count
+  toward availability and earnings), a **Final $** field on every trip to
+  record actual revenue, **Archive/Unarchive** for past trips with an Archived
+  filter, oldest/newest **sort toggle**, a per-view **estimated earnings**
+  bar, and **Export CSV** of all trips.
 - **Booking rules** (Console → Availability): dispatch hours, number of cars
   (capacity per 2-hour window), minimum notice in hours (no
   ride-in-10-minutes requests), how far ahead customers can book, and per-hour
