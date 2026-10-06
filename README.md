@@ -54,10 +54,13 @@ pricing, route verification map, mobile pass, no owner photo).
   username/password) in Console → Team.
 - Fully phone-friendly: single-column forms, no overflow, taps never make the
   page jump, and step changes scroll to the top of the booking card.
-- Bookings, reviews, rules, rates, team and the service area persist in the
-  visitor's browser (`localStorage`, key `alem_site_v5`) — perfect for demoing
-  end-to-end. There is no backend; wiring one up (shared bookings, real
-  notifications, hashed passwords) is the next step after client approval.
+- **Two modes, same site.** *Demo mode* (default): bookings, reviews, rules,
+  rates and team accounts live in each visitor's own browser — great for
+  showing the experience, but nothing is shared between devices. *Live mode*:
+  fill in `config.js` with the client's Supabase project (schema in
+  `supabase/schema.sql`) and everything moves to one shared database with
+  real, bcrypt-hashed team logins. The console header shows which mode is
+  active. Step-by-step go-live instructions: **[SETUP.md](SETUP.md)**.
 
 ## Swapping photos
 
@@ -89,9 +92,9 @@ All photos are free stock from Pexels
 Footer → "Team Login" → username + password. The seeded owner account is
 **`admin` / `alem2259`** (defined in `team_()` in `index.html` — change it
 there). Add or remove team members, each with their own username and
-password, in Console → Team. Note: this is demo-grade auth (credentials live
-in the page/localStorage); a production build moves accounts server-side with
-hashed passwords.
+password, in Console → Team, and change your own password there too. In demo
+mode credentials live in the browser; in live mode they are bcrypt-hashed in
+the database and sessions expire after 12 hours.
 
 ## Running locally
 
@@ -112,5 +115,10 @@ works in most browsers; a server is closer to production.)
   renders the page).
 - `image-slot.js` — the `<image-slot>` web component used for every photo
   placeholder.
+- `store.js` — the data layer: `LocalStore` (demo mode, browser storage) and
+  `SupaStore` (live mode, Supabase) expose the same methods; `config.js`
+  decides which one runs.
+- `supabase/schema.sql` — tables, row-level security and the database
+  functions for live mode. Run once in the client's Supabase project.
 
 No build step, no dependencies to install.

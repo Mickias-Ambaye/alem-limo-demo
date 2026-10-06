@@ -3,13 +3,18 @@
 How to put this site on a real domain for free, and exactly what its limits
 are. Written for whoever operates the site.
 
+> **Update:** the site now has a real database mode. Follow **[SETUP.md](SETUP.md)**
+> to run it on the client's own Supabase + Vercel accounts with the Squarespace
+> domain. The "data constraints" section below describes **demo mode only**
+> (what runs until `config.js` is filled in).
+
 ## What this site is, technically
 
-A fully static website: one `index.html`, two JavaScript runtime files, and an
-`images/` folder. There is **no server and no database**. Anything a visitor
-or the dispatcher "saves" is stored in that person's own browser
-(`localStorage`). That makes hosting trivially free — and it defines every
-constraint listed below.
+A static website: one `index.html`, a few JavaScript files, and an `images/`
+folder — no server to run. In **demo mode** there is no database: anything a
+visitor or the dispatcher "saves" is stored in that person's own browser
+(`localStorage`). In **live mode** the same files talk to a Supabase
+database, and every constraint in the next section disappears.
 
 ---
 
@@ -107,21 +112,17 @@ fees owed. Swap any by replacing the file in `images/` with the same name.
 
 ---
 
-## The upgrade that removes constraints #1–#4
+## Live mode removes constraints #1–#4 (built)
 
-One backend addition turns the demo into an operating system of record:
+The shared database, real bcrypt-hashed team logins and shared settings are
+implemented — `supabase/schema.sql` + `config.js`, see **SETUP.md**. What
+remains optional:
 
 | Piece | Service | Cost |
 |---|---|---|
-| Shared database (bookings, reviews, team, rates) | Supabase free tier (500 MB Postgres) | $0 |
-| Real logins, hashed passwords | Supabase Auth | $0 |
-| SMS to dispatcher & riders | Twilio | ~$1.15/mo number + ~$0.008/SMS |
-| Keyed geocoding/routing | Google or Mapbox free tier | $0 at this volume |
-| Hosting (unchanged) | GitHub Pages or Vercel | $0 |
-
-Estimated build effort: roughly a week. Until then, present the live site as
-a **fully interactive demo of the customer experience and dispatch console**,
-not as the production booking system.
+| SMS/email alerts to the dispatcher | Twilio (+ a small edge function) | ~$1.15/mo number + ~$0.008/SMS |
+| Keyed geocoding/routing at volume | Google or Mapbox free tier | $0 at this volume |
+| Daily database backups | Supabase Pro | $25/mo (free tier: export CSV weekly instead) |
 
 ---
 
