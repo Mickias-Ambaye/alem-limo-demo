@@ -48,7 +48,8 @@ language sql stable as $$
   );
 $$;
 
-create or replace function public._send_telegram(p_text text) returns void
+drop function if exists public._send_telegram(text);
+create or replace function public._send_telegram(p_text text, p_markup jsonb default null) returns void
 language plpgsql security definer set search_path = public, extensions as $$
 declare s public.notify_settings;
 begin
@@ -58,6 +59,7 @@ begin
     url := 'https://api.telegram.org/bot' || s.telegram_token || '/sendMessage',
     headers := '{"Content-Type":"application/json"}'::jsonb,
     body := jsonb_build_object('chat_id', s.telegram_chat_id, 'text', p_text, 'disable_web_page_preview', true)
+            || case when p_markup is null then '{}'::jsonb else jsonb_build_object('reply_markup', p_markup) end
   );
 end $$;
 
@@ -78,7 +80,7 @@ begin
   );
 end $$;
 
-revoke execute on function public._send_telegram(text) from public, anon, authenticated;
+revoke execute on function public._send_telegram(text, jsonb) from public, anon, authenticated;
 revoke execute on function public._send_email(text, text, text) from public, anon, authenticated;
 
 -- ---------- triggers ----------
@@ -88,7 +90,11 @@ declare s public.notify_settings; body text;
 begin
   select * into s from public.notify_settings where id = 1;
   body := public._booking_summary(new);
-  perform public._send_telegram('New ride request ' || new.conf || E'\n' || body || E'\n\nOpen the console to confirm.');
+  perform public._send_telegram(
+    'New ride request ' || new.conf || E'\n' || body || E'\n\nTap Confirm ride to accept it, or open the console.',
+    jsonb_build_object('inline_keyboard', jsonb_build_array(jsonb_build_array(
+      jsonb_build_object('text', 'Confirm ride', 'callback_data', 'confirm:' || new.id::text),
+      jsonb_build_object('text', 'Open console', 'url', 'https://www.alemtransportation.com/')))));
   perform public._send_email(s.email_to, 'New ride request ' || new.conf || ' · ' || public._fmt_when(new.date, new.time), body || E'\n\nOpen the console to confirm.');
   if s.customer_emails and coalesce(new.email, '') <> '' then
     perform public._send_email(new.email,

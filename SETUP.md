@@ -154,6 +154,29 @@ every confirmed ride, each exactly once (Eastern time). At the 1-hour mark the
 customer also gets a reminder email if email is configured. Check it's
 scheduled with `select jobname, schedule, active from cron.job;`.
 
+### Confirm rides from Telegram (optional, recommended)
+
+Each "New ride request" message carries a **Confirm ride** button. Pressing it
+marks the ride confirmed, which sends the customer's confirmation email and the
+"Ride confirmed" message, without opening the console. It needs one small
+server function in the client's Supabase project:
+
+1. Supabase → **Edge Functions → Deploy a new function → Via Editor**. Name it
+   exactly `telegram-webhook`, paste the contents of
+   `supabase/functions/telegram-webhook/index.ts`, click **Deploy**.
+2. Open the function → **Details / Settings** → turn **Verify JWT** off
+   (Telegram cannot send a Supabase token).
+3. **Edge Functions → Secrets** → add three secrets:
+   `TELEGRAM_BOT_TOKEN` (the BotFather token), `TELEGRAM_CHAT_ID` (the dispatch
+   chat id), `TELEGRAM_WEBHOOK_SECRET` (the random string registered with
+   Telegram; the developer provides it when the webhook is set).
+4. The webhook itself is registered with Telegram once by the developer
+   (`setWebhook` with the function URL and the secret). After that, make a test
+   booking and press **Confirm ride** on the message.
+
+Only people in the dispatch chat can see or press the button, and the function
+ignores presses from any other chat.
+
 ### If Telegram messages don't arrive
 
 Paste this in the SQL Editor and read the results top to bottom:
