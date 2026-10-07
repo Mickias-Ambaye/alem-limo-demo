@@ -179,21 +179,26 @@ ignores presses from any other chat.
 
 ### If Telegram messages don't arrive
 
-Paste this in the SQL Editor and read the results top to bottom:
+Every message is a row in the outbox; it is sent immediately and retried up
+to 5 times (about a minute apart) if the call times out or fails. Paste this in
+the SQL Editor and read the results top to bottom:
 
 ```sql
 select telegram_token is not null as has_token, telegram_chat_id, email_to from public.notify_settings;
-select status_code, content::text, error_msg, created from net._http_response order by created desc limit 5;
+select id, kind, attempts, sent_at, last_error, created_at from public.notify_outbox order by id desc limit 10;
 select public.notify_test();
 ```
 
 - `has_token` false or `telegram_chat_id` empty → the UPDATE with your keys
   was never run (or ran before notifications.sql created the table). Run it.
-- Rows in `net._http_response` with `status_code` 200 → Telegram accepted the
-  message; check you're looking at the right chat. 400/403 → wrong chat ID or
-  the bot was blocked in that chat. `error_msg` filled → network/pg_net issue.
-- No rows at all → the functions never called out; confirm pg_net is enabled
-  (Database → Extensions → pg_net).
+- Outbox rows with `sent_at` filled → delivered. `sent_at` empty and
+  `attempts` below 5 → still retrying (wait a minute). `attempts` 5 with a
+  `last_error` → gave up; the error says why (404/401 = wrong token, 400 =
+  wrong chat ID, "Timeout" = Telegram unreachable from the database).
+- `last_error` "channel not configured" → that channel's keys were missing
+  when the message was created (for email that is normal until Resend is set up).
+- No rows at all → the trigger never ran; make sure notifications.sql was run
+  after schema.sql and that the booking was made on the live site, not the demo.
 
 ## What is still not included
 

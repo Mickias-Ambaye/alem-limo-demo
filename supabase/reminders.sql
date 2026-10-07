@@ -45,6 +45,7 @@ begin
       n := n + 1;
     end if;
   end loop;
+  if n > 0 then perform public.process_notify_outbox(); end if;
   return n;
 end $$;
 revoke execute on function public.send_ride_reminders() from public, anon, authenticated;
