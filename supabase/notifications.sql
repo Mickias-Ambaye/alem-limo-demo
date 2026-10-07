@@ -88,7 +88,7 @@ declare s public.notify_settings; body text;
 begin
   select * into s from public.notify_settings where id = 1;
   body := public._booking_summary(new);
-  perform public._send_telegram('🚘 New ride request ' || new.conf || E'\n' || body || E'\n\nOpen the console to confirm.');
+  perform public._send_telegram('New ride request ' || new.conf || E'\n' || body || E'\n\nOpen the console to confirm.');
   perform public._send_email(s.email_to, 'New ride request ' || new.conf || ' · ' || public._fmt_when(new.date, new.time), body || E'\n\nOpen the console to confirm.');
   if s.customer_emails and coalesce(new.email, '') <> '' then
     perform public._send_email(new.email,
@@ -109,7 +109,7 @@ create or replace function public._on_booking_confirm() returns trigger
 language plpgsql security definer set search_path = public, extensions as $$
 begin
   if new.status = 'confirmed' and coalesce(old.status, '') <> 'confirmed' then
-    perform public._send_telegram('✅ Confirmed ' || new.conf || E'\n' || public._booking_summary(new) || E'\n\nReminders will follow 1 hour and 30 minutes before pickup.');
+    perform public._send_telegram('Ride confirmed: ' || new.conf || E'\n' || public._booking_summary(new) || E'\n\nReminders will follow 1 hour and 30 minutes before pickup.');
     if coalesce(new.email, '') <> '' and not new.offsite then
       perform public._send_email(new.email,
         'Your ride is confirmed (' || new.conf || ')',
@@ -119,7 +119,7 @@ begin
     end if;
   end if;
   if new.status = 'completed' and coalesce(old.status, '') <> 'completed' then
-    perform public._send_telegram('🏁 Completed ' || new.conf || ' · ' || coalesce(new.name, 'Guest') || ' · ' || coalesce(new.est, ''));
+    perform public._send_telegram('Ride completed: ' || new.conf || ' · ' || coalesce(new.name, 'Guest') || ' · ' || coalesce(new.est, ''));
   end if;
   return new;
 exception when others then
@@ -144,7 +144,7 @@ language plpgsql security definer set search_path = public, extensions as $$
 declare s public.notify_settings;
 begin
   select * into s from public.notify_settings where id = 1;
-  perform public._send_telegram('✅ Alem Dispatch alerts are connected. New ride requests will appear here.');
+  perform public._send_telegram('Alem Dispatch alerts are connected. New ride requests will appear here.');
   perform public._send_email(s.email_to, 'Alem Dispatch alerts connected', 'Email alerts for new ride requests are working.');
   return 'queued (check Telegram / inbox in a few seconds)';
 end $$;

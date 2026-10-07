@@ -142,14 +142,14 @@ never blocks a booking.
 
 **What gets sent:** new website request → Telegram + dispatcher email +
 "we received your request" email to the customer. Dispatcher clicks Confirm →
-"✅ Confirmed" to Telegram + "your ride is confirmed" email to the customer.
-Mark Completed → "🏁 Completed" to Telegram.
+"Ride confirmed" to Telegram + "your ride is confirmed" email to the customer.
+Mark Completed → "Ride completed" to Telegram.
 
 ### Ride reminders (1 hour and 30 minutes before pickup)
 
 Run `supabase/reminders.sql` once (after notifications.sql). It turns on
 Supabase's scheduler (pg_cron), which checks every 5 minutes and posts
-"⏰ Pickup in 1 hour" and "⏰ Pickup in 30 minutes" to the Telegram chat for
+"Reminder, pickup in 1 hour" and "Reminder, pickup in 30 minutes" to the Telegram chat for
 every confirmed ride, each exactly once (Eastern time). At the 1-hour mark the
 customer also gets a reminder email if email is configured. Check it's
 scheduled with `select jobname, schedule, active from cron.job;`.

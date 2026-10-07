@@ -30,7 +30,7 @@ begin
       continue;
     end;
     if mins between 50 and 70 and not b.reminded_60 then
-      perform public._send_telegram('⏰ Pickup in 1 hour · ' || b.conf || E'\n' || public._booking_summary(b));
+      perform public._send_telegram('Reminder, pickup in 1 hour: ' || b.conf || E'\n' || public._booking_summary(b));
       if coalesce(b.email, '') <> '' and not b.offsite then
         perform public._send_email(b.email,
           'Your chauffeur arrives in about an hour (' || b.conf || ')',
@@ -40,7 +40,7 @@ begin
       update public.bookings set reminded_60 = true where id = b.id;
       n := n + 1;
     elsif mins between 20 and 40 and not b.reminded_30 then
-      perform public._send_telegram('⏰ Pickup in 30 minutes · ' || b.conf || E'\n' || public._booking_summary(b));
+      perform public._send_telegram('Reminder, pickup in 30 minutes: ' || b.conf || E'\n' || public._booking_summary(b));
       update public.bookings set reminded_30 = true, reminded_60 = true where id = b.id;
       n := n + 1;
     end if;
