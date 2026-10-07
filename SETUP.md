@@ -140,6 +140,38 @@ Confirm). No server, no monthly cost.
 Keys live in a private table the website cannot read. A notification failure
 never blocks a booking.
 
+**What gets sent:** new website request → Telegram + dispatcher email +
+"we received your request" email to the customer. Dispatcher clicks Confirm →
+"✅ Confirmed" to Telegram + "your ride is confirmed" email to the customer.
+Mark Completed → "🏁 Completed" to Telegram.
+
+### Ride reminders (1 hour and 30 minutes before pickup)
+
+Run `supabase/reminders.sql` once (after notifications.sql). It turns on
+Supabase's scheduler (pg_cron), which checks every 5 minutes and posts
+"⏰ Pickup in 1 hour" and "⏰ Pickup in 30 minutes" to the Telegram chat for
+every confirmed ride, each exactly once (Eastern time). At the 1-hour mark the
+customer also gets a reminder email if email is configured. Check it's
+scheduled with `select jobname, schedule, active from cron.job;`.
+
+### If Telegram messages don't arrive
+
+Paste this in the SQL Editor and read the results top to bottom:
+
+```sql
+select telegram_token is not null as has_token, telegram_chat_id, email_to from public.notify_settings;
+select status_code, content::text, error_msg, created from net._http_response order by created desc limit 5;
+select public.notify_test();
+```
+
+- `has_token` false or `telegram_chat_id` empty → the UPDATE with your keys
+  was never run (or ran before notifications.sql created the table). Run it.
+- Rows in `net._http_response` with `status_code` 200 → Telegram accepted the
+  message; check you're looking at the right chat. 400/403 → wrong chat ID or
+  the bot was blocked in that chat. `error_msg` filled → network/pg_net issue.
+- No rows at all → the functions never called out; confirm pg_net is enabled
+  (Database → Extensions → pg_net).
+
 ## What is still not included
 
 - **SMS texts.** Possible via Twilio (~$1/month + ~$0.008/text), but US

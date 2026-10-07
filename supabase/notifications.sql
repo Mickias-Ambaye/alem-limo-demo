@@ -108,12 +108,18 @@ end $$;
 create or replace function public._on_booking_confirm() returns trigger
 language plpgsql security definer set search_path = public, extensions as $$
 begin
-  if new.status = 'confirmed' and coalesce(old.status, '') <> 'confirmed' and coalesce(new.email, '') <> '' and not new.offsite then
-    perform public._send_email(new.email,
-      'Your ride is confirmed (' || new.conf || ')',
-      'Good news, your ride with Alem Luxury Transportation is confirmed.' || E'\n\n' ||
-      public._booking_summary(new) || E'\n\n' ||
-      'Your chauffeur will be in touch before pickup. Need to change anything? Call or text (240)-595-2259.');
+  if new.status = 'confirmed' and coalesce(old.status, '') <> 'confirmed' then
+    perform public._send_telegram('✅ Confirmed ' || new.conf || E'\n' || public._booking_summary(new) || E'\n\nReminders will follow 1 hour and 30 minutes before pickup.');
+    if coalesce(new.email, '') <> '' and not new.offsite then
+      perform public._send_email(new.email,
+        'Your ride is confirmed (' || new.conf || ')',
+        'Good news, your ride with Alem Luxury Transportation is confirmed.' || E'\n\n' ||
+        public._booking_summary(new) || E'\n\n' ||
+        'Your chauffeur will be in touch before pickup. Need to change anything? Call or text (240)-595-2259.');
+    end if;
+  end if;
+  if new.status = 'completed' and coalesce(old.status, '') <> 'completed' then
+    perform public._send_telegram('🏁 Completed ' || new.conf || ' · ' || coalesce(new.name, 'Guest') || ' · ' || coalesce(new.est, ''));
   end if;
   return new;
 exception when others then
