@@ -162,8 +162,12 @@ marks the ride confirmed, which sends the customer's confirmation email and the
 server function in the client's Supabase project:
 
 1. Supabase → **Edge Functions → Deploy a new function → Via Editor**. Name it
-   exactly `telegram-webhook`, paste the contents of
-   `supabase/functions/telegram-webhook/index.ts`, click **Deploy**.
+   exactly `telegram-webhook`. In the editor, delete the sample code entirely
+   (it is a "hello world" that demands an API key and will answer every
+   button press with 401) and paste the full contents of
+   `supabase/functions/telegram-webhook/index.ts`, then click **Deploy**.
+   To check what is really deployed: open the function → **Code** tab; the
+   first lines must mention `telegram-webhook` and `withSupabase({ auth: "none" }`.
 2. Open the function → **Details / Settings** → turn **Verify JWT** off
    (Telegram cannot send a Supabase token).
 3. **Edge Functions → Secrets** → add three secrets:
