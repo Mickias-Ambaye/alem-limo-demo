@@ -19,9 +19,6 @@ export default {
       return new Response("forbidden", { status: 403 });
     }
     const update = await req.json().catch(() => null);
-    const cq = update?.callback_query;
-    if (!cq) return new Response("ok");
-
     const token = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
     const tg = (method: string, body: unknown) =>
       fetch(`https://api.telegram.org/bot${token}/${method}`, {
@@ -29,6 +26,24 @@ export default {
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body),
       });
+
+    // Anyone who opens the bot and presses Start (or writes to it) is told the chat ID,
+    // so a new dispatcher can be connected without technical help.
+    const msg = update?.message;
+    if (msg?.chat?.id && !update?.callback_query) {
+      const allowedChat = Deno.env.get("TELEGRAM_CHAT_ID");
+      const isTarget = allowedChat && String(msg.chat.id) === allowedChat;
+      await tg("sendMessage", {
+        chat_id: msg.chat.id,
+        text: isTarget
+          ? "This chat is connected to Alem Dispatch. New ride requests, confirmations and reminders arrive here."
+          : `Welcome to Alem Dispatch. This chat's ID is ${msg.chat.id}. Send it to your administrator to receive ride alerts here.`,
+      });
+      return new Response("ok");
+    }
+
+    const cq = update?.callback_query;
+    if (!cq) return new Response("ok");
 
     const match = /^confirm:([0-9a-f-]{36})$/.exec(String(cq.data ?? ""));
     if (!match) {

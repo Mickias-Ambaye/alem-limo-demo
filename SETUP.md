@@ -181,6 +181,13 @@ server function in the client's Supabase project:
 Only people in the dispatch chat can see or press the button, and the function
 ignores presses from any other chat.
 
+**Connecting a new person or group:** open the bot (or add it to a group) and
+press Start or send any message. The bot replies with that chat's ID. Put the
+ID in two places: `update public.notify_settings set telegram_chat_id = '<id>';`
+in the SQL Editor, and the `TELEGRAM_CHAT_ID` secret in Edge Functions →
+Secrets. Group IDs are negative numbers. A group is recommended when more than
+one person dispatches, because alerts go to exactly one chat.
+
 ### If Telegram messages don't arrive
 
 Every message is a row in the outbox; it is sent immediately and retried up
